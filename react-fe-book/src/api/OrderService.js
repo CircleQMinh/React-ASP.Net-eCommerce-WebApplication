@@ -15,12 +15,6 @@ class OrderService {
     return response;
   }
 
-  //admin duyệt order
-  async PutOrder(dto,id) {
-    const response = await axios.put(`${apiUrl}/order/${id}`,  dto);
-    return response;
-  }
-
 
 }
 

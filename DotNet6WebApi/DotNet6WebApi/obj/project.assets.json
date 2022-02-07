@@ -2478,11 +2478,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\quocm\\source\\repos\\DotNet6WebApi\\DotNet6WebApi\\DotNet6WebApi.csproj",
+      "projectUniqueName": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\DotNet6WebApi.csproj",
       "projectName": "DotNet6WebApi",
-      "projectPath": "C:\\Users\\quocm\\source\\repos\\DotNet6WebApi\\DotNet6WebApi\\DotNet6WebApi.csproj",
+      "projectPath": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\DotNet6WebApi.csproj",
       "packagesPath": "C:\\Users\\quocm\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\quocm\\source\\repos\\DotNet6WebApi\\DotNet6WebApi\\obj\\",
+      "outputPath": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

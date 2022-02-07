@@ -19,12 +19,15 @@ function AdminOrder() {
   const [listOrder, setListOrder] = useState([]);
   //function
   function onStatusFilterChange(event) {
+    setpageNumber(1);
     setStatus(event.target.value);
   }
   function onOrderByFilterChange(event) {
+    setpageNumber(1);
     setOrderby(event.target.value);
   }
   function onSortFilterChange(event) {
+    setpageNumber(1);
     setSort(event.target.value);
   }
   function onPageSizeFilterChange(event) {
@@ -50,7 +53,6 @@ function AdminOrder() {
   function ReRender()
   {
     setReRender(!reRender)
-    console.log("a")
   }
   //run first
 
@@ -180,10 +182,7 @@ function AdminOrder() {
                     </div>
                     <div className="col-sm-12 ">
                       <div className="btn-group mb-2">
-                        <button type="button" className="btn btn-danger">
-                          <i className="fas fa-plus"></i>
-                        </button>
-                        <button type="button" className="btn btn-warning">
+                        <button type="button" className="btn btn-warning" onClick={ReRender}>
                           <i className="fas fa-sync"></i>
                         </button>
                         <button type="button" className="btn btn-success">

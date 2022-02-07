@@ -4,7 +4,7 @@ const apiUrl = "https://localhost:7251/api";
 
 class ProductService {
   async getProduct(pageNumber,pageSize,keyword=null,priceRange=null,genreFilter=null) {
-    const response = await axios.get(`${apiUrl}/Book?pageNumber=${pageNumber}&pageSize=${pageSize}${keyword!=null?`&keyword=${keyword}`:""}${priceRange!=null?`&priceRange=${priceRange}`:""}${genreFilter!=null?`&genreFilter=${genreFilter}`:""}
+    const response = await axios.get(`${apiUrl}/Book/search?pageNumber=${pageNumber}&pageSize=${pageSize}${keyword!=null?`&keyword=${keyword}`:""}${priceRange!=null?`&priceRange=${priceRange}`:""}${genreFilter!=null?`&genreFilter=${genreFilter}`:""}
     `);
     return response;
   }
@@ -20,7 +20,14 @@ class ProductService {
     const response = await axios.get(`${apiUrl}/Genre`);
     return response;
   }
-
+  async getAuthor() {
+    const response = await axios.get(`${apiUrl}/Author`);
+    return response;
+  }
+  async getPublisher() {
+    const response = await axios.get(`${apiUrl}/Publisher`);
+    return response;
+  }
 }
 
 export default new ProductService();
