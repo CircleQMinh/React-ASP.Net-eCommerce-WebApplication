@@ -77,7 +77,7 @@ function AdminHeader(props) {
               </Nav.Link>
             </NavItem>
             <NavItem as="li">
-              <Nav.Link as={NavLink} to={"/search"}>
+              <Nav.Link as={NavLink} to={"/admin/product"}>
                 <i className="fas fa-shopping-bag"></i>
                 <p className="d-inline show_for_991"> Sản phẩm</p>
               </Nav.Link>

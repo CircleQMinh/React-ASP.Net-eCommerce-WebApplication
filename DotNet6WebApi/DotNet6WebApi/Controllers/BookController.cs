@@ -43,7 +43,7 @@ namespace DotNet6WebApi.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("search")]
         public async Task<IActionResult> GetBooks(int pageNumber, int pageSize, string? keyword = null,string? priceRange=null,string? genreFilter=null)
         {
 
@@ -82,6 +82,46 @@ namespace DotNet6WebApi.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
+
+
+        //-----------------------------------------------------------------------
+
+        [HttpGet]
+        public async Task<IActionResult> GetBooksForAdmin(string genre, string orderby, string sort, int pageNumber, int pageSize)
+        {
+
+            try
+            {
+                Expression<Func<Book, bool>> expression = genre == "all" ? q => true : q => q.Genres.Any(g=>g.Id==int.Parse(genre));
+                Func<IQueryable<Book>, IOrderedQueryable<Book>> orderBy = null;
+                switch (orderby)
+                {
+                    case "Id":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(p => p.Id) : q => q.OrderByDescending(p => p.Id);
+                        break;
+                    case "Title":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(p => p.Title) : q => q.OrderByDescending(p => p.Title);
+                        break;
+                    case "Price":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(p => p.Price) : q => q.OrderByDescending(p => p.Price);
+                        break;
+                    default:
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(p => p.Id) : q => q.OrderByDescending(p => p.Id);
+                        break;
+                }
+
+                var books = await unitOfWork.Books.GetAll(expression, orderBy, new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" }, new PaginationFilter(pageNumber, pageSize));
+                var count = await unitOfWork.Books.GetCount(expression);
+                var result = mapper.Map<IList<BookDTO>>(books);
+
+                return Accepted(new { result = result, totalProduct = count });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostBook(CreateBookDTO bookDTO)
         {
@@ -138,11 +178,11 @@ namespace DotNet6WebApi.Controllers
 
 
                 await unitOfWork.Save();
-                return Ok(new { book = newBook });
+                return Ok(new { book = newBook,success=true });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.ToString(), success = true });
+                return BadRequest(new { error = ex.ToString(), success = false });
             }
         }
         [HttpPut("{id}")]

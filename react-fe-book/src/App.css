@@ -299,8 +299,13 @@ Extra extra large	xxl	        ≥1400px */
   top: 75px;
 }
 .admin_img_table{
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
+}
+.admin_img_modal{
+  width: 100px;
+  height: 100px;
+  margin-top: 10px;
 }
 
 .text-white{

@@ -109,6 +109,25 @@ namespace DotNet6WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            try
+            {
+                var order = await unitOfWork.Orders.Get(q => q.Id == id);
+                if (order == null)
+                {
+                    return Ok(new { success = false, msg = "Không tìm thấy đơn hàng" });
+                }
+                await unitOfWork.Orders.Delete(order.Id);
+                await unitOfWork.Save();
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetOrders(string status,string orderby,string sort,int pageNumber,int pageSize)

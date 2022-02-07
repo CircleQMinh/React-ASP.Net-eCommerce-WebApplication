@@ -30,7 +30,6 @@ function OrderTableItem(props) {
       })
       .finally(() => {
         setIsLoadingOrderDetails(false);
-
       });
   };
 
@@ -41,15 +40,22 @@ function OrderTableItem(props) {
     setShowEditOrderModal(true);
   };
 
+  const [showDeleteOrderModal, setShowDeleteOrderModal] = useState(false);
+  const [isDeletingOrder, setIsDeletingOrder] = useState(false);
+  const handleCloseDeleteOrderModal = () => setShowDeleteOrderModal(false);
+  const handleShowDeleteOrderModal = () => {
+    setShowDeleteOrderModal(true);
+  };
+
   function onSave_EditOrderModal() {
     console.log(document.getElementById("edit_order_modal_status").value);
     console.log(document.getElementById("edit_order_modal_note").value);
     setIsEditingOrder(true);
     var status = document.getElementById("edit_order_modal_status").value;
     var note = document.getElementById("edit_order_modal_note").value;
-    OrderService.PutOrder({ status: status, note: note }, item.id)
+    AdminService.PutOrder({ status: status, note: note }, item.id)
       .then((response) => {
-        console.log(response.data);
+       // console.log(response.data);
         if (response.data.success) {
           toast.success("Chỉnh sửa thành công!", {
             position: "top-center",
@@ -72,12 +78,62 @@ function OrderTableItem(props) {
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Có lỗi xảy ra! Xin hãy thử lại", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       })
       .finally(() => {
         setIsEditingOrder(false);
         setShowEditOrderModal(false);
-        props.reRender() 
+        props.reRender();
       });
+  }
+  function onDelete_DeleteOrderModal(){
+    setIsDeletingOrder(true)
+    AdminService.DeleteOrder(item.id).then(
+      (response)=>{
+        if (response.data.success) {
+          toast.success("Xóa thành công!", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          toast.error("Có lỗi xảy ra! Xin hãy thử lại", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      }
+    )
+    .catch((error)=>{
+      console.log(error)
+      toast.error("Có lỗi xảy ra! Xin hãy thử lại", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    })
+    .finally(()=>{
+      setIsDeletingOrder(false);
+      setShowDeleteOrderModal(false);
+      props.reRender();
+    })
   }
 
   var orderDetailsContent = orderDetailsList.map((od) => {
@@ -230,9 +286,13 @@ function OrderTableItem(props) {
         <div   className="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style={{width: 25+'%'}}></div>
       </div>
     </div> */}
- 
-          {item.paymentMethod=="cash" && (<p className="text-center">Tiền mặt</p>)}
-          {item.paymentMethod=="vnpay" && (<p className="text-center">VNPay</p>)}
+
+          {item.paymentMethod == "cash" && (
+            <p className="text-center">Tiền mặt</p>
+          )}
+          {item.paymentMethod == "vnpay" && (
+            <p className="text-center">VNPay</p>
+          )}
         </td>
         <td>
           {item.status == 0 && (
@@ -268,7 +328,11 @@ function OrderTableItem(props) {
             >
               <i className="far fa-edit"></i>
             </button>
-            <button type="button" className="btn btn-danger">
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={handleShowDeleteOrderModal}
+            >
               <i className="far fa-trash-alt"></i>
             </button>
           </div>
@@ -372,6 +436,46 @@ function OrderTableItem(props) {
             onClick={onSave_EditOrderModal}
           >
             Save
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showDeleteOrderModal}
+        onHide={handleCloseDeleteOrderModal}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Xóa đơn hàng </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p class="text-tron text-monospace">Xóa đơn hàng này?</p>
+          <p class="text-center">
+            <i class="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào liên
+            quan đến đơn hàng sẽ bị xóa!
+          </p>
+        </Modal.Body>
+        {isDeletingOrder && (
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border text-info" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="text monospace ms-2">Đang xủ lý xin chờ tí...</p>
+          </div>
+        )}
+        <Modal.Footer>
+          <button
+            className="btn btn-danger"
+            onClick={handleCloseDeleteOrderModal}
+          >
+            Close
+          </button>
+          <button
+            disabled={isDeletingOrder}
+            className="btn btn-success"
+            onClick={onDelete_DeleteOrderModal}
+          >
+            OK
           </button>
         </Modal.Footer>
       </Modal>
