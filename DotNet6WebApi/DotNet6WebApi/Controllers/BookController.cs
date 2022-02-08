@@ -44,18 +44,18 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> GetBooks(int pageNumber, int pageSize, string? keyword = null,string? priceRange=null,string? genreFilter=null)
+        public async Task<IActionResult> GetBooks(int pageNumber, int pageSize, string? keyword = null, string? priceRange = null, string? genreFilter = null)
         {
 
-            Expression<Func<Book, bool>> expression = q=>true;
+            Expression<Func<Book, bool>> expression = q => true;
 
             try
             {
-      
+
 
                 if (keyword != null)
                 {
-                    Expression<Func<Book, bool>> expression_keyword = q=>q.Title.Contains(keyword);
+                    Expression<Func<Book, bool>> expression_keyword = q => q.Title.Contains(keyword);
                     expression = expression.AndAlso(expression_keyword);
 
                 }
@@ -83,6 +83,35 @@ namespace DotNet6WebApi.Controllers
             }
         }
 
+        [HttpGet("{id}/related")]
+        public async Task<IActionResult> GetRelatedBook(int id)
+        {
+            try
+            {
+                var book = await unitOfWork.Books.Get(q => q.Id == id, new List<string> { "Authors", "Genres", "Publisher"});
+                if (book == null)
+                {
+                    return Ok(new { success = false, msg = "Không tìm thấy sản phẩm" });
+                }
+
+                Expression<Func<Book, bool>> expression =
+                    q =>
+                    (q.Authors.Any(author => book.Authors.Contains(author))
+                ||  q.Genres.Any(genre => book.Genres.Contains(genre))
+                ||  q.Publisher==book.Publisher)
+                &&  q.Id!=id;
+
+                var relatedBook = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "PromotionInfo"}, new PaginationFilter(1, 8)); ;
+                var result = mapper.Map<IList<BookDTO>>(relatedBook);
+
+
+                return Ok(new { result});
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
 
         //-----------------------------------------------------------------------
 
@@ -92,7 +121,7 @@ namespace DotNet6WebApi.Controllers
 
             try
             {
-                Expression<Func<Book, bool>> expression = genre == "all" ? q => true : q => q.Genres.Any(g=>g.Id==int.Parse(genre));
+                Expression<Func<Book, bool>> expression = genre == "all" ? q => true : q => q.Genres.Any(g => g.Id == int.Parse(genre));
                 Func<IQueryable<Book>, IOrderedQueryable<Book>> orderBy = null;
                 switch (orderby)
                 {
@@ -178,7 +207,7 @@ namespace DotNet6WebApi.Controllers
 
 
                 await unitOfWork.Save();
-                return Ok(new { book = newBook,success=true });
+                return Ok(new { book = newBook, success = true });
             }
             catch (Exception ex)
             {

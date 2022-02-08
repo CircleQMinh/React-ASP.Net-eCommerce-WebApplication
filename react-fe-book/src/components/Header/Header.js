@@ -8,7 +8,7 @@ import {
   Form,
   Nav,
 } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { auth_action } from "../../redux/auth_slice.js";
 import AuthService from "../../api/AuthService";
@@ -35,12 +35,15 @@ function Header(props) {
 
   //var
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
   const user = useSelector((state) => state.auth_slice.user);
 
   //function
   function LogOut() {
+   // navigate("/home")
     dispatch(auth_action.logOut());
+
   }
 
   //run first
@@ -51,6 +54,12 @@ function Header(props) {
   // for (const [key, value] of Object.entries(user)) {
   //   console.log(`${key}: ${value}`);
   // }
+
+  function onLoginClick() {
+    const pathname = window.location.pathname; //returns the current url minus the domain name
+    localStorage.setItem("redirect",pathname)
+    navigate("/login")
+  }
 
   return (
     <Fragment>
@@ -135,8 +144,8 @@ function Header(props) {
                 </Nav.Link>
               </NavItem>
               {!isLoggedIn && (
-                <NavItem as="li">
-                  <Nav.Link as={NavLink} to={"/login"}>
+                <NavItem as="li" onClick={onLoginClick}>
+                  <Nav.Link>
                     <i className="fas fa-sign-in-alt  me-2"></i>
                     <p className="hide_for_1399 show_for_991">Đăng nhập</p>
                   </Nav.Link>
@@ -167,7 +176,7 @@ function Header(props) {
                     }
                     id="profile_drop"
                   >
-                    <NavDropdown.Item href="#action/3.4">
+                    <NavDropdown.Item as={NavLink}  to={`/profile/${user.id}`}>
                       <i className="fas fa-user me-2"></i>
                       <p className="d-inline show_for_991">Tài khoản</p>
                     </NavDropdown.Item>

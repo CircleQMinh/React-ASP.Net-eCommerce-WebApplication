@@ -22,6 +22,7 @@ import Thankyou from "./components/Thankyou/Thankyou";
 import Dashboard from "./components/Admin/Dashboard";
 import AdminOrder from "./components/Admin/AdminOrder";
 import AdminProduct from "./components/Admin/AdminProduct";
+import Profile from "./components/Profile/Profile";
 function App() {
   return (
     <Fragment>
@@ -46,6 +47,8 @@ function App() {
           <Route path="/admin/dashboard" element={<Dashboard></Dashboard>} ></Route>
           <Route path="/admin/order" element={<AdminOrder></AdminOrder>} ></Route>
           <Route path="/admin/product" element={<AdminProduct></AdminProduct>} ></Route>
+
+          <Route path="/profile/:id" element={<Profile></Profile>} ></Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>

@@ -14,6 +14,12 @@ class ProductService {
     return response;
   }
 
+  async getRelatedProductById(id) {
+    const response = await axios.get(`${apiUrl}/Book/${id}/related
+    `);
+    return response;
+  }
+
   // --------------------------------------------------------------------------------------------------------
 
   async getGenre() {

@@ -2,8 +2,12 @@ import React, { Fragment } from "react";
 import { Container } from "react-bootstrap";
 import Slider from "react-slick";
 import Arrow from "./Arrow";
+import NumberFormat from "react-number-format";
+import { useNavigate } from "react-router-dom";
 
-function SlickSlider(props) {
+function SlickSliderRelatedProduct(props) {
+  //console.log(props.items);
+  const navigate = useNavigate()
   let slide_to_show = props.slide_to_show == null ? 4 : props.slide_to_show;
   let slide_to_scroll =
     props.slide_to_scroll == null ? 4 : props.slide_to_scroll;
@@ -40,10 +44,10 @@ function SlickSlider(props) {
   let items = props.items;
   var settings = {
     dots: true,
-    infinite: true,
+    infinite: items.length > slide_to_show,
     speed: 500,
-    slidesToShow: slide_to_show,
-    slidesToScroll: slide_to_scroll,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     initialSlide: 0,
     autoplay: true,
     autoplaySpeed: 2000,
@@ -56,7 +60,7 @@ function SlickSlider(props) {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          infinite: true,
+
           dots: true,
         },
       },
@@ -77,6 +81,10 @@ function SlickSlider(props) {
       },
     ],
   };
+  function onProductCardClick(id){
+    window.scrollTo(0,0)
+    navigate(`/book/${id}`)
+  }
   return (
     <Fragment>
       <Container className="p-3">
@@ -218,16 +226,105 @@ function SlickSlider(props) {
           <Slider {...settings}>
             {items.map((item) => {
               return (
-                <div className="col col-xs-8 col-md-6 col-lg-4 col-xl-3 " key={item.id}>
-                  <div className="card border border-4 rounded-3 mb-2">
-                    <img
-                      src={item.imgUrl}
-                      className="card-img-top product_img"
-                      alt={`Product ${item.id}`}
-                    />
-
-                    <div className="card-body">
-                      <h5 className="card-title product_name">{item.title}</h5>
+                <div key={item.id}>
+                  <div className="col  "  >
+                    <div className="card border border-4 rounded-3 mb-2" onClick={()=>{onProductCardClick(item.id)}} id={item.id}>
+                      <img
+                        src={item.imgUrl}
+                        className="card-img-top product_img"
+                        alt={`Product ${item.id}`}
+                      />
+                      <div className="card-body">
+                        <h5 className="card-title product_name">
+                          {item.title}
+                        </h5>
+                      </div>
+                      {/* Không có giảm giá */}
+                      {item.promotionInfo == null && (
+                        <div className="product_price_div">
+                          <p className="text-center">
+                            <NumberFormat
+                              value={item.price}
+                              className="text-center text-danger text-decoration-underline  "
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              suffix={"đ"}
+                              renderText={(value, props) => (
+                                <span {...props}>{value}</span>
+                              )}
+                            />
+                          </p>
+                        </div>
+                      )}
+                      {/* Giảm theo vnd*/}
+                      {item.promotionInfo != null &&
+                        item.promotionInfo.promotionAmount != null && (
+                          <div className="product_price_div">
+                            <p className=" text-center">
+                              <NumberFormat
+                                value={
+                                  item.price -
+                                  item.promotionInfo.promotionAmount
+                                }
+                                className="text-center text-danger text-decoration-underline  "
+                                displayType={"text"}
+                                thousandSeparator={true}
+                                suffix={"đ"}
+                                renderText={(value, props) => (
+                                  <span {...props}>{value}</span>
+                                )}
+                              />
+                              <span className="badge rounded-pill bg-danger ms-3">
+                                {`- ${item.promotionInfo.promotionAmount} đ`}
+                              </span>
+                            </p>
+                            <p className=" text-center m-0">
+                              <NumberFormat
+                                value={item.price}
+                                className="text-center text-danger text-decoration-line-through  "
+                                displayType={"text"}
+                                thousandSeparator={true}
+                                suffix={"đ"}
+                                renderText={(value, props) => (
+                                  <span {...props}>{value}</span>
+                                )}
+                              />
+                            </p>
+                          </div>
+                        )}
+                      {/* Giảm theo % */}
+                      {item.promotionInfo != null &&
+                        item.promotionInfo.promotionPercent != null && (
+                          <div className="product_price_div">
+                            <p className="text-center m-0">
+                              <NumberFormat
+                                value={item.price - (item.price * 10) / 100}
+                                className="text-center text-danger text-decoration-underline "
+                                displayType={"text"}
+                                thousandSeparator={true}
+                                suffix={"đ"}
+                                renderText={(value, props) => (
+                                  <span {...props}>{value}</span>
+                                )}
+                              />
+                              <span className="badge rounded-pill bg-success ms-3">
+                                -{item.promotionInfo.promotionPercent}%
+                              </span>
+                            </p>
+                            <p className=" text-center m-0">
+                              <NumberFormat
+                                value={item.price}
+                                className="text-center text-danger text-decoration-line-through  "
+                                displayType={"text"}
+                                thousandSeparator={true}
+                                suffix={"đ"}
+                                renderText={(value, props) => (
+                                  <span {...props}>{value}</span>
+                                )}
+                              />
+                            </p>
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>
@@ -240,4 +337,4 @@ function SlickSlider(props) {
   );
 }
 
-export default SlickSlider;
+export default SlickSliderRelatedProduct;

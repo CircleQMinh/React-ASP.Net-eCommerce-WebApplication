@@ -183,71 +183,92 @@ namespace DotNet6WebApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAccountInfo(string id)
+        {
+            try
+            {
+                var user = await userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return Ok(new { success = false, msg = "Không tìm thấy người dùng" });
+                }
+                var roles = await userManager.GetRolesAsync(user);
+                var result = mapper.Map<SimpleUserDTO>(user);
+                result.Roles=roles;
+                return Ok(new { result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
 
-        public IActionResult ExternalLogin(string provider, string returnUrl = null)
-        {
-            // Request a redirect to the external login provider.
-            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
-            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return Challenge(properties, provider);
-        }
-        [TempData]
-        public string ErrorMessage { get; set; }
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null)
-        {
+        //[HttpPost]
+
+        //public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        //{
+        //    // Request a redirect to the external login provider.
+        //    var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
+        //    var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        //    return Challenge(properties, provider);
+        //}
+        //[TempData]
+        //public string ErrorMessage { get; set; }
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null)
+        //{
        
-            var info = await signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                return RedirectToAction(nameof(ExternalLogin));
-            }
-            // Sign in the user with this external login provider if the user already has a login.
-            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-            if (result.Succeeded)
-            {
-                var user = await userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
-                return Accepted(new { success = "OK", user=user });
-                //_logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
-                //return RedirectToAction(nameof(returnUrl));
-            }
-            else
-            {
-                string email = string.Empty;
-                string firstName = string.Empty;
-                string lastName = string.Empty;
-                string profileImage = string.Empty;
-                //get google login user infromation like that.
-                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-                {
-                    email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                }
-                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.GivenName))
-                {
-                    firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
-                }
-                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.GivenName))
-                {
-                    lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
-                }
-                if (info.Principal.HasClaim(c => c.Type == "picture"))
-                {
-                    profileImage = info.Principal.FindFirstValue("picture");
-                }
-                var user = new AppUser { UserName = email, Email = email, EmailConfirmed = true,imgUrl=profileImage };
-                var result2 = await userManager.CreateAsync(user);
-                if (result2.Succeeded)
-                {
-                    result2 = await userManager.AddLoginAsync(user, info);
-                    if (result2.Succeeded)
-                    {
-                        //do somethng here
-                    }
-                }
-                return Accepted(new { success = "OK",user=user }); 
-            }
-        }
+        //    var info = await signInManager.GetExternalLoginInfoAsync();
+        //    if (info == null)
+        //    {
+        //        return RedirectToAction(nameof(ExternalLogin));
+        //    }
+        //    // Sign in the user with this external login provider if the user already has a login.
+        //    var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+        //    if (result.Succeeded)
+        //    {
+        //        var user = await userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
+        //        return Accepted(new { success = "OK", user=user });
+        //        //_logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
+        //        //return RedirectToAction(nameof(returnUrl));
+        //    }
+        //    else
+        //    {
+        //        string email = string.Empty;
+        //        string firstName = string.Empty;
+        //        string lastName = string.Empty;
+        //        string profileImage = string.Empty;
+        //        //get google login user infromation like that.
+        //        if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
+        //        {
+        //            email = info.Principal.FindFirstValue(ClaimTypes.Email);
+        //        }
+        //        if (info.Principal.HasClaim(c => c.Type == ClaimTypes.GivenName))
+        //        {
+        //            firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+        //        }
+        //        if (info.Principal.HasClaim(c => c.Type == ClaimTypes.GivenName))
+        //        {
+        //            lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+        //        }
+        //        if (info.Principal.HasClaim(c => c.Type == "picture"))
+        //        {
+        //            profileImage = info.Principal.FindFirstValue("picture");
+        //        }
+        //        var user = new AppUser { UserName = email, Email = email, EmailConfirmed = true,imgUrl=profileImage };
+        //        var result2 = await userManager.CreateAsync(user);
+        //        if (result2.Succeeded)
+        //        {
+        //            result2 = await userManager.AddLoginAsync(user, info);
+        //            if (result2.Succeeded)
+        //            {
+        //                //do somethng here
+        //            }
+        //        }
+        //        return Accepted(new { success = "OK",user=user }); 
+        //    }
+        //}
     }
 }
