@@ -130,7 +130,9 @@ Extra extra large	xxl	        ≥1400px */
 .notfound a:hover {
   background-color: #2c2c2c;
 }
-
+.img_review{
+  max-height: 162px;
+}
 .product_name {
   height: 60px;
   text-align: center;
@@ -317,6 +319,15 @@ Extra extra large	xxl	        ≥1400px */
 .w-100vh{
   width: 100vh;
 }
+.full_page_spinner{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
 
 @media (max-width: 1399.98px) {
   #ad_slide img {

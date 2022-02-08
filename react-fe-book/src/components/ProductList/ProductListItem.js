@@ -4,11 +4,13 @@ import Header from "../Header/Header";
 import NumberFormat from "react-number-format";
 import { useSelector, useDispatch } from "react-redux";
 import {  cart_slice_action } from "../../redux/cart_slice.js";
+import { useNavigate } from "react-router-dom";
 
 function ProductListItem(props) {
   // console.log(props.item);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   function onClickAddToCart(event){
     event.preventDefault()
@@ -16,9 +18,13 @@ function ProductListItem(props) {
     dispatch(cart_slice_action.addToCart(item))
     dispatch(cart_slice_action.calculateCartTotal())
   }
+  function onProductCardClick(){
+    window.scrollTo(0,0)
+    navigate(`/book/${props.item.id}`)
+  }
   return (
     <Fragment>
-      <div className="col col-xs-8 col-md-6 col-lg-4 col-xl-3 ">
+      <div className="col col-xs-8 col-md-6 col-lg-4 col-xl-3 " onClick={onProductCardClick}>
         <div className="card border border-4 rounded-3 mb-2">
           <img
             src={props.item.imgUrl}

@@ -210,6 +210,11 @@ function AdminProduct() {
       .finally(() => {
         setIsAdding(false);
         setShowAddModal(false)
+        resetAddModal();
+        setSelectedGenres([])
+        setSelectedAuthors([])
+        setSelectedPublisher(null)
+        setselectedImgUrl(defaultImgUrl)
         ReRender()
       });
   }

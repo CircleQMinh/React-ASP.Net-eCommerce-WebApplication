@@ -42,13 +42,17 @@ class AuthService {
     });
     return response;
   }
-  async TestProvider(provider, url) {
-    const response = await axios.post(`${apiUrl}?provider=${provider}&returnUrl=${url}`, {
-      provider: provider,
-      returnUrl: url,
-    });
+  async GetUserInfo(id) {
+    const response = await axios.get(`${apiUrl}/account/${id}`);
     return response;
   }
+  // async TestProvider(provider, url) {
+  //   const response = await axios.post(`${apiUrl}?provider=${provider}&returnUrl=${url}`, {
+  //     provider: provider,
+  //     returnUrl: url,
+  //   });
+  //   return response;
+  // }
 }
 
 export default new AuthService();
