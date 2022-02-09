@@ -344,14 +344,14 @@ function ProductTableItem(props) {
               </Fragment>
             )}
         </td>
-        <td className="text-white">{item.publisher.name}</td>
+        <td className="text-white"><i className="fa-solid fa-print me-2"></i>{item.publisher.name}</td>
 
         <td className="text-white">
           {item.authors.map((author) => {
             return (
               <p className="text-center" key={author.id}>
                 {" "}
-                {author.name}
+                <i className="fa-solid fa-user-pen me-2"></i>{author.name}
               </p>
             );
           })}
@@ -361,7 +361,7 @@ function ProductTableItem(props) {
             return (
               <p className="text-center" key={genre.id}>
                 {" "}
-                {genre.name}
+                <i className="fa-solid fa-tag me-2"></i> {genre.name}
               </p>
             );
           })}

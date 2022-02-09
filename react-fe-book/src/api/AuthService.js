@@ -1,10 +1,14 @@
 import axios from "axios";
 
-const apiUrl = "https://localhost:7251/api/account";
+const apiUrl = "https://localhost:7251/api";
+const token = localStorage.getItem("token");
+const config = {
+  headers: { Authorization: `Bearer ${token}` },
+};
 
 class AuthService {
   async Login(email, password) {
-    const response = await axios.post(`${apiUrl}/login`, {
+    const response = await axios.post(`${apiUrl}/account/login`, {
       email: email,
       password: password,
     });
@@ -12,7 +16,7 @@ class AuthService {
   }
   async Register(data) {
     //console.log(data);
-    const response = await axios.post(`${apiUrl}/register`, {
+    const response = await axios.post(`${apiUrl}/account/register`, {
       email: data.email,
       password: data.password,
       imgUrl:
@@ -24,21 +28,23 @@ class AuthService {
     return response;
   }
   async ConfimrEmail(email, token) {
-    const response = await axios.post(`${apiUrl}/confirmEmail`, {
+    const response = await axios.post(`${apiUrl}/account/confirmEmail`, {
       email: email,
       token: token,
     });
     return response;
   }
   async RequestNewPassword(email) {
-    const response = await axios.post(`${apiUrl}/requestNewPassword?email=${email}`);
+    const response = await axios.post(
+      `${apiUrl}/account/requestNewPassword?email=${email}`
+    );
     return response;
   }
-  async ConfimrNewPassword(email, token,password) {
-    const response = await axios.post(`${apiUrl}/confirmNewPassword`, {
+  async ConfimrNewPassword(email, token, password) {
+    const response = await axios.post(`${apiUrl}/account/confirmNewPassword`, {
       email: email,
       token: token,
-      password:password
+      password: password,
     });
     return response;
   }
@@ -53,6 +59,20 @@ class AuthService {
   //   });
   //   return response;
   // }
+  async GetAuthorizeAdmin() {
+    const response = await axios.get(
+      `${apiUrl}/account/getAuthorize/Administrator`,
+      config
+    );
+    return response;
+  }
+  async GetAuthorizeUser(id) {
+    const response = await axios.get(
+      `${apiUrl}/account/getAuthorize/User/${id}`,
+      config
+    );
+    return response;
+  }
 }
 
 export default new AuthService();

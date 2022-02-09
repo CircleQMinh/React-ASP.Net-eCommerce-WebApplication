@@ -41,9 +41,8 @@ function Header(props) {
 
   //function
   function LogOut() {
-   // navigate("/home")
+    // navigate("/home")
     dispatch(auth_action.logOut());
-
   }
 
   //run first
@@ -57,8 +56,8 @@ function Header(props) {
 
   function onLoginClick() {
     const pathname = window.location.pathname; //returns the current url minus the domain name
-    localStorage.setItem("redirect",pathname)
-    navigate("/login")
+    localStorage.setItem("redirect", pathname);
+    navigate("/login");
   }
 
   return (
@@ -176,10 +175,17 @@ function Header(props) {
                     }
                     id="profile_drop"
                   >
-                    <NavDropdown.Item as={NavLink}  to={`/profile/${user.id}`}>
+                    <NavDropdown.Item as={NavLink} to={`/profile/${user.id}`}>
                       <i className="fas fa-user me-2"></i>
                       <p className="d-inline show_for_991">Tài khoản</p>
                     </NavDropdown.Item>
+                    {user.roles.includes("Administrator") && (
+                      <NavDropdown.Item as={NavLink} to={`/admin/dashboard`}>
+                        <i className="fas fa-home me-2"></i>
+                        <p className="d-inline show_for_991">Trang quản lý</p>
+                      </NavDropdown.Item>
+                    )}
+
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={LogOut}>
                       <i className="fas fa-sign-in-alt  me-2"></i>
