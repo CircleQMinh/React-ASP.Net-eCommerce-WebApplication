@@ -61,9 +61,9 @@ function AdminHeader(props) {
         className="p-0 me-auto"
         style={{ backgroundColor: "#27293D" }}
       >
-        <Navbar.Brand as={NavLink} to={"/"} className="ms-3">
+        <Navbar.Brand as={NavLink} to={"/admin/dashboard"} className="ms-3">
           <p className={"show_for_991"} style={{ display: "inline" }}>
-            <i className="fas fa-home me-2"></i> Dashboard
+            <i className="fas fa-home me-2" ></i> Dashboard
           </p>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -134,9 +134,13 @@ function AdminHeader(props) {
                   id="profile_drop"
                   style={{ marginRight: 30 + "px" }}
                 >
-                  <NavDropdown.Item href="#action/3.4">
+                  <NavDropdown.Item as={NavLink}  to={`/profile/${user.id}`}>
                     <i className="fas fa-user me-2"></i>
                     <p className="d-inline show_for_991">Tài khoản</p>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={NavLink}  to={`/home`}>
+                  <i className="fas fa-home me-2" ></i>
+                    <p className="d-inline show_for_991">Cửa hàng</p>
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={LogOut}>

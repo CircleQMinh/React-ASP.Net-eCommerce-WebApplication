@@ -3,6 +3,7 @@ using DotNet6WebApi.Data;
 using DotNet6WebApi.DTO;
 using DotNet6WebApi.Helper;
 using DotNet6WebAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
@@ -116,6 +117,7 @@ namespace DotNet6WebApi.Controllers
         //-----------------------------------------------------------------------
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetBooksForAdmin(string genre, string orderby, string sort, int pageNumber, int pageSize)
         {
 
@@ -152,6 +154,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PostBook(CreateBookDTO bookDTO)
         {
             if (!ModelState.IsValid)
@@ -215,6 +218,7 @@ namespace DotNet6WebApi.Controllers
             }
         }
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PutBook([FromBody] CreateBookDTO bookDTO, int id)
         {
             if (!ModelState.IsValid)
@@ -365,6 +369,7 @@ namespace DotNet6WebApi.Controllers
 
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteBook(int id)
         {
             try

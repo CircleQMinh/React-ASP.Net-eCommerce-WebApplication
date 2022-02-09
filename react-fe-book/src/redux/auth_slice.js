@@ -25,7 +25,7 @@ const auth_slice = createSlice({
     getAuthInfoFromLocalStorage(state, action) {
       let u = localStorage.getItem("user");
       if (u !== null) {
-        console.log("Tìm thấy phiên đăng nhập!");
+        //console.log("Tìm thấy phiên đăng nhập!");
         let timeOut = new Date(localStorage.getItem("loginTimeOut"));
         let timeNow = new Date();
         // console.log(timeOut);
@@ -35,15 +35,15 @@ const auth_slice = createSlice({
           localStorage.removeItem("isLoggedIn");
           localStorage.removeItem("token");
           localStorage.removeItem("loginTimeOut")
-          console.log("Hết phiên đăng nhập! Xóa hết info cũ");
+         // console.log("Hết phiên đăng nhập! Xóa hết info cũ");
         } else {
           let user = JSON.parse(u)
           state.user = user;
           state.isLoggedIn = true;
-          console.log("Còn phiên đăng nhập! Dùng lại info cũ");
+          //console.log("Còn phiên đăng nhập! Dùng lại info cũ");
         }
       } else {
-        console.log("Không tìm thấy phiên đăng nhập nào");
+        //console.log("Không tìm thấy phiên đăng nhập nào");
       }
     },
     logOut(state, action) {

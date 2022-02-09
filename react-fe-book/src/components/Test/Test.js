@@ -2,20 +2,12 @@ import { React, Fragment } from "react";
 import AuthService from "../../api/AuthService";
 
 function Test() {
-
-    function DoSMT(){
-        AuthService.TestProvider("Google","/home").then(
-            (response )=>{
-                console.log(response )
-            }
-        )
-        .catch((error)=>{
-
-        })
-        .finally(()=>{
-
-        })
-    }
+  function DoSMT() {
+    AuthService.GetAuthorize("69")
+      .then((res) => {console.log(res.data)})
+      .catch((error) => {})
+      .finally(() => {});
+  }
 
   return (
     <Fragment>

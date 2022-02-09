@@ -3,6 +3,7 @@ using DotNet6WebApi.Data;
 using DotNet6WebApi.DTO;
 using DotNet6WebApi.Helper;
 using DotNet6WebAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
@@ -20,155 +21,8 @@ namespace DotNet6WebApi.Controllers
             unitOfWork = _unitOfWork;
             mapper = _mapper;
         }
-
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderById(int id)
-        {
-            try
-            {
-                var order = await unitOfWork.Orders.Get(q=>q.Id== id,new List<string> { "OrderDetails"});
-                if (order==null)
-                {
-                    return Ok(new { success = false,msg = "Không tìm thấy đơn hàng." });
-                }
-                var result = mapper.Map<OrderDTO>(order);
-                return Ok(new {success=true,result});
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-          
-        }
-        [HttpGet("{id}/orderdetails")]
-        public async Task<IActionResult> GetAllOrderDetailByOrderId(int id)
-        {
-            try
-            {
-                var orderDetails = await unitOfWork.OrderDetails.GetAll(q => q.OrderId==id,null,new List<string> { "Book"});
-                if (orderDetails.Count==0)
-                {
-                    return Ok(new { success = false, msg = "Không tìm thấy đơn hàng." });
-                }
-                var result = mapper.Map<IList<OrderDetailDTO>>(orderDetails);
-                return Ok(new { success = true, result });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostOrder([FromBody] CreateOrderDTO order)
-        {
-            if (!ModelState.IsValid)
-            {
-                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
-            }
-            try
-            {
-                var newOrder = mapper.Map<Order>(order);
-                await unitOfWork.Orders.Insert(newOrder);
-                await unitOfWork.Save();
-
-
-                return Ok(new { order = newOrder, success = true });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder([FromBody] EditOrderDTO dto,int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
-            }
-            try
-            {
-                var order = await unitOfWork.Orders.Get(q => q.Id == id);
-                if (order==null)
-                {
-                    return Ok(new { error = "Không tìm thấy đơn hàng", success = false });
-                }
-                order.Note=dto.Note;
-                order.Status=dto.Status;
-
-                unitOfWork.Orders.Update(order);
-                await unitOfWork.Save();
-
-                return Ok(new { order = order, success = true });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
-        {
-            try
-            {
-                var order = await unitOfWork.Orders.Get(q => q.Id == id);
-                if (order == null)
-                {
-                    return Ok(new { success = false, msg = "Không tìm thấy đơn hàng" });
-                }
-                await unitOfWork.Orders.Delete(order.Id);
-                await unitOfWork.Save();
-                return Ok(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { error = ex.ToString() });
-            }
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetOrders(string status,string orderby,string sort,int pageNumber,int pageSize)
-        {
-   
-            try
-            {
-                Expression<Func<Order, bool>> expression = status=="all" ? q=>true : q => q.Status == int.Parse(status);
-                Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;
-                switch (orderby)
-                {
-                    case "Id":
-                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);
-                        break;
-                    case "totalPrice":
-                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.TotalPrice) : q => q.OrderByDescending(order => order.TotalPrice);
-                        break;
-                    case "contactName":
-                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.ContactName) : q => q.OrderByDescending(order => order.ContactName);
-                        break;
-                    default:
-                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);
-                        break;
-                }
-
-                var orders = await unitOfWork.Orders.GetAll(expression,orderBy,new List<string> {"OrderDetails"},new PaginationFilter(pageNumber,pageSize));
-                var count = await unitOfWork.Orders.GetCount(expression);
-                var result = mapper.Map<IList<OrderDTO>>(orders);
-
-
-
-                return Accepted(new {result=result,totalOrder=count});
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
-
-        }
-
         [HttpGet("getVNPayUrl", Name = "getVNPayUrl")]
+        [Authorize]
         public async Task<IActionResult> GetVNPayUrl(int totalPrice)
         {
             try
@@ -228,5 +82,202 @@ namespace DotNet6WebApi.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
+
+
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetOrderById(int id)
+        {
+            try
+            {
+                var order = await unitOfWork.Orders.Get(q=>q.Id== id,new List<string> { "OrderDetails"});
+                if (order==null)
+                {
+                    return Ok(new { success = false,msg = "Không tìm thấy đơn hàng." });
+                }
+                var result = mapper.Map<OrderDTO>(order);
+                return Ok(new {success=true,result});
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+          
+        }
+
+        [HttpGet("{id}/orderdetails")]
+        [Authorize]
+        public async Task<IActionResult> GetAllOrderDetailByOrderId(int id)
+        {
+            try
+            {
+                var orderDetails = await unitOfWork.OrderDetails.GetAll(q => q.OrderId==id,null,new List<string> { "Book"});
+                if (orderDetails.Count==0)
+                {
+                    return Ok(new { success = false, msg = "Không tìm thấy đơn hàng." });
+                }
+                var result = mapper.Map<IList<OrderDetailDTO>>(orderDetails);
+                return Ok(new { success = true, result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("history/{id}")]
+       // [Authorize]
+        public async Task<IActionResult> GetOrderHistory(string id, string status, string orderby, string sort, int pageNumber, int pageSize)
+        {
+            try
+            {
+                Expression<Func<Order, bool>> expression = q => q.UserID == id;
+                Expression<Func<Order, bool>> expression_status = status == "all" ? q => true : q => q.Status == int.Parse(status);
+                expression = expression.AndAlso(expression_status);
+
+                Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;
+                switch (orderby)
+                {
+                    case "Id":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);
+                        break;
+                    case "totalPrice":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.TotalPrice) : q => q.OrderByDescending(order => order.TotalPrice);
+                        break;
+                    case "date":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.OrderDate) : q => q.OrderByDescending(order => order.OrderDate);
+                        break;
+                    default:
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);
+                        break;
+                }
+
+                var orders = await unitOfWork.Orders.GetAll(expression, 
+                    orderBy,
+                    new List<string> { "OrderDetails" },
+                    new PaginationFilter(pageNumber,pageSize));
+                var count = await unitOfWork.Orders.GetCount(expression);
+                var result = mapper.Map<IList<OrderDTO>>(orders);
+                return Ok(new { success = true, result = result,totalOrder=count });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> PostOrder([FromBody] CreateOrderDTO order)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+            }
+            try
+            {
+                var newOrder = mapper.Map<Order>(order);
+                await unitOfWork.Orders.Insert(newOrder);
+                await unitOfWork.Save();
+
+
+                return Ok(new { order = newOrder, success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> PutOrder([FromBody] EditOrderDTO dto,int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+            }
+            try
+            {
+                var order = await unitOfWork.Orders.Get(q => q.Id == id);
+                if (order==null)
+                {
+                    return Ok(new { error = "Không tìm thấy đơn hàng", success = false });
+                }
+                order.Note=dto.Note;
+                order.Status=dto.Status;
+
+                unitOfWork.Orders.Update(order);
+                await unitOfWork.Save();
+
+                return Ok(new { order = order, success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            try
+            {
+                var order = await unitOfWork.Orders.Get(q => q.Id == id);
+                if (order == null)
+                {
+                    return Ok(new { success = false, msg = "Không tìm thấy đơn hàng" });
+                }
+                await unitOfWork.Orders.Delete(order.Id);
+                await unitOfWork.Save();
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> GetOrders(string status,string orderby,string sort,int pageNumber,int pageSize)
+        {
+   
+            try
+            {
+                Expression<Func<Order, bool>> expression = status=="all" ? q=>true : q => q.Status == int.Parse(status);
+                Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;
+                switch (orderby)
+                {
+                    case "Id":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);
+                        break;
+                    case "totalPrice":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.TotalPrice) : q => q.OrderByDescending(order => order.TotalPrice);
+                        break;
+                    case "contactName":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.ContactName) : q => q.OrderByDescending(order => order.ContactName);
+                        break;
+                    default:
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);
+                        break;
+                }
+
+                var orders = await unitOfWork.Orders.GetAll(expression,orderBy,new List<string> {"OrderDetails"},new PaginationFilter(pageNumber,pageSize));
+                var count = await unitOfWork.Orders.GetCount(expression);
+                var result = mapper.Map<IList<OrderDTO>>(orders);
+
+
+
+                return Accepted(new {result=result,totalOrder=count});
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+
+        }
+
+
     }
 }

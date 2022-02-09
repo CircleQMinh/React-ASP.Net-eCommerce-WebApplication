@@ -23,6 +23,7 @@ import Dashboard from "./components/Admin/Dashboard";
 import AdminOrder from "./components/Admin/AdminOrder";
 import AdminProduct from "./components/Admin/AdminProduct";
 import Profile from "./components/Profile/Profile";
+import ProfileOrder from "./components/Profile/ProfileOrder";
 function App() {
   return (
     <Fragment>
@@ -49,6 +50,7 @@ function App() {
           <Route path="/admin/product" element={<AdminProduct></AdminProduct>} ></Route>
 
           <Route path="/profile/:id" element={<Profile></Profile>} ></Route>
+          <Route path="/profile/:id/order" element={<ProfileOrder></ProfileOrder>} ></Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>

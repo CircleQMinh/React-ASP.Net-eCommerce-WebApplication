@@ -22,7 +22,7 @@ function OrderTableItem(props) {
     setShowInfoModal(true);
     AdminService.GetAllOrdersDetailsForOrder(item.id)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setOrderDetailsList(response.data.result);
       })
       .catch((error) => {
@@ -48,8 +48,8 @@ function OrderTableItem(props) {
   };
 
   function onSave_EditOrderModal() {
-    console.log(document.getElementById("edit_order_modal_status").value);
-    console.log(document.getElementById("edit_order_modal_note").value);
+    // console.log(document.getElementById("edit_order_modal_status").value);
+    // console.log(document.getElementById("edit_order_modal_note").value);
     setIsEditingOrder(true);
     var status = document.getElementById("edit_order_modal_status").value;
     var note = document.getElementById("edit_order_modal_note").value;
@@ -449,9 +449,9 @@ function OrderTableItem(props) {
           <Modal.Title>Xóa đơn hàng </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p class="text-tron text-monospace">Xóa đơn hàng này?</p>
-          <p class="text-center">
-            <i class="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào liên
+          <p className="text-tron text-monospace">Xóa đơn hàng này?</p>
+          <p className="text-center">
+            <i className="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào liên
             quan đến đơn hàng sẽ bị xóa!
           </p>
         </Modal.Body>
