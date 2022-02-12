@@ -19,6 +19,8 @@ namespace DotNet6WebApi.DTO
         public string Note { get; set; }
         public virtual IList<OrderDetailDTO> OrderDetails { get; set; }
         public int? DiscountCodeID { get; set; }
+        public string? ShipperID { get; set; }
+        public virtual AppUser Shipper { get; set; }
 
     }
     public class CreateOrderDTO
@@ -41,5 +43,20 @@ namespace DotNet6WebApi.DTO
     {
         public int Status { get; set; }
         public string Note { get; set; }
+    }
+
+    public class AcceptOrderDTO
+    {
+        public int OrderID { get; set; }
+        public string ShipperId { get; set; }
+    }
+
+    public class CompleteOrderDTO
+    {
+        public int OrderID { get; set; }
+        public string ShipperId { get; set; }
+        public string Note { get; set; }
+        public int Status { get; set; }
+        public DateTime ShippedDate { get; set; }
     }
 }

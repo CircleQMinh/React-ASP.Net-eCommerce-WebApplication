@@ -18,8 +18,10 @@ namespace DotNet6WebAPI.Repository
         IGenericRepository<Promotion> Promotions { get; }
         IGenericRepository<Order> Orders { get; }
         IGenericRepository<OrderDetail> OrderDetails { get; }
-
         IGenericRepository<DiscountCode> DiscountCodes { get; }
+
+        IGenericRepository<Employee> Employees { get; }
+        IGenericRepository<AppUser> Users { get; }
         Task Save();
     }
 }

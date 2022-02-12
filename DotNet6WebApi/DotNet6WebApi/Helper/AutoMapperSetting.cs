@@ -27,8 +27,11 @@ namespace DotNet6WebApi.Helper
             CreateMap<Book, SimpleBookInfoDTO>().ReverseMap();
             //PromotionInfo
             CreateMap<PromotionInfo, PromotionInfoDTO>().ReverseMap();
+            CreateMap<PromotionInfo, SimplePromotionInfoDTO>().ReverseMap();
             //Promotion
             CreateMap<Promotion,PromotionDTO>().ReverseMap();
+            CreateMap<Promotion, FullPromotionDTO>().ReverseMap();
+            CreateMap<Promotion, CreatPromotionDTO>().ReverseMap();
             //Review
             CreateMap<Review, ReviewDTO>().ReverseMap();
             //Order
@@ -37,6 +40,12 @@ namespace DotNet6WebApi.Helper
             //Order Details
             CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
             CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();
+            //Employee
+            CreateMap<Employee, EmployeeDTO>().ReverseMap();
+            CreateMap<Employee, CreateEmployeeDTO>().ReverseMap();
+            //DiscountCode
+            CreateMap<DiscountCode, DiscountCodeDTO>().ReverseMap();
+            CreateMap<DiscountCode, CreateDiscountCodeDTO>().ReverseMap();
         }
     }
 }

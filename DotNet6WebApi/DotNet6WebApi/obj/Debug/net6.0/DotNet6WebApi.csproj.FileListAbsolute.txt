@@ -144,3 +144,4 @@ D:\My Project\React-ASP.NET WebApp\DotNet6WebApi\DotNet6WebApi\obj\Debug\net6.0\
 D:\My Project\React-ASP.NET WebApp\DotNet6WebApi\DotNet6WebApi\obj\Debug\net6.0\ref\DotNet6WebApi.dll
 D:\My Project\React-ASP.NET WebApp\DotNet6WebApi\DotNet6WebApi\obj\Debug\net6.0\DotNet6WebApi.pdb
 D:\My Project\React-ASP.NET WebApp\DotNet6WebApi\DotNet6WebApi\obj\Debug\net6.0\DotNet6WebApi.genruntimeconfig.cache
+D:\My Project\React-ASP.NET WebApp\DotNet6WebApi\DotNet6WebApi\bin\Debug\net6.0\DotNet6WebApi.staticwebassets.runtime.json

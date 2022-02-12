@@ -73,8 +73,8 @@ namespace DotNet6WebApi.Helper
         public async Task<bool> ValidateUser(LoginUserDTO userDTO)
         {
             _user = await _userManager.FindByEmailAsync(userDTO.Email);
-            Console.WriteLine(userDTO.Email);
-            Console.WriteLine(userDTO.Password);
+            //Console.WriteLine(userDTO.Email);
+            //Console.WriteLine(userDTO.Password);
             var validPassword = await _userManager.CheckPasswordAsync(_user, userDTO.Password);
 
             return (_user != null && validPassword);
