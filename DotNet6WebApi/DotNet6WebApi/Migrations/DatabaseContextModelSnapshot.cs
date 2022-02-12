@@ -22,6 +22,21 @@ namespace DotNet6WebApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("AppUserBook", b =>
+                {
+                    b.Property<int>("WishlistId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WishlistUsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("WishlistId", "WishlistUsersId");
+
+                    b.HasIndex("WishlistUsersId");
+
+                    b.ToTable("AppUserBook");
+                });
+
             modelBuilder.Entity("AuthorBook", b =>
                 {
                     b.Property<int>("AuthorsId")
@@ -214,6 +229,60 @@ namespace DotNet6WebApi.Migrations
                     b.ToTable("DiscountCodes");
                 });
 
+            modelBuilder.Entity("DotNet6WebApi.Data.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CMND")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DoB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Salary")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sex")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShipperId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("imgUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShipperId");
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("DotNet6WebApi.Data.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -272,6 +341,9 @@ namespace DotNet6WebApi.Migrations
                     b.Property<DateTime>("ShippedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ShipperID")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -290,6 +362,8 @@ namespace DotNet6WebApi.Migrations
                     b.HasIndex("DiscountCodeID")
                         .IsUnique()
                         .HasFilter("[DiscountCodeID] IS NOT NULL");
+
+                    b.HasIndex("ShipperID");
 
                     b.HasIndex("UserID");
 
@@ -471,22 +545,22 @@ namespace DotNet6WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "acaaf5e3-0401-4df7-bea6-37cd9718f515",
-                            ConcurrencyStamp = "0bed8b17-2e36-4325-ab46-3f62982e0f91",
+                            Id = "1c2d32c0-eeae-402d-afe1-b3bd712229fe",
+                            ConcurrencyStamp = "5f128ccf-0fc9-4e84-98e5-521470cda4be",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "14412b66-bdfd-47dd-87a6-90216bf489ff",
-                            ConcurrencyStamp = "c88708bd-ca04-4b2b-a94e-2d767e9ced87",
+                            Id = "c82ce99b-2c10-43aa-824e-e38681e53e7f",
+                            ConcurrencyStamp = "f37bcc91-35a1-4c34-b136-e2525ffec2c7",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "eef307f9-e224-4ef9-af10-2e5c3c89ef09",
-                            ConcurrencyStamp = "a6e78427-faa2-4b89-a225-324b09408bee",
+                            Id = "0e334b50-e047-4f01-8701-0b5a0527a15c",
+                            ConcurrencyStamp = "cb895a82-e153-4ac7-9f05-967420aa69ca",
                             Name = "Shipper",
                             NormalizedName = "SHIPPER"
                         });
@@ -598,6 +672,21 @@ namespace DotNet6WebApi.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AppUserBook", b =>
+                {
+                    b.HasOne("DotNet6WebApi.Data.Book", null)
+                        .WithMany()
+                        .HasForeignKey("WishlistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DotNet6WebApi.Data.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("WishlistUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AuthorBook", b =>
                 {
                     b.HasOne("DotNet6WebApi.Data.Author", null)
@@ -645,11 +734,24 @@ namespace DotNet6WebApi.Migrations
                     b.Navigation("Publisher");
                 });
 
+            modelBuilder.Entity("DotNet6WebApi.Data.Employee", b =>
+                {
+                    b.HasOne("DotNet6WebApi.Data.AppUser", "Shipper")
+                        .WithMany()
+                        .HasForeignKey("ShipperId");
+
+                    b.Navigation("Shipper");
+                });
+
             modelBuilder.Entity("DotNet6WebApi.Data.Order", b =>
                 {
                     b.HasOne("DotNet6WebApi.Data.DiscountCode", "DiscountCode")
                         .WithOne("Order")
                         .HasForeignKey("DotNet6WebApi.Data.Order", "DiscountCodeID");
+
+                    b.HasOne("DotNet6WebApi.Data.AppUser", "Shipper")
+                        .WithMany()
+                        .HasForeignKey("ShipperID");
 
                     b.HasOne("DotNet6WebApi.Data.AppUser", "User")
                         .WithMany()
@@ -658,6 +760,8 @@ namespace DotNet6WebApi.Migrations
                         .IsRequired();
 
                     b.Navigation("DiscountCode");
+
+                    b.Navigation("Shipper");
 
                     b.Navigation("User");
                 });

@@ -48,7 +48,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
     // Cấu hình về User.
     options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
-        "abcdeghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+        "abcdeghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZăắằẳẵặâấầẩẫậưứừửữựơớờởỡợôốồổỗộêếềểễệĂẮẰẲẴẶÂẤẦẨẪẬƯỨỪỬỮỰƠỚỜỞỠỢÔỐỒỔỖỘÊẾỀỂỄỆ0123456789-._@+ ";
     options.User.RequireUniqueEmail = true;  // Email là duy nhất
 
     // Cấu hình đăng nhập.

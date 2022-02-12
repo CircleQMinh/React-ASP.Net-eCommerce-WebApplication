@@ -20,5 +20,9 @@
         public virtual IList<OrderDetail> OrderDetails { get; set; }
         public int? DiscountCodeID { get; set; }
         public DiscountCode DiscountCode { get; set; }
+        public string? ShipperID { get; set; }
+        public virtual AppUser Shipper { get; set; }
     }
+
+
 }

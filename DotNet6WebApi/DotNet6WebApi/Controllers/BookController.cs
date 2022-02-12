@@ -388,5 +388,21 @@ namespace DotNet6WebApi.Controllers
                 return BadRequest(new { error = ex.ToString() });
             }
         }
+
+        [HttpGet("getLatestBook")]
+        public async Task<IActionResult> GetLatestBook(int number)
+        {
+            try
+            {
+                var books = await unitOfWork.Books.GetAll(q => true, q => q.OrderByDescending(p => p.Id), new List<string> { }, new PaginationFilter(1, number));
+
+                return Ok(new { success = true,result=books });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
+
     }
 }

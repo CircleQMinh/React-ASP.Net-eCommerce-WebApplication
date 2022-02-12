@@ -19,6 +19,8 @@ namespace DotNet6WebApi.Data
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderDetail>  OrderDetails { get; set; }
         public DbSet<DiscountCode> DiscountCodes { get; set; }
+        public DbSet<AppUser> Users { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         public DatabaseContext(DbContextOptions options) : base(options)
         {

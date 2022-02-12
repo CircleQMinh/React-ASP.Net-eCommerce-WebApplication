@@ -127,7 +127,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet("history/{id}")]
-       // [Authorize]
+        [Authorize]
         public async Task<IActionResult> GetOrderHistory(string id, string status, string orderby, string sort, int pageNumber, int pageSize)
         {
             try
@@ -257,6 +257,9 @@ namespace DotNet6WebApi.Controllers
                         break;
                     case "contactName":
                         orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.ContactName) : q => q.OrderByDescending(order => order.ContactName);
+                        break;
+                    case "orderDate":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.OrderDate) : q => q.OrderByDescending(order => order.OrderDate);
                         break;
                     default:
                         orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);

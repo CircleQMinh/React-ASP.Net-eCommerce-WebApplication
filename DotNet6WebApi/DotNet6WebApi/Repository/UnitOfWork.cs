@@ -19,7 +19,9 @@ namespace DotNet6WebAPI.Repository
         private IGenericRepository<Promotion> promotion;
         private IGenericRepository<PromotionInfo> promotionInfo;
         private IGenericRepository<DiscountCode> discountCode;
-             
+        private IGenericRepository<Employee> employees;
+        private IGenericRepository<AppUser> users;
+
         public UnitOfWork(DatabaseContext databaseContext)
         {
             context = databaseContext;
@@ -34,6 +36,9 @@ namespace DotNet6WebAPI.Repository
         public IGenericRepository<Promotion> Promotions => promotion ??= new GenericRepository<Promotion>(context);
         public IGenericRepository<PromotionInfo> PromotionInfos => promotionInfo ??= new GenericRepository<PromotionInfo>(context);
         public IGenericRepository<DiscountCode> DiscountCodes => discountCode ??= new GenericRepository<DiscountCode>(context);
+
+        public IGenericRepository<Employee> Employees => employees ??= new GenericRepository<Employee>(context);
+        public IGenericRepository<AppUser> Users => users ??= new GenericRepository<AppUser>(context);
         public void Dispose()
         {
             context.Dispose();

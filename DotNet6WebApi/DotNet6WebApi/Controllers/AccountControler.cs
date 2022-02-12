@@ -54,7 +54,6 @@ namespace DotNet6WebApi.Controllers
                         return Ok(new { errors = errors, success = false });
                     }
                     await userManager.AddToRolesAsync(user, dto.Roles);
-                    var results = mapper.Map<SimpleUserDTO>(user);
                     var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
                     EmailHelper emailHelper = new EmailHelper();
                     string emailResponse = emailHelper.SendEmailConfirm(user.Email, token, dto.UserName);
@@ -224,6 +223,30 @@ namespace DotNet6WebApi.Controllers
                     return BadRequest(new { error = "Người dùng không có quyền" });
                 }
                 return Accepted(new { authorize=true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
+        [HttpGet("getAuthorize/Shipper")]
+        [Authorize(Roles = "Shipper")]
+        public async Task<IActionResult> GetAuthorizeShipper()
+        {
+            var name = User.Identity.Name;
+            var user = await userManager.FindByNameAsync(name);
+            if (user == null)
+            {
+                return BadRequest(new { error = "Token không hợp lệ" });
+            }
+            try
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                if (!roles.Contains("Shipper"))
+                {
+                    return BadRequest(new { error = "Người dùng không có quyền" });
+                }
+                return Accepted(new { authorize = true });
             }
             catch (Exception ex)
             {

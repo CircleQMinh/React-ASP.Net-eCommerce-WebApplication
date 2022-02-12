@@ -15,13 +15,16 @@
         public Publisher Publisher { get; set; }
         public virtual IList<Review> Reviews { get; set; }
         public int? PromotionInfoID { get; set; }
-        public PromotionInfo PromotionInfo { get; set; }
+        public PromotionInfo? PromotionInfo { get; set; }
+
+        public virtual IList<AppUser> WishlistUsers { get; set; }
 
         public Book()
         {
             Genres = new List<Genre>();
             Authors = new List<Author>(); 
             Reviews = new List<Review>();
+            WishlistUsers = new List<AppUser>();
         }
     }
 }

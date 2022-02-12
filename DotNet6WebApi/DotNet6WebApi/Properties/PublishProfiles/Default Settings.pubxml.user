@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA3eNY6SXw4UqUHfHx3HHCJQAAAAACAAAAAAAQZgAAAAEAACAAAAC3GUybrCkqJpvj/WwhBjZR03wGlM+erjpACELxGleo+QAAAAAOgAAAAAIAACAAAADInIP+IS2yJeoezVLGUROacNPpgonn336wrI/TRoP1giAAAADMfyzFNYiIX/0T9nlWBD+HGa1AXcNUcr1YKTnqKIrCQ0AAAADB7Gxa/gYLHQH4zN/WxmZ2IMmNhbyAYKtRQH8fTxNDyOcH2u6NIAK9qBCaHHne4rtKy2HHiuz2wp4vFARpdyfx</EncryptedPassword>
+    <History>True|2022-02-12T09:36:51.8401347Z;True|2022-02-12T16:25:20.7202640+07:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="sqlConnection">
+      <Value>Data Source=SQL5097.site4now.net%3bInitial Catalog=db_a82cf5_bookstore18110%3bUser Id=db_a82cf5_bookstore18110_admin%3bPassword=p%40ssworD3</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>
