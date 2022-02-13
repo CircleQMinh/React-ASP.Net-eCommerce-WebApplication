@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Footer from "../Footer/Footer";
@@ -7,19 +7,44 @@ import ProductList from "../ProductList/ProductList";
 import SlickSlider from "../SlickSlider/SlickSlider";
 import AdvertiseSlide from "./AdvertiseSlide";
 import FirstAPI from "../../api/FirstAPI";
+import ProductService from "../../api/ProductService";
+import { limitGetProduct } from "../../utils/constant";
+import { LoadingScreen } from "../Loading";
 
 import "./Home.css";
 
 function Home(props) {
+  const [isLoading, setIsLoading] = useState(true)
+  const [randomProducts, setRandomProduct] = useState([]);
+  const [lateProducts, setLateProducts] = useState([]);
+  const [popularProducts, setPopularProducts] = useState([]);
 
-  // FirstAPI.getAnime().then(
-  //   data=>{
-  //     console.log(data)
-  //   },
-  //   error=>{
-  //     console.log(error)
-  //   }
-  // )
+  const getDataProduct = async () => {
+    //get products random
+    ProductService.getRandomProducts(limitGetProduct.RANDOM)
+      .then((response) => { setRandomProduct(response?.data?.result || []) })
+      .catch((error) => { console.log(error); })
+      .finally(() => { });
+
+    ProductService.getPopularProducts(limitGetProduct.POPULAR)
+      .then((response) => { 
+        if(response?.data?.result?.length > 0) {
+          const productsPopular = response?.data?.result.map(product => product.book )
+          setPopularProducts(productsPopular)
+        }
+      })
+      .catch((error) => { console.log(error); })
+      .finally(() => { });
+
+    ProductService.getLateProducts(limitGetProduct.LATE)
+      .then((response) => { setLateProducts(response?.data?.result || []) })
+      .catch((error) => { console.log(error); })
+      .finally(() => { });
+  }
+
+  useEffect(()=>{
+    getDataProduct()
+  },[])
 
 
   return (
@@ -43,7 +68,14 @@ function Home(props) {
             <i className="far fa-star"></i> Nổi bật
           </h3>
         </div>
-        <SlickSlider></SlickSlider>
+        {console.log("popularProducts", popularProducts, lateProducts,"randomProducts", randomProducts)}
+        {popularProducts?.length > 0 
+          ?  
+          <SlickSlider items={popularProducts}/>
+          : 
+          <LoadingScreen/>
+        }
+       
       </div>
       <Container className="mt-5">
         <hr></hr>
@@ -73,7 +105,12 @@ function Home(props) {
             <i className="far fa-star"></i> Gợi ý cho bạn
           </h3>
         </div>
-        <SlickSlider></SlickSlider>
+        {randomProducts 
+          ?
+          <SlickSlider items={randomProducts}></SlickSlider>
+          :
+          <LoadingScreen/>
+        }
       </div>
       <Container className="mt-5">
         <hr></hr>
@@ -90,7 +127,12 @@ function Home(props) {
             <i className="far fa-star"></i> Mới nhất
           </h3>
         </div>
-        <SlickSlider></SlickSlider>
+        {lateProducts 
+          ?
+          <SlickSlider items={lateProducts}></SlickSlider>
+          :
+          <LoadingScreen/>
+        }
       </div>
 
       <div className="container">

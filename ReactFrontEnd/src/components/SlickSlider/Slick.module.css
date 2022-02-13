@@ -1,0 +1,111 @@
+.cartContainer {
+    margin: 0 4px;
+    cursor: pointer;
+}
+
+.cartContainer :hover {
+    border-color: var(--primary-color);
+}
+
+.borderStyle {
+    border: 1px solid var(--primary-color)
+}
+
+.price {
+    display: flex;
+    justify-content: center;
+}
+
+.productName:hover {
+    color: var(--primary-color);
+}
+
+.productName {
+    text-align: center;
+    font-size: var(--font-size-medium);
+    height: 40px;
+
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.price {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.iconSearch {
+    position: absolute;
+    top: 30%;
+    left: calc(50% - 26px);
+    color: #fff;
+    border-radius: 50px;
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--primary-color);
+}
+
+.addToCartWrapper {
+    position:absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px;
+
+    height: 42px;
+    width: 100%;
+    color: #fff;
+    font-weight: bold;
+    background-color: var(--primary-color);
+}
+
+.addToCart {
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.iconHeart {
+    color: #fff;
+    height: 100%;
+}
+
+.angleRightBtn {
+    right: 0;
+}
+
+.angleLeftBtn {
+    left: 0;
+}
+
+.angleLeftBtn,
+.angleRightBtn {
+    position: absolute;
+    top: 40%;
+    background-color: rgb(50, 50, 50, 0.5); /* #323232 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 12;
+    height: 50px;
+}
+
+.angleLeftBtn:hover,
+.angleRightBtn:hover {
+    background-color: #323232;
+}
+
+.angleLeftBtn > i,
+.angleRightBtn > i {
+    color: #fff;
+}
