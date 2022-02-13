@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
 function Login(props) {
+  window.scrollTo(0,0)
   //form login
   let {
     register,

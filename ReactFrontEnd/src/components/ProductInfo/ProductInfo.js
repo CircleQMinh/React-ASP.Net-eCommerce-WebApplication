@@ -63,15 +63,39 @@ function ProductInfo(props) {
         // console.log(response.data);
         setProduct(response.data.result);
         setReview(response.data.reviews);
+        var cal = { five: 0, four: 0, three: 0, two: 0, one: 0 };
+        response.data.reviews.forEach((r) => {
+          switch (r.star) {
+            case 5:
+              cal.five += 1;
+              break;
+            case 4:
+              cal.four += 1;
+              break;
+            case 3:
+              cal.three += 1;
+              break;
+            case 2:
+              cal.two += 1;
+              break;
+            case 1:
+              cal.one += 1;
+              break;
+            default:
+              break;
+          }
+        });
+        setRating(cal);
       })
       .catch((error) => {
         console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
+        
       });
 
-    ProductService.getRelatedProductById(params.id)
+    ProductService.getRelatedProductById(params.id,8)
       .then((response) => {
         //console.log(response.data);
         setRelatedProduct(response.data.result);
@@ -82,32 +106,11 @@ function ProductInfo(props) {
       .finally(() => {
         setIsLoadingRelated(false);
       });
-
-    var cal = { five: 0, four: 0, three: 0, two: 0, one: 0 };
-    reviews.forEach((r) => {
-      switch (r.star) {
-        case 5:
-          cal.five += 1;
-          break;
-        case 4:
-          cal.four += 1;
-          break;
-        case 3:
-          cal.three += 1;
-          break;
-        case 2:
-          cal.two += 1;
-          break;
-        case 1:
-          cal.one += 1;
-          break;
-        default:
-          break;
-      }
-    });
-    setRating(cal);
   }, [reRender, params.id]);
 
+  function ReRender(){
+    setReRender(!reRender)
+  }
   return (
     <Fragment>
       <Header></Header>
@@ -153,7 +156,7 @@ function ProductInfo(props) {
                 </h3>
                 <h3 className="pro_author text-muted">
                   <span className="green">
-                  <i className="fas fa-print me-2"></i>Năm xuất bản :
+                    <i className="fas fa-print me-2"></i>Năm xuất bản :
                   </span>{" "}
                   {product.publishYear}
                 </h3>
@@ -303,6 +306,7 @@ function ProductInfo(props) {
             </h2>
             <hr></hr>
             {/* Đánh giá */}
+            
             <div className="row d-flex justify-content-center">
               {reviews.length > 0 && (
                 <div className="rating_pro">
@@ -313,7 +317,7 @@ function ProductInfo(props) {
                     <ProgressBar
                       className="mt-1 ms-1"
                       variant="success"
-                      now={rating.five*100/reviews.length}
+                      now={(rating.five * 100) / reviews.length}
                       style={{ width: 80 + "%" }}
                     />
                   </div>
@@ -324,7 +328,7 @@ function ProductInfo(props) {
                     <ProgressBar
                       className="mt-1 ms-1"
                       variant="primary"
-                      now={rating.four*100/reviews.length}
+                      now={(rating.four * 100) / reviews.length}
                       style={{ width: 80 + "%" }}
                     />
                   </div>
@@ -335,7 +339,7 @@ function ProductInfo(props) {
                     <ProgressBar
                       className="mt-1 ms-1"
                       variant="info"
-                      now={rating.three*100/reviews.length}
+                      now={(rating.three * 100) / reviews.length}
                       style={{ width: 80 + "%" }}
                     />
                   </div>
@@ -346,7 +350,7 @@ function ProductInfo(props) {
                     <ProgressBar
                       className="mt-1 ms-1"
                       variant="warning"
-                      now={rating.two*100/reviews.length}
+                      now={(rating.two * 100) / reviews.length}
                       style={{ width: 80 + "%" }}
                     />
                   </div>
@@ -357,7 +361,7 @@ function ProductInfo(props) {
                     <ProgressBar
                       className="mt-1 ms-1"
                       variant="danger"
-                      now={rating.one*100/reviews.length}
+                      now={(rating.one * 100) / reviews.length}
                       style={{ width: 80 + "%" }}
                     />
                   </div>

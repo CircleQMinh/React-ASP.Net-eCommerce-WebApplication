@@ -20,7 +20,7 @@ namespace DotNet6WebApi.DTO
         public virtual IList<OrderDetailDTO> OrderDetails { get; set; }
         public int? DiscountCodeID { get; set; }
         public string? ShipperID { get; set; }
-        public virtual AppUser Shipper { get; set; }
+        public virtual SimpleUserDTO Shipper { get; set; }
 
     }
     public class CreateOrderDTO

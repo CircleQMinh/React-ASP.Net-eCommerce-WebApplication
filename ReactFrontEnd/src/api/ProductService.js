@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const apiUrl = "https://localhost:7251/api";
-const apiUrl = "http://bookstore18110-001-site1.itempurl.com/api"
+import { GetAPIUrl } from "./API";
+const apiUrl = GetAPIUrl()
 
 class ProductService {
   async getProduct(pageNumber,pageSize,keyword=null,priceRange=null,genreFilter=null) {
@@ -15,8 +15,8 @@ class ProductService {
     return response;
   }
 
-  async getRelatedProductById(id) {
-    const response = await axios.get(`${apiUrl}/Book/${id}/related
+  async getRelatedProductById(id,number) {
+    const response = await axios.get(`${apiUrl}/Book/${id}/related?numberOfBook=${number}
     `);
     return response;
   }

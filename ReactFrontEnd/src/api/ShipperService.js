@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const apiUrl = "https://localhost:7251/api";
-const apiUrl = "http://bookstore18110-001-site1.itempurl.com/api"
+import { GetAPIUrl } from "./API";
+const apiUrl = GetAPIUrl();
 const token = localStorage.getItem("token");
 const config = {
   headers: { Authorization: `Bearer ${token}` },
@@ -19,6 +19,35 @@ class ShipperService {
       `${apiUrl}/order/${id}/orderdetails`,
       config
     );
+    return response;
+  }
+  async AcceptOrder(dto) {
+    const response = await axios.post(
+      `${apiUrl}/shipper/acceptOrder`,
+      dto,
+      config
+    );
+    return response;
+  }
+  async getAcceptedOrders(id, orderBy, sort, pageNumber, pageSize) {
+    const response =
+      await axios.get(`${apiUrl}/Shipper/${id}/getAcceptedOrders?orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}
+    `);
+    return response;
+  }
+  async CompleteOrder(dto) {
+    const response = await axios.post(
+      `${apiUrl}/Shipper/completeOrder`,
+      dto,
+      config
+    );
+    return response;
+  }
+
+  async getHistory(id, orderBy, sort, pageNumber, pageSize) {
+    const response =
+      await axios.get(`${apiUrl}/Shipper/${id}/getDeliverHistory?orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}
+    `);
     return response;
   }
 }

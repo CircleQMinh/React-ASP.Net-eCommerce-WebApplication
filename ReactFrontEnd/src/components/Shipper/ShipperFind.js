@@ -71,7 +71,7 @@ function ShipperFind() {
     setIsLoading(true);
     ShipperService.getAvailableOrder( orderby, sort, pageNumber, pageSize)
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         setListOrder(response.data.result);
         setTotalPage(Math.ceil(Number(response.data.total/ pageSize)));
       })
@@ -89,7 +89,7 @@ function ShipperFind() {
         <Fragment>
           <ShipperHeader></ShipperHeader>
 
-          <div className="w-100 h-100" style={{ backgroundColor: "#1E1E28" }}>
+          <div className="w-100 h-100" style={{ backgroundColor: "#6666C4" }}>
             <div className="container  py-3 ">
               <div className="card p-3">
                 <p className="lead text-center mb-0 fw-bold fs-3 text-monospace">
