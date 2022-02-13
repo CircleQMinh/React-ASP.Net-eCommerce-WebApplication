@@ -4,11 +4,21 @@ import { formatDate } from "../../../helper/formatDate";
 import { toast } from "react-toastify";
 import Modal from "react-bootstrap/Modal";
 import ShipperService from "../../../api/ShipperService";
-function FindOrderItem(props) {
+import { useForm } from "react-hook-form";
+
+function CurrentOrderItem(props) {
   var item = props.item;
   var orderDate = new Date(item.orderDate + "Z");
+  var shippedDate = new Date(item.shippedDate + "Z");
   //   console.log(orderDate.toLocaleString())
   //   console.log(item);
+  let {
+    register: registerCompleteModal,
+    handleSubmit: handleSubmitCompleteModal,
+    watch,
+    reset: resetCompleteModal,
+    formState: { errors: completeModalError },
+  } = useForm();
 
   const [orderDetailsList, setOrderDetailsList] = useState([]);
 
@@ -21,7 +31,7 @@ function FindOrderItem(props) {
     setShowInfoModal(true);
     ShipperService.GetAllOrdersDetailsForOrder(item.id)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setOrderDetailsList(response.data.result);
       })
       .catch((error) => {
@@ -32,22 +42,27 @@ function FindOrderItem(props) {
       });
   };
 
-  const [showAcceptOrderModal, setShowAcceptOrderModal] = useState(false);
-  const [isAccepting, setIsAccepting] = useState(false);
-  const handleCloseAcceptOrderModal = () => setShowAcceptOrderModal(false);
-  const handleShowAcceptOrderModal = () => {
-    setShowAcceptOrderModal(true);
+  const [showCompleteOrderModal, setShowCompleteOrderModal] = useState(false);
+  const [isCompleting, setIsCompleting] = useState(false);
+  const handleCloseCompleteOrderModal = () => setShowCompleteOrderModal(false);
+  const handleShowCompleteOrderModal = () => {
+    setShowCompleteOrderModal(true);
   };
 
-  function onAccept_AcceptOrderModal(){
-    var user = JSON.parse(localStorage.getItem("user"))
-    // console.log(user.id)
-    // console.log(item.id)
-    setIsAccepting(true)
-    ShipperService.AcceptOrder({orderID:item.id,shipperId:user.id}).then(
+  function onComlete_CompleteOrderModal(data) {
+    var user = JSON.parse(localStorage.getItem("user"));
+    var dto = {
+      orderID: item.id,
+      shipperId: user.id,
+      note: data.note,
+      status: data.status,
+      shippedDate: new Date().toISOString(),
+    };
+    setIsCompleting(true)
+    ShipperService.CompleteOrder(dto).then(
       (response)=>{
         if (response.data.success) {
-          toast.success("Nhận giao thành công!", {
+          toast.success("Hoàn thành giao thành công!", {
             position: "top-center",
             autoClose: 1000,
             hideProgressBar: true,
@@ -79,8 +94,8 @@ function FindOrderItem(props) {
       });
     })
     .finally(()=>{
-      setIsAccepting(false)
-      setShowAcceptOrderModal(false)
+      setIsCompleting(false)
+      setShowCompleteOrderModal(false)
       props.reRender();
     })
   }
@@ -204,9 +219,7 @@ function FindOrderItem(props) {
   return (
     <Fragment>
       <tr>
-        <td className="text-center text-white">
-          {item.id}
-        </td>
+        <td className="text-center text-white">{item.id}</td>
         <td className="text-white">
           <p>Tên liên lạc : {item.contactName}</p>
           <p>Số điện thoại : {item.phone}</p>
@@ -260,11 +273,10 @@ function FindOrderItem(props) {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={handleShowAcceptOrderModal}
+              onClick={handleShowCompleteOrderModal}
             >
               <i className="far fa-edit"></i>
             </button>
-
           </div>
         </td>
       </tr>
@@ -290,8 +302,8 @@ function FindOrderItem(props) {
               <p>Tổng SP : {item.totalItem}</p>
               <p>Tổng giá : {item.totalPrice}</p>
 
-              <p>Shipper : Chưa có</p>
-              <p>Ngày giao : Chưa </p>
+              <p>Shipper : {item.shipper.userName}</p>
+              <p>Ngày giao :  {formatDate(shippedDate, "dd-MM-yyyy HH:mm:ss")} </p>
               <table className="table">
                 <thead>
                   <tr>
@@ -311,20 +323,43 @@ function FindOrderItem(props) {
       </Modal>
 
       <Modal
-        show={showAcceptOrderModal}
-        onHide={handleShowAcceptOrderModal}
+        show={showCompleteOrderModal}
+        onHide={handleShowCompleteOrderModal}
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Nhận giao đơn hàng </Modal.Title>
+          <Modal.Title>Hoàn thành giao đơn hàng </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p className="text-tron text-monospace text-center">Nhận giao đơn hàng này?</p>
-          <p className="text-center">
-            <i className="fas fa-exclamation-triangle"></i> Đơn hàng sẽ được bạn nhận giao!
-          </p>
+          <form>
+            <div className="form-group">
+              <label>Ghi chú : </label>
+              <div className="input-group">
+                <input
+                  className="form-control"
+                  placeholder="Tên..."
+                  defaultValue={"Đã hoàn thành đơn hàng!"}
+                  {...registerCompleteModal("note", {
+                    required: true,
+                  })}
+                ></input>
+              </div>
+              <label>Trạng thái</label>
+              <select
+                className="form-select"
+                defaultValue={3}
+                {...registerCompleteModal("status", {
+                    required: true,
+                  })}
+              >
+                <option value="3">Hoàn Thành</option>
+                <option value="4">Hủy</option>
+
+              </select>
+            </div>
+          </form>
         </Modal.Body>
-        {isAccepting && (
+        {isCompleting && (
           <div className="d-flex justify-content-center">
             <div className="spinner-border text-info" role="status">
               <span className="visually-hidden">Loading...</span>
@@ -335,23 +370,21 @@ function FindOrderItem(props) {
         <Modal.Footer>
           <button
             className="btn btn-danger"
-            onClick={handleCloseAcceptOrderModal}
+            onClick={handleCloseCompleteOrderModal}
           >
             Close
           </button>
           <button
-            disabled={isAccepting}
+            disabled={isCompleting}
             className="btn btn-success"
-            onClick={onAccept_AcceptOrderModal}
+            onClick={handleSubmitCompleteModal( onComlete_CompleteOrderModal)}
           >
             OK
           </button>
         </Modal.Footer>
       </Modal>
-
-
     </Fragment>
   );
 }
 
-export default FindOrderItem;
+export default CurrentOrderItem;

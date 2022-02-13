@@ -117,7 +117,7 @@ namespace DotNet6WebApi.Controllers
             }
             try
             {
-                var orders = await unitOfWork.Orders.GetAll(expression, orderBy, new List<string> { "OrderDetails" }, new PaginationFilter(pageNumber, pageSize));
+                var orders = await unitOfWork.Orders.GetAll(expression, orderBy, new List<string> { "OrderDetails", "Shipper" }, new PaginationFilter(pageNumber, pageSize));
                 var result = mapper.Map<IList<OrderDTO>>(orders);
                 var total = await unitOfWork.Orders.GetCount(expression);
 
@@ -187,7 +187,7 @@ namespace DotNet6WebApi.Controllers
             }
             try
             {
-                var orders = await unitOfWork.Orders.GetAll(expression, orderBy, new List<string> { "OrderDetails" }, new PaginationFilter(pageNumber, pageSize));
+                var orders = await unitOfWork.Orders.GetAll(expression, orderBy, new List<string> { "OrderDetails","Shipper" }, new PaginationFilter(pageNumber, pageSize));
                 var result = mapper.Map<IList<OrderDTO>>(orders);
                 var total = await unitOfWork.Orders.GetCount(expression);
 

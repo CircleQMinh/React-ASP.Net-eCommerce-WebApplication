@@ -83,7 +83,7 @@ function ShipperHeader(props) {
             </NavItem>
 
             <NavItem as="li">
-              <Nav.Link as={NavLink} to={"/search"}>
+              <Nav.Link as={NavLink} to={"/shipper/history"}>
                 <i className="far fa-id-card"></i>
                 <p className="d-inline show_for_991"> Lịch sử giao hàng</p>
               </Nav.Link>

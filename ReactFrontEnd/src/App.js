@@ -27,6 +27,8 @@ import ProfileOrder from "./components/Profile/ProfileOrder";
 import AdminPromotion from "./components/Admin/AdminPromotion";
 import ShipperDashboard from "./components/Shipper/ShipperDashboard";
 import ShipperFind from "./components/Shipper/ShipperFind";
+import ShipperCurrent from "./components/Shipper/ShipperCurrent";
+import ShipperHistory from "./components/Shipper/ShipperHistory";
 function App() {
   return (
     <Fragment>
@@ -58,6 +60,8 @@ function App() {
 
           <Route path="/shipper/dashboard" element={<ShipperDashboard></ShipperDashboard>} ></Route>
           <Route path="/shipper/find" element={<ShipperFind></ShipperFind>} ></Route>
+          <Route path="/shipper/current" element={<ShipperCurrent></ShipperCurrent>} ></Route>
+          <Route path="/shipper/history" element={<ShipperHistory></ShipperHistory>} ></Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>

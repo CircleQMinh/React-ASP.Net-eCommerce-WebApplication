@@ -185,7 +185,12 @@ function Header(props) {
                         <p className="d-inline show_for_991">Trang quản lý</p>
                       </NavDropdown.Item>
                     )}
-
+                    {user.roles.includes("Shipper") && (
+                      <NavDropdown.Item as={NavLink} to={`/shipper/dashboard`}>
+                        <i className="fas fa-home me-2"></i>
+                        <p className="d-inline show_for_991">Trang giao hàng</p>
+                      </NavDropdown.Item>
+                    )}
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={LogOut}>
                       <i className="fas fa-sign-in-alt  me-2"></i>

@@ -85,7 +85,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet("{id}/related")]
-        public async Task<IActionResult> GetRelatedBook(int id)
+        public async Task<IActionResult> GetRelatedBook(int id,int numberOfBook)
         {
             try
             {
@@ -102,11 +102,44 @@ namespace DotNet6WebApi.Controllers
                 ||  q.Publisher==book.Publisher)
                 &&  q.Id!=id;
 
-                var relatedBook = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "PromotionInfo"}, new PaginationFilter(1, 8)); ;
+                var relatedBook = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "PromotionInfo"}, new PaginationFilter(1, numberOfBook));
+                if (relatedBook.Count<numberOfBook)
+                {
+                    Expression<Func<Book, bool>> expression_revert =
+                        q =>
+                    !(q.Authors.Any(author => book.Authors.Contains(author))
+                    || q.Genres.Any(genre => book.Genres.Contains(genre))
+                    || q.Publisher == book.Publisher)
+                    && q.Id != id;
+                    var randomBooks = await unitOfWork.Books.GetAll(expression_revert, q => q.OrderBy(book => Guid.NewGuid()),
+                        new List<string>() { "PromotionInfo" }, 
+                        new PaginationFilter(1, numberOfBook-relatedBook.Count));
+                    relatedBook = relatedBook.Concat(randomBooks).ToList();
+                }
                 var result = mapper.Map<IList<BookDTO>>(relatedBook);
 
 
                 return Ok(new { result});
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
+
+        [HttpGet("getRandomProduct")]
+        public async Task<IActionResult> GetRandomBook( int numberOfBook)
+        {
+            try
+            {
+
+
+                var randomBooks = await unitOfWork.Books.GetAll(null, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "PromotionInfo" }, new PaginationFilter(1, numberOfBook));
+
+                var result = mapper.Map<IList<BookDTO>>(randomBooks);
+
+
+                return Ok(new { result });
             }
             catch (Exception ex)
             {

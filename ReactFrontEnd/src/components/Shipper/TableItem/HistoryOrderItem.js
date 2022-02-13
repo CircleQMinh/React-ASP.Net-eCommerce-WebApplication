@@ -4,9 +4,10 @@ import { formatDate } from "../../../helper/formatDate";
 import { toast } from "react-toastify";
 import Modal from "react-bootstrap/Modal";
 import ShipperService from "../../../api/ShipperService";
-function FindOrderItem(props) {
+function HistoryOrderItem(props) {
   var item = props.item;
   var orderDate = new Date(item.orderDate + "Z");
+  var shippedDate = new Date(item.shippedDate + "Z");
   //   console.log(orderDate.toLocaleString())
   //   console.log(item);
 
@@ -32,58 +33,7 @@ function FindOrderItem(props) {
       });
   };
 
-  const [showAcceptOrderModal, setShowAcceptOrderModal] = useState(false);
-  const [isAccepting, setIsAccepting] = useState(false);
-  const handleCloseAcceptOrderModal = () => setShowAcceptOrderModal(false);
-  const handleShowAcceptOrderModal = () => {
-    setShowAcceptOrderModal(true);
-  };
 
-  function onAccept_AcceptOrderModal(){
-    var user = JSON.parse(localStorage.getItem("user"))
-    // console.log(user.id)
-    // console.log(item.id)
-    setIsAccepting(true)
-    ShipperService.AcceptOrder({orderID:item.id,shipperId:user.id}).then(
-      (response)=>{
-        if (response.data.success) {
-          toast.success("Nhận giao thành công!", {
-            position: "top-center",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
-        } else {
-          toast.error("Có lỗi xảy ra! Xin hãy thử lại", {
-            position: "top-center",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
-        }
-      }
-    )
-    .catch((error)=>{
-      console.log(error)
-      toast.error("Có lỗi xảy ra! Xin hãy thử lại", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-    })
-    .finally(()=>{
-      setIsAccepting(false)
-      setShowAcceptOrderModal(false)
-      props.reRender();
-    })
-  }
 
   var orderDetailsContent = orderDetailsList.map((od) => {
     return (
@@ -257,13 +207,6 @@ function FindOrderItem(props) {
             >
               <i className="fas fa-info-circle"></i>
             </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleShowAcceptOrderModal}
-            >
-              <i className="far fa-edit"></i>
-            </button>
 
           </div>
         </td>
@@ -290,8 +233,8 @@ function FindOrderItem(props) {
               <p>Tổng SP : {item.totalItem}</p>
               <p>Tổng giá : {item.totalPrice}</p>
 
-              <p>Shipper : Chưa có</p>
-              <p>Ngày giao : Chưa </p>
+              <p>Shipper : {item.shipper.userName}</p>
+              <p>Ngày giao :  {formatDate(shippedDate, "dd-MM-yyyy HH:mm:ss")} </p>
               <table className="table">
                 <thead>
                   <tr>
@@ -310,48 +253,11 @@ function FindOrderItem(props) {
         </Modal.Body>
       </Modal>
 
-      <Modal
-        show={showAcceptOrderModal}
-        onHide={handleShowAcceptOrderModal}
-        size="lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Nhận giao đơn hàng </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p className="text-tron text-monospace text-center">Nhận giao đơn hàng này?</p>
-          <p className="text-center">
-            <i className="fas fa-exclamation-triangle"></i> Đơn hàng sẽ được bạn nhận giao!
-          </p>
-        </Modal.Body>
-        {isAccepting && (
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border text-info" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-            <p className="text monospace ms-2">Đang xủ lý xin chờ tí...</p>
-          </div>
-        )}
-        <Modal.Footer>
-          <button
-            className="btn btn-danger"
-            onClick={handleCloseAcceptOrderModal}
-          >
-            Close
-          </button>
-          <button
-            disabled={isAccepting}
-            className="btn btn-success"
-            onClick={onAccept_AcceptOrderModal}
-          >
-            OK
-          </button>
-        </Modal.Footer>
-      </Modal>
+
 
 
     </Fragment>
   );
 }
 
-export default FindOrderItem;
+export default HistoryOrderItem;
