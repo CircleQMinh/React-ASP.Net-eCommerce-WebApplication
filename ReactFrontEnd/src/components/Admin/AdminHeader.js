@@ -13,9 +13,13 @@ import "./Admin.css";
 import { auth_action } from "../../redux/auth_slice.js";
 import AuthService from "../../api/AuthService";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import CartIcon from "../Cart/CartIcon";
 
 function AdminHeader(props) {
+
+  var navigate = useNavigate()
+
   //dropdown
   const [show, setShow] = useState(false);
   const showDropdown = (e) => {
@@ -41,6 +45,7 @@ function AdminHeader(props) {
   //function
   function LogOut() {
     dispatch(auth_action.logOut());
+    navigate("/home")
   }
 
   //run first

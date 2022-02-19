@@ -9,22 +9,23 @@ const config = {
 class OrderService {
   //tạo order mới
   async PostOrder(order) {
-    const response = await axios.post(`${apiUrl}/order`, order);
+    const response = await axios.post(`${apiUrl}/order`, order,config);
     return response;
   }
 
   //vnpay url
   async GetVnPayUrl(price) {
     const response = await axios.get(
-      `${apiUrl}/order/getVNPayUrl?totalPrice=${price}`
+      `${apiUrl}/order/getVNPayUrl?totalPrice=${price}`,config
     );
     return response;
   }
 
+
   //lấy order history
   async GetUserOrderHistory(id, pageNumber, pageSize, status, orderby, sort) {
     const response = await axios.get(
-      `${apiUrl}/order/history/${id}?pageNumber=${pageNumber}&pageSize=${pageSize}&status=${status}&orderby=${orderby}&sort=${sort}`
+      `${apiUrl}/order/history/${id}?pageNumber=${pageNumber}&pageSize=${pageSize}&status=${status}&orderby=${orderby}&sort=${sort}`,config
     );
     return response;
   }

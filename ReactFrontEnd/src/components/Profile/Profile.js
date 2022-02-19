@@ -13,7 +13,7 @@ function Profile() {
   const navigate = useNavigate();
 
   const userId = params.id;
-  console.log(params.id);
+  //console.log(params.id);
 
   const [authorizing, setAuthorizing] = useState(true);
 

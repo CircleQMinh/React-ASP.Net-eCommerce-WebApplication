@@ -13,6 +13,7 @@ function Thankyou() {
   const url = new URLSearchParams(search);
 
   var vnp_ResponseCode = url.get("vnp_ResponseCode")
+  console.log(vnp_ResponseCode)
 
   var order = localStorage.getItem("order")
   if(order){

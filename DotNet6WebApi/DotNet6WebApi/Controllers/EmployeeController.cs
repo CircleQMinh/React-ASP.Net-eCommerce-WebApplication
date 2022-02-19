@@ -27,6 +27,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetEmployees(string role, string orderby, string sort, int pageNumber, int pageSize)
         {
             try
@@ -75,6 +76,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPost("createShipper")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateShipper([FromBody] CreateShipperDTO dto)
         {
             if (!ModelState.IsValid)
@@ -125,6 +127,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPost("createEmployee")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDTO dto,int id)
         {
             if (!ModelState.IsValid)
@@ -145,6 +148,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PutEmployee([FromBody] CreateEmployeeDTO dto,int id)
         {
             if (!ModelState.IsValid)
@@ -179,7 +183,8 @@ namespace DotNet6WebApi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]   
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             try

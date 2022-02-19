@@ -43,6 +43,7 @@ function Header(props) {
   function LogOut() {
     // navigate("/home")
     dispatch(auth_action.logOut());
+    navigate("/home")
   }
 
   //run first

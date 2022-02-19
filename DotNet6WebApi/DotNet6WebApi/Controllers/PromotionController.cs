@@ -243,6 +243,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet("getPromotableProduct")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetPromotableProduct()
         {
             try
