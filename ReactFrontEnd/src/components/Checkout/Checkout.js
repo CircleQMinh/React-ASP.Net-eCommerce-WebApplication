@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import OrderService from "../../api/OrderService";
 import { toast } from "react-toastify";
 import Modal from "react-bootstrap/Modal";
+import DiscountService from "../../api/DiscountService";
 function Checkout(props) {
   //var
   const dispatch = useDispatch();
@@ -19,6 +20,8 @@ function Checkout(props) {
   const items = useSelector((state) => state.cart_slice.items);
   const totalItem = useSelector((state) => state.cart_slice.totalItem);
   const totalPrice = useSelector((state) => state.cart_slice.totalPrice);
+
+  const [discountCode, setDiscountCode] = useState(null);
 
   const navigate = useNavigate();
 
@@ -71,17 +74,52 @@ function Checkout(props) {
     register,
     handleSubmit,
     watch,
+    setValue ,
     formState: { errors },
   } = useForm();
   const [showLoadingModal, setShowLoadingModal] = useState(false);
 
   const handleCloseLoadingModal = () => setShowLoadingModal(false);
   const handleShowLoadingModal = () => setShowLoadingModal(true);
+
+  const [showDiscountModal, setShowDiscountModal] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
+
+  const handleCloseDiscountModal = () => {
+    setShowDiscountModal(false);
+  };
+  const handleShowDiscountModal = () => {
+    setShowDiscountModal(true);
+  };
   //function
 
   window.scrollTo(0, 0);
   function getAddressString(addno, street, ward, district, city) {
     return `${addno} ${street}, ${ward}, ${district}, ${city}`;
+  }
+
+  function reEnterUserForm(){
+    var data = JSON.parse(localStorage.getItem("order_form"))
+    if(data!=null){
+      setValue("contactName",data.contactName)
+      setValue("addressNo",data.addressNo)
+      setValue("street",data.street)
+      setValue("ward",data.ward)
+      setValue("district",data.district)
+      setValue("city",data.city)
+      setValue("phoneNumber",data.phoneNumber)
+      setValue("paymentMethod",data.paymentMethod)
+      setValue("note",data.note)
+      setValue("email",data.email)
+      toast.success("Tự động điền form cho bạn!", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
   }
 
   function SendOrder(data) {
@@ -106,7 +144,7 @@ function Checkout(props) {
       status: 0,
       note: data.note,
       orderDetails: [],
-      discountCodeID: null,
+      discountCodeID: discountCode == null ? null : discountCode.id,
     };
     //console.log(order.orderDate)
 
@@ -124,24 +162,67 @@ function Checkout(props) {
       order.orderDetails.push(orderItem);
     });
     // console.log(order);
-    localStorage.setItem("order",JSON.stringify(order))
+    localStorage.setItem("order_form", JSON.stringify(data));
+    localStorage.setItem("order", JSON.stringify(order));
     if (order.paymentMethod == "vnpay") {
-      OrderService.GetVnPayUrl(order.totalPrice)
+      var vnpay_total = order.totalPrice
+      if(discountCode!=null){
+        if(discountCode.discountAmount!=null){
+          vnpay_total = order.totalPrice-discountCode.discountAmount
+        }
+        else{
+          vnpay_total=order.totalPrice-(discountCode.discountPercent*order.totalPrice)/100
+        }
+      }
+      OrderService.GetVnPayUrl(vnpay_total)
         .then((response) => {
-          var url = response.data.paymentUrl
-          window.location.href=url
+          var url = response.data.paymentUrl;
+          window.location.href = url;
         })
         .catch((error) => {
           console.log(error);
         })
         .finally(() => {});
-    }
-    else{
+    } else {
       OrderService.PostOrder(order)
-      .then((response) => {
-        if (response.data.success) {
-          dispatch(cart_slice_action.resetCart());
-          toast.success("Đặt đơn hàng thành công!", {
+        .then((response) => {
+          if (response.data.success) {
+            dispatch(cart_slice_action.resetCart());
+            toast.success("Đặt đơn hàng thành công!", {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+            navigate("/thankyou");
+          } else {
+            alert("Có lỗi xảy ra!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setShowLoadingModal(false);
+          localStorage.removeItem("order");
+        });
+    }
+  }
+
+  function ApplyDiscountCode() {
+    var code = document.getElementById("discount_code_input").value;
+    if (!code) {
+      return;
+    }
+    //console.log(code)
+    setIsChecking(true);
+    DiscountService.ApplyDiscountCode(code)
+      .then((res) => {
+        if (res.data.success) {
+          setDiscountCode(res.data.discountCode);
+          toast.success("Thêm mã giảm giá thành công!", {
             position: "top-center",
             autoClose: 1000,
             hideProgressBar: true,
@@ -149,23 +230,29 @@ function Checkout(props) {
             pauseOnHover: true,
             draggable: true,
           });
-          navigate("/thankyou");
         } else {
-          alert("Có lỗi xảy ra!");
+          toast.error(res.data.msg, {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((e) => {
+        console.log(e);
       })
       .finally(() => {
-        setShowLoadingModal(false);
-        localStorage.removeItem("order")
+        setIsChecking(false);
+        setShowDiscountModal(false);
       });
-    }
-   
   }
+
   useEffect(() => {
     dispatch(auth_action.getAuthInfoFromLocalStorage());
+    reEnterUserForm();
   }, [isLoggedIn, dispatch]);
 
   return (
@@ -447,18 +534,64 @@ function Checkout(props) {
                 </div>
               </div>
               <p className="lead text-center fw-bold">Thông tin mã giảm giá</p>
-              <div className="container">
-                <p className="text-center">Không có thông tin mã giảm giá</p>
-                <div className="d-grid gap-2">
-                  <button
-                    className="btn btn-warning"
-                    type="button"
-                    onClick={handleShowLoadingModal}
-                  >
-                    <i className="fas fa-gift me-2"></i> Nhập mã giảm giá
-                  </button>
+              {discountCode == null && (
+                <div className="container">
+                  <p className="text-center">Không có thông tin mã giảm giá</p>
+                  <div className="d-grid gap-2">
+                    <button
+                      className="btn btn-warning"
+                      type="button"
+                      onClick={handleShowDiscountModal}
+                    >
+                      <i className="fas fa-gift me-2"></i> Nhập mã giảm giá
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
+              {discountCode != null && (
+                <div className="container">
+                  {discountCode.discountAmount != null && (
+                    <Fragment>
+                      <p className="text-center">
+                        Giảm giá : {discountCode.discountAmount} đ
+                      </p>
+                      <p className="lead text-center fw-bold">
+                        Tổng giá đơn hàng sau giảm giá : 
+                        <NumberFormat
+                          value={totalPrice-discountCode.discountAmount}
+                          className="text-center ms-1  "
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          suffix={"đ"}
+                          renderText={(value, props) => (
+                            <span {...props}>{value}</span>
+                          )}
+                        />
+                      </p>
+                    </Fragment>
+                  )}
+                  {discountCode.discountPercent != null && (
+                    <Fragment>
+                      <p className="text-center">
+                        Giảm giá : {discountCode.discountPercent} %
+                      </p>
+                      <p className="lead text-center fw-bold">
+                        Tổng giá đơn hàng sau giảm giá : 
+                        <NumberFormat
+                          value={totalPrice-(discountCode.discountPercent*totalPrice)/100}
+                          className="text-center  ms-1 "
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          suffix={"đ"}
+                          renderText={(value, props) => (
+                            <span {...props}>{value}</span>
+                          )}
+                        />
+                      </p>
+                    </Fragment>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -484,6 +617,50 @@ function Checkout(props) {
             </p>
           </div>
         </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={showDiscountModal}
+        onHide={handleCloseDiscountModal}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Nhập mã giảm giá của bạn </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="form-group">
+              <label>Mã giảm giá : </label>
+              <div className="input-group">
+                <input
+                  className="form-control"
+                  placeholder="Nhập mã giảm giá..."
+                  id="discount_code_input"
+                ></input>
+              </div>
+            </div>
+          </form>
+        </Modal.Body>
+        {isChecking && (
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border text-info" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="text monospace ms-2">Đang xủ lý xin chờ tí...</p>
+          </div>
+        )}
+        <Modal.Footer>
+          <button className="btn btn-danger" onClick={handleCloseDiscountModal}>
+            Close
+          </button>
+          <button
+            disabled={isChecking}
+            className="btn btn-success"
+            onClick={ApplyDiscountCode}
+          >
+            OK
+          </button>
+        </Modal.Footer>
       </Modal>
     </Fragment>
   );

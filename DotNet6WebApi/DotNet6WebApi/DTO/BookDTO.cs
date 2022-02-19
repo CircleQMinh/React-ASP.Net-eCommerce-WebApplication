@@ -45,4 +45,16 @@ namespace DotNet6WebApi.DTO
         public string PublisherName { get; set; }
   
     }
+
+    public class PopularBookDTO
+    {
+        public BookDTO Book { get; set; }
+        public int Sales    { get; set; }
+    }
+
+    public class AddBookToWishlist
+    {
+        public string UserId { get; set; }
+        public int BookId { get; set; }
+    }
 }

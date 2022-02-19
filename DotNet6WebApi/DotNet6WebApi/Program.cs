@@ -48,7 +48,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
     // Cấu hình về User.
     options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
-        "abcdeghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZăắằẳẵặâấầẩẫậưứừửữựơớờởỡợôốồổỗộêếềểễệĂẮẰẲẴẶÂẤẦẨẪẬƯỨỪỬỮỰƠỚỜỞỠỢÔỐỒỔỖỘÊẾỀỂỄỆ0123456789-._@+ ";
+        "abcdeghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZđĐáàảãạăắằẳẵặâấầẩẫậưứừửữựơớờởỡợôốồổỗộêếềểễệíìỉĩịýỳỷỹỵúùủũụóòỏõọÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬƯỨỪỬỮỰƠỚỜỞỠỢÔỐỒỔỖỘÊẾỀỂỄỆÍÌỈĨỊÝỲỶỸỴÚÙỦŨỤÓÒỎÕỌ0123456789-._@+ ";
     options.User.RequireUniqueEmail = true;  // Email là duy nhất
 
     // Cấu hình đăng nhập.
@@ -93,7 +93,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperSetting));
 
 //modify with newtonsoftjson
 builder.Services.AddControllers().AddNewtonsoftJson(
-    op => op.SerializerSettings.ReferenceLoopHandling 
+    op => op.SerializerSettings.ReferenceLoopHandling
     = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

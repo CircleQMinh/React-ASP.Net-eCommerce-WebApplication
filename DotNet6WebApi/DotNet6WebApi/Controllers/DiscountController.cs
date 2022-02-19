@@ -22,6 +22,7 @@ namespace DotNet6WebApi.Controllers
             mapper = _mapper;
         }
         [HttpGet]
+       // [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetDiscountCode(string status,string type , int pageNumber, int pageSize)
         {
             try
@@ -71,6 +72,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateDiscountCode(CreateDiscountCodeDTO dto)
         {
             if (!ModelState.IsValid)
@@ -91,7 +93,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PutDiscountCode([FromBody] CreateDiscountCodeDTO dto, int id)
         {
             if (!ModelState.IsValid)
@@ -119,7 +121,7 @@ namespace DotNet6WebApi.Controllers
 
 
         [HttpDelete("{id}")]
-       // [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteDC(int id)
         {
             try
@@ -136,6 +138,112 @@ namespace DotNet6WebApi.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { error = ex.ToString() });
+            }
+        }
+
+        [HttpGet("applyDiscountCode")]
+        [Authorize]
+        public async Task<IActionResult> applyDiscountCode(string code)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { error = "error" });
+            }
+            try
+            {
+                DateTime today = DateTime.Today;
+                var dc = await unitOfWork.DiscountCodes.Get(q => q.Code == code);
+                if (dc == null)
+                {
+                    return Accepted(new { success = false, msg = "Mã không hợp lệ!" });
+                }
+                else if (dc.Status == 1)
+                {
+                    return Accepted(new { success = false, msg = "Mã đã được sử dụng!" });
+                }
+                else if (dc.StartDate>today)
+                {
+                    return Accepted(new { success = false, msg = "Mã chưa thể sử dụng!" });
+
+                }
+                else if (dc.EndDate<today)
+                {
+                    return Accepted(new { success = false, msg = "Mã đã hết hạn!" });
+                }
+                return Accepted(new { success = true, discountCode = dc });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
+
+        [HttpPost("redeemDiscountCode")]
+        [Authorize]
+        public async Task<IActionResult> RedeemDiscount([FromBody]RedeemDiscountCodeDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+            }
+            try
+            {
+
+                var user = await unitOfWork.Users.Get(q=>q.Id==dto.UserId);
+                if (user==null)
+                {
+                    return Ok(new { success = false, msg = "Không tìm thấy user!" });
+                }
+                var requireCoins = 0;
+                var dc = new DiscountCode();
+
+                switch (dto.DicountMode)
+                {
+                    case "Amount10K":
+                        requireCoins = (int) DiscountCodeCost.Amount10K;
+                        dc.DiscountAmount = DiscountCodeValue.Amount10K.ToString("D");
+                        break;
+                    case "Amount20K":
+                        requireCoins = (int)DiscountCodeCost.Amount20K;
+                        dc.DiscountAmount = DiscountCodeValue.Amount20K.ToString("D");
+                        break;
+                    case "Amount50K":
+                        requireCoins = (int)DiscountCodeCost.Amount50K;
+                        dc.DiscountAmount = DiscountCodeValue.Amount50K.ToString("D");
+                        break;
+                    case "Percent10":
+                        requireCoins = (int)DiscountCodeCost.Percent10;
+                        dc.DiscountPercent = DiscountCodeValue.Percent10.ToString("D");
+                        break;
+                    case "Percent20":
+                        requireCoins = (int)DiscountCodeCost.Percent20;
+                        dc.DiscountPercent = DiscountCodeValue.Percent20.ToString("D");
+                        break;
+                    case "Percent50":
+                        requireCoins = (int)DiscountCodeCost.Percent50;
+                        dc.DiscountPercent = DiscountCodeValue.Percent50.ToString("D");
+                        break;
+                }
+                if (user.Coins<requireCoins)
+                {
+                    return Ok(new { success = false, msg = "Không đủ shop xu!" });
+                }
+
+
+                dc.Code = Utility.RandomString(8);
+
+
+                dc.StartDate = DateTime.Today;
+                dc.EndDate = DateTime.Today.AddDays(30);
+
+                await unitOfWork.DiscountCodes.Insert(dc);
+                await unitOfWork.Save();
+
+                return Ok(new {  discountCode=dc,success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

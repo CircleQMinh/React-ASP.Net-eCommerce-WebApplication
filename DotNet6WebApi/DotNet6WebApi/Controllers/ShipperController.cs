@@ -23,6 +23,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet("getAvailableOrders")]
+        [Authorize(Roles ="Shipper")]
         public async Task<IActionResult> GetAvailableOrders(string orderby,string sort, int pageNumber, int pageSize)
         {
             Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;
@@ -61,6 +62,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPost("acceptOrder")]
+        [Authorize(Roles = "Shipper")]
         public async Task<IActionResult> AcceptOrder([FromBody] AcceptOrderDTO dto)
         {
             if (!ModelState.IsValid)
@@ -92,6 +94,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet("{id}/getAcceptedOrders")]
+        [Authorize(Roles = "Shipper")]
         public async Task<IActionResult> GetAcceptedOrders(string id,string orderby, string sort, int pageNumber, int pageSize)
         {
             Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;
@@ -130,6 +133,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPost("completeOrder")]
+        [Authorize(Roles = "Shipper")]
         public async Task<IActionResult> CompleteOrder([FromBody] CompleteOrderDTO dto)
         {
             if (!ModelState.IsValid)
@@ -162,6 +166,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet("{id}/getDeliverHistory")]
+        [Authorize(Roles = "Shipper,Administrator")]
         public async Task<IActionResult> GetDeliverHistory(string id, string orderby, string sort, int pageNumber, int pageSize)
         {
             Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;

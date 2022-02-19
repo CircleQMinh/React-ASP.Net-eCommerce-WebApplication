@@ -102,7 +102,7 @@ namespace DotNet6WebApi.Controllers
                 ||  q.Publisher==book.Publisher)
                 &&  q.Id!=id;
 
-                var relatedBook = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "PromotionInfo"}, new PaginationFilter(1, numberOfBook));
+                var relatedBook = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "Authors", "Genres", "Publisher", "PromotionInfo" }, new PaginationFilter(1, numberOfBook));
                 if (relatedBook.Count<numberOfBook)
                 {
                     Expression<Func<Book, bool>> expression_revert =
@@ -134,7 +134,7 @@ namespace DotNet6WebApi.Controllers
             {
 
 
-                var randomBooks = await unitOfWork.Books.GetAll(null, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "PromotionInfo" }, new PaginationFilter(1, numberOfBook));
+                var randomBooks = await unitOfWork.Books.GetAll(null, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "Authors", "Genres", "Publisher", "PromotionInfo" }, new PaginationFilter(1, numberOfBook));
 
                 var result = mapper.Map<IList<BookDTO>>(randomBooks);
 
@@ -146,6 +146,66 @@ namespace DotNet6WebApi.Controllers
                 return BadRequest(new { error = ex.ToString() });
             }
         }
+
+        [HttpGet("getPopularProduct")]
+        public async Task<IActionResult> GetPopularProduct(int numberOfBook)
+        {
+            try
+            {
+                var orderDetails = await unitOfWork.OrderDetails.GetAll(q => q.Order.Status == (int)OrderStatus.Done, null, new List<string> { "Book" });
+                Dictionary<int,int> dic = new Dictionary<int,int>();
+                foreach (var od in orderDetails)
+                {
+                    if (!dic.ContainsKey(od.BookId))
+                    {
+                        dic.Add(od.BookId, od.Quantity);
+                    }
+                    else
+                    {
+                        dic[od.BookId] += od.Quantity;
+                    }
+                }
+                List<PopularBookDTO> result = new List<PopularBookDTO>();
+                foreach (var item in dic)
+                {
+                    var od = orderDetails.Where(q=>q.BookId==item.Key).FirstOrDefault();
+                    var rs = new PopularBookDTO() { Book = mapper.Map<BookDTO>(od.Book), Sales = item.Value };
+                    result.Add(rs);
+                }
+
+                result.Sort((a, b) => b.Sales - a.Sales ); //Desc
+                result = result.Take(numberOfBook).ToList();
+
+               foreach (var item in result)
+                {
+                    var temp = await unitOfWork.Books.Get(q => q.Id == item.Book.Id, new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" });
+                    item.Book = mapper.Map<BookDTO>(temp);
+                }
+                
+            
+                return Ok(new {result});;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
+
+        [HttpGet("getLatestBook")]
+        public async Task<IActionResult> GetLatestBook(int number)
+        {
+            try
+            {
+                var books = await unitOfWork.Books.GetAll(q => true, q => q.OrderByDescending(p => p.Id), new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" }, new PaginationFilter(1, number));
+
+                return Ok(new { success = true, result = books });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
+
 
         //-----------------------------------------------------------------------
 
@@ -422,18 +482,104 @@ namespace DotNet6WebApi.Controllers
             }
         }
 
-        [HttpGet("getLatestBook")]
-        public async Task<IActionResult> GetLatestBook(int number)
+
+        [HttpPost("addToWishlist")]
+        [Authorize]
+        public async Task<IActionResult> AddBookToWishlist([FromBody] AddBookToWishlist dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+            }
             try
             {
-                var books = await unitOfWork.Books.GetAll(q => true, q => q.OrderByDescending(p => p.Id), new List<string> { }, new PaginationFilter(1, number));
+                var product = await unitOfWork.Books.Get(q => q.Id == dto.BookId, new List<string> { "WishlistUsers" });
+                var user = await unitOfWork.Users.Get(q => q.Id == dto.UserId,new List<string> { "Wishlist"});
 
-                return Ok(new { success = true,result=books });
+                if (product==null||user==null)
+                {
+                    return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+                }
+
+                foreach (var item in user.Wishlist)
+                {
+                    if (item.Id==product.Id)
+                    {
+                        return Ok(new { error = "Sản phẩm đã nằm trong wishlist rồi!", success = false });
+                    }
+                }
+                unitOfWork.Users.Update(user);
+                unitOfWork.Books.Update(product);
+                product.WishlistUsers.Add(user);
+                user.Wishlist.Add(product);
+
+                await unitOfWork.Save();
+                return Ok(new { success = true });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.ToString() });
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("removeFromWishlist")]
+        [Authorize]
+        public async Task<IActionResult> RemoveBookFromWishlist([FromBody] AddBookToWishlist dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+            }
+            try
+            {
+                Book product = await unitOfWork.Books.Get(q => q.Id == dto.BookId, new List<string> { "WishlistUsers" });
+                AppUser user = await unitOfWork.Users.Get(q => q.Id == dto.UserId, new List<string> { "Wishlist" });
+
+                if (product == null || user == null)
+                {
+                    return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+                }
+
+                bool isItemInFav = false;
+                foreach (var item in user.Wishlist)
+                {
+                    if (item.Id == product.Id)
+                    {
+                        isItemInFav = true;
+                        break;
+                    }
+                }
+
+                if (!isItemInFav)
+                {
+                    return Ok(new { success = false });
+                }
+                unitOfWork.Users.Update(user);
+
+
+                //unitOfWork.Products.Update(pro);
+
+                foreach (var item in user.Wishlist.ToList())
+                {
+                    if (item.Id == product.Id)
+                    {
+                        user.Wishlist.Remove(item);
+                    }
+                }
+                foreach (var item in product.WishlistUsers.ToList())
+                {
+                    if (item.Id == user.Id)
+                    {
+                        product.WishlistUsers.Remove(item);
+                    }
+                }
+
+
+                await unitOfWork.Save();
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 
