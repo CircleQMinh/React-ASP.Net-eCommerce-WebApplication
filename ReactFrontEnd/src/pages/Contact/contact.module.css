@@ -1,0 +1,130 @@
+.image {
+    width: 100%;
+    height: 200px;
+    object-fit: none;
+    opacity: 0.7;
+}
+
+.titleContact {
+    position: absolute;
+    top: calc(50% - 25px);
+    right: calc(50% - 100px);
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: #fff;
+    width: 200px;
+    height: 50px;
+}
+
+.title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.content {
+    font-size: 18px;
+}
+
+.infoWrapper {
+    max-width: 800px;
+}
+
+.bodyContact {
+    display: flex;
+    justify-content: center;
+    padding: 36px;
+    font-size: 18px;
+}
+
+.iconWrapper > i {
+    font-size: 25px;
+    color: var(--primary-color);
+}
+
+.iconFacebook > i,
+.twitterIcon > i,
+.ggplusIcon > i {
+    color: #fff;
+    font-size: 25px;
+}
+
+.twitterIcon {
+    border: none !important;
+    background:  #62c6f8
+}
+
+.ggplusIcon {
+    border: none !important;
+    background: #dd4b39;
+}
+
+.iconFacebook {
+    background: #3873ae;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 20px;
+    border-radius: 50px;
+}
+
+.iconWrapper {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 20px;
+    border: 1px var(--primary-color) solid;
+    border-radius: 50px;
+}
+
+.colWrapper > div {
+    padding-bottom: 12px;
+}
+
+.rowWrapper > :first-child {
+    border-right: 1px rgb(216 210 210) solid;
+}
+
+.promo {
+    background: var(--primary-background);
+    min-height: 300px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.promoTitle {
+    color: #fff;
+    font-size: 24px;
+    text-transform: capitalize;
+    font-weight: bold;
+    padding-bottom: 12px;
+}
+
+.promoTitleEnd {
+    color: #fff;
+    font-size: 24px;
+    line-height: 40px;
+    text-transform: capitalize;
+    font-style: italic;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+    margin-bottom: 12px;
+}
+
+.btnOutlineLight:hover {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}

@@ -1,0 +1,42 @@
+.price {
+    display: flex;
+    justify-content: center;
+}
+
+
+.price {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+
+
+.angleRightBtn {
+    right: 0;
+}
+
+.angleLeftBtn {
+    left: 0;
+}
+
+.angleLeftBtn,
+.angleRightBtn {
+    position: absolute;
+    top: 40%;
+    background-color: rgb(50, 50, 50, 0.5); /* #323232 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 12;
+    height: 50px;
+}
+
+.angleLeftBtn:hover,
+.angleRightBtn:hover {
+    background-color: #323232;
+}
+
+.angleLeftBtn > i,
+.angleRightBtn > i {
+    color: #fff;
+}

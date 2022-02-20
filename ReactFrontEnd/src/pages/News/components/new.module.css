@@ -1,0 +1,21 @@
+.title {
+    font-size: 21px;
+    line-height: 28px;
+    font-weight: 600;
+}
+
+.title:hover {
+    color: var(--primary-background);
+}
+
+.dayAuthorText {
+    font-size: 14px;
+    line-height: 24px;
+}
+
+.content {
+    font-size: 14px;
+    line-height: 24px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}

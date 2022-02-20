@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import 'animate.css';
-import Home from "./components/Home/Home";
+import Home from "./pages/Home/Home";
 import React,{Fragment} from "react";
 import { BrowserRouter, Routes, Route,  Navigate } from "react-router-dom";
 import Login from "./components/Login/Login";
@@ -30,6 +30,8 @@ import ShipperFind from "./components/Shipper/ShipperFind";
 import ShipperCurrent from "./components/Shipper/ShipperCurrent";
 import ShipperHistory from "./components/Shipper/ShipperHistory";
 import AdminUser from "./components/Admin/AdminUser";
+import ContactPage from "./pages/Contact";
+import { NewsPage } from "./pages/News";
 function App() {
   return (
     <Fragment>
@@ -64,6 +66,9 @@ function App() {
           <Route path="/shipper/find" element={<ShipperFind></ShipperFind>} ></Route>
           <Route path="/shipper/current" element={<ShipperCurrent></ShipperCurrent>} ></Route>
           <Route path="/shipper/history" element={<ShipperHistory></ShipperHistory>} ></Route>
+
+          <Route path="/contact" element={<ContactPage/>}></Route>
+          <Route path="/news" element={<NewsPage/>}></Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>
