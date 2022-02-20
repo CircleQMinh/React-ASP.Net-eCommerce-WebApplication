@@ -277,6 +277,10 @@ outline: none;
 color: #9DBFAF;
 }
 
+.searchTerm:hover {
+  border: 3px solid var(--primary-color);
+}
+
 .searchTerm:focus{
 color: #00B4CC;
 }

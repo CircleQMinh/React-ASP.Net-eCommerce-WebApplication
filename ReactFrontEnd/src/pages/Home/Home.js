@@ -105,7 +105,7 @@ function Home(props) {
             <i className="far fa-star"></i> Gợi ý cho bạn
           </h3>
         </div>
-        {randomProducts 
+        {randomProducts?.length > 0 
           ?
           <SlickSlider items={randomProducts}></SlickSlider>
           :
@@ -127,7 +127,7 @@ function Home(props) {
             <i className="far fa-star"></i> Mới nhất
           </h3>
         </div>
-        {lateProducts 
+        {lateProducts?.length > 0 
           ?
           <SlickSlider items={lateProducts}></SlickSlider>
           :
@@ -170,7 +170,7 @@ function Home(props) {
                 to charity, or we'll recycle it.
               </p>
               <p>
-                <Link to="/aboutus.aspx" className="btn btn-success ">
+                <Link to="/aboutus.aspx" className="btn btn-primary ">
                   More About Us
                 </Link>
               </p>

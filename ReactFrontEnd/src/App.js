@@ -30,6 +30,7 @@ import ShipperFind from "./components/Shipper/ShipperFind";
 import ShipperCurrent from "./components/Shipper/ShipperCurrent";
 import ShipperHistory from "./components/Shipper/ShipperHistory";
 import ContactPage from "./pages/Contact";
+import { NewsPage } from "./pages/News";
 function App() {
   return (
     <Fragment>
@@ -64,7 +65,8 @@ function App() {
           <Route path="/shipper/current" element={<ShipperCurrent></ShipperCurrent>} ></Route>
           <Route path="/shipper/history" element={<ShipperHistory></ShipperHistory>} ></Route>
 
-          <Route path="/contact" element={<ContactPage></ContactPage>}></Route>
+          <Route path="/contact" element={<ContactPage/>}></Route>
+          <Route path="/news" element={<NewsPage/>}></Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>

@@ -1,0 +1,19 @@
+
+.bodyNewsPage {
+    padding: 40px;
+}
+
+.newsWrapper > div {
+    padding-bottom: 40px;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: bold;
+    padding-left: 40px;
+    padding-bottom: 40px;
+}
+
+.title:hover {
+    color: var(--primary-background);
+}
