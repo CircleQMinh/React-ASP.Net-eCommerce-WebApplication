@@ -1,15 +1,15 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Footer from "../Footer/Footer";
-import Header from "../Header/Header";
-import ProductList from "../ProductList/ProductList";
-import SlickSlider from "../SlickSlider/SlickSlider";
+import Footer from "../../components/Footer/Footer";
+import Header from "../../components/Header/Header";
+import ProductList from "../../components/ProductList/ProductList";
+import SlickSlider from "../../components/SlickSlider/SlickSlider";
 import AdvertiseSlide from "./AdvertiseSlide";
 import FirstAPI from "../../api/FirstAPI";
 import ProductService from "../../api/ProductService";
 import { limitGetProduct } from "../../utils/constant";
-import { LoadingScreen } from "../Loading";
+import { LoadingScreen } from "../../components/Loading";
 
 import "./Home.css";
 

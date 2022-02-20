@@ -155,7 +155,7 @@ Extra extra large	xxl	        ≥1400px */
   margin: 0 var(--margin);
   border-radius: 6px;
   color: #fff;
-  background: #202020;
+  background: rgb(18 76 122);
   max-width: auto;
   min-width: var(--size);
   height: var(--size);
@@ -167,11 +167,11 @@ Extra extra large	xxl	        ≥1400px */
 }
 @media (hover: hover) {
   .paginationsa\:number:hover {
-    background: #944343;
+    background: var(--primary-color);
   }
 }
 .paginationsa_active {
-  background: #944343;
+  background: var(--primary-color);
 }
 
 .loading_spinner {

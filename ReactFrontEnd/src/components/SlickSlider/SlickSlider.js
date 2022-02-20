@@ -5,6 +5,7 @@ import Arrow from "./Arrow";
 import styles from "./Slick.module.css";
 import { formatCurrencyVN } from "../../utils";
 import { useNavigate } from "react-router-dom";
+import { ProductInfo } from "../Product/ProductInfo";
 
 function SlickSlider(props) {
   let slide_to_show = props.slide_to_show == null ? 4 : props.slide_to_show;
@@ -113,39 +114,7 @@ function SlickSlider(props) {
             {items.map((item, index)=>{
               return (
                 <div key={`itemSlider-${index}-${item.id}`}>
-                  <div 
-                    className={`${"card"} ${styles.cartContainer} ${productHover === index && styles.borderStyle}`}
-                    onMouseLeave={()=>setProductHover(-1)}
-                    onMouseEnter={()=>setProductHover(index)}
-                  >
-                    <div style={{ position: 'relative' }}> 
-                      <img
-                        src={item?.imgUrl || "https://picsum.photos/200/200"}
-                        className="card-img-top"
-                        alt={`Product ${item.id}`}
-                      />
-                      {productHover === index && 
-                        <>
-                          <button 
-                            className={`btn btn-primary ${styles.iconSearch} fa fa-search animate__animated animate__fadeIn animate__faster`}
-                            onClick={()=>{ item.id && redirectDetailProduct(item.id)}}
-                          >
-
-                          </button>
-                          <div className={`${styles.addToCartWrapper} animate__animated animate__fadeIn animate__faster`}>
-                            <button className={`btn btn-primary ${styles.addToCart} `}>ADD TO CART</button>
-                            <button className={`btn btn-primary ${styles.iconHeart}`}><i class="fa-solid fa-heart"></i></button>
-                          </div>
-                        </>
-                      }
-                    </div>
-                    <div className={`${"card-body"}`}>
-                      <h5 className={`${styles.productName}`}
-                        onClick={()=>{ item.id && redirectDetailProduct(item.id)}}
-                      >{item.title}</h5>
-                      <div className={styles.price}>{formatCurrencyVN(item.price)}</div>
-                    </div>
-                  </div>
+                  <ProductInfo book={item}/>
                 </div>
               )
             })}

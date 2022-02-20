@@ -283,7 +283,7 @@ function ProductList(props) {
                       <div className="input-group mb-3">
                         <button
                           onClick={applyPriceRange}
-                          className="btn btn-success"
+                          className="btn btn-primary"
                         >
                           Áp dụng
                         </button>

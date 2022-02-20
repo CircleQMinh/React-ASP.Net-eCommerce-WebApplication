@@ -1,0 +1,14 @@
+.title {
+    font-size: 30px;
+    line-height: 32px;
+}
+
+.titleWrapper {
+    display: flex;
+    justify-items: center;
+}
+
+.line {
+    width: auto;
+    border: 1px 
+}
