@@ -58,7 +58,7 @@ const cart_slice = createSlice({
           item.product.promotionInfo.promotionPercent != null
         ) {
           total +=
-            (item.product.price - (item.product.price * 10) / 100) *
+            (item.product.price - (item.product.price * item.promotionInfo.promotionPercent) / 100) *
             item.quantity;
         } else {
           total +=
