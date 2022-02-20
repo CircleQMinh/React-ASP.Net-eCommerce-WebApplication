@@ -107,6 +107,38 @@ class AdminService {
     );
     return response;
   }
+
+  // -----user----------------
+  async GetUserForAdmin( orderBy, sort, pageNumber, pageSize) {
+    const response = await axios.get(
+      `${apiUrl}/user?orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      config
+    );
+    return response;
+  }
+  async AddUserForAdmin(user) {
+    const response = await axios.post(
+      `${apiUrl}/user`,
+      user,
+      config
+    );
+    return response;
+  }
+  async EditUserForAdmin(id,user) {
+    const response = await axios.put(
+      `${apiUrl}/user/${id}`,
+      user,
+      config
+    );
+    return response;
+  }
+  async DeleteUserForAdmin(id) {
+    const response = await axios.delete(
+      `${apiUrl}/user/${id}`,
+      config
+    );
+    return response;
+  }
 }
 
 export default new AdminService();

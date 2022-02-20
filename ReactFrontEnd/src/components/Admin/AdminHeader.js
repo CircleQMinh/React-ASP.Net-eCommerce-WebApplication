@@ -89,13 +89,13 @@ function AdminHeader(props) {
             </NavItem>
 
             <NavItem as="li">
-              <Nav.Link as={NavLink} to={"/search"}>
+              <Nav.Link as={NavLink} to={"/admin/employee"}>
                 <i className="far fa-id-card"></i>
                 <p className="d-inline show_for_991"> Nhân viên</p>
               </Nav.Link>
             </NavItem>
             <NavItem as="li">
-              <Nav.Link as={NavLink} to={"/search"}>
+              <Nav.Link as={NavLink} to={"/admin/user"}>
                 <i className="fas fa-cog "></i>
                 <p className="d-inline show_for_991"> Người dùng</p>
               </Nav.Link>
@@ -107,7 +107,7 @@ function AdminHeader(props) {
               </Nav.Link>
             </NavItem>
             <NavItem as="li">
-              <Nav.Link as={NavLink} to={"/search"}>
+              <Nav.Link as={NavLink} to={"/admin/discount"}>
                 <i className="fas fa-qrcode"></i>
                 <p className="d-inline show_for_991"> Giảm giá</p>
               </Nav.Link>

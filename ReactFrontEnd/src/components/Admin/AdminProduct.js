@@ -42,13 +42,14 @@ function AdminProduct() {
   const [pageSize, setPageSize] = useState(5);
   const [totalPage, setTotalPage] = useState(1);
 
-  const defaultImgUrl =
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png";
+
   const [selectedImgUrl, setselectedImgUrl] = useState(null);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedPublisher, setSelectedPublisher] = useState();
-
+  
+  const defaultImgUrl =
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png";
   function onImageChange(event) {
     //setselectedImgUrl(event.target.value)
     if (!event.target.files[0] || event.target.files[0].length == 0) {

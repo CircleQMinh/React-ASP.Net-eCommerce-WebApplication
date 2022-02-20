@@ -29,6 +29,7 @@ import ShipperDashboard from "./components/Shipper/ShipperDashboard";
 import ShipperFind from "./components/Shipper/ShipperFind";
 import ShipperCurrent from "./components/Shipper/ShipperCurrent";
 import ShipperHistory from "./components/Shipper/ShipperHistory";
+import AdminUser from "./components/Admin/AdminUser";
 function App() {
   return (
     <Fragment>
@@ -54,6 +55,7 @@ function App() {
           <Route path="/admin/order" element={<AdminOrder></AdminOrder>} ></Route>
           <Route path="/admin/product" element={<AdminProduct></AdminProduct>} ></Route>
           <Route path="/admin/promotion" element={<AdminPromotion></AdminPromotion>} ></Route>
+          <Route path="/admin/user" element={<AdminUser></AdminUser>} ></Route>
 
           <Route path="/profile/:id" element={<Profile></Profile>} ></Route>
           <Route path="/profile/:id/order" element={<ProfileOrder></ProfileOrder>} ></Route>
