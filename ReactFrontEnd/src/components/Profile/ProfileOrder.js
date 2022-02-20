@@ -33,8 +33,8 @@ function ProfileOrder() {
   }
 
   const [status, setStatus] = useState("all");
-  const [orderby, setOrderby] = useState("Id");
-  const [sort, setSort] = useState("Asc");
+  const [orderby, setOrderby] = useState("date");
+  const [sort, setSort] = useState("Desc");
   const [pageNumber, setpageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [totalPage, setTotalPage] = useState(1);
@@ -79,11 +79,12 @@ function ProfileOrder() {
   const handleCloseInfoModal = () => setShowInfoModal(false);
   const handleShowInfoModal = (order) => {
     setselectedOrder(order);
+    console.log(order);
     setIsLoadingOrderDetails(true);
     setShowInfoModal(true);
     OrderService.GetAllOrdersDetailsForOrder(order.id)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setOrderDetailsList(response.data.result);
       })
       .catch((error) => {
@@ -93,6 +94,7 @@ function ProfileOrder() {
         setIsLoadingOrderDetails(false);
       });
   };
+
   useEffect(() => {
     setIsLoading(true);
     OrderService.GetUserOrderHistory(
@@ -394,10 +396,9 @@ function ProfileOrder() {
 
                             {!isLoading && listOrder.length > 0 && (
                               <tbody>
-                                {" "}
                                 {listOrder.map((order) => {
                                   return (
-                                    <tr>
+                                    <tr key={order.id}>
                                       <td>{order.id}</td>
                                       <td>
                                         {order.status == 0 && (
@@ -434,16 +435,57 @@ function ProfileOrder() {
                                         )}
                                       </td>
                                       <td>
-                                        <NumberFormat
-                                          value={order.totalPrice}
-                                          className="text-center text-danger text-decoration-underline  "
-                                          displayType={"text"}
-                                          thousandSeparator={true}
-                                          suffix={"đ"}
-                                          renderText={(value, props) => (
-                                            <span {...props}>{value}</span>
+                                        {order.discountCode == null && (
+                                          <NumberFormat
+                                            value={order.totalPrice}
+                                            className="text-center text-danger text-decoration-underline  "
+                                            displayType={"text"}
+                                            thousandSeparator={true}
+                                            suffix={"đ"}
+                                            renderText={(value, props) => (
+                                              <span {...props}>{value}</span>
+                                            )}
+                                          />
+                                        )}
+
+                                        {order.discountCode != null &&
+                                          order.discountCode.discountAmount !=
+                                            null && (
+                                            <NumberFormat
+                                              value={
+                                                order.totalPrice -
+                                                order.discountCode
+                                                  .discountAmount
+                                              }
+                                              className="text-center text-danger text-decoration-underline  "
+                                              displayType={"text"}
+                                              thousandSeparator={true}
+                                              suffix={"đ"}
+                                              renderText={(value, props) => (
+                                                <span {...props}>{value}</span>
+                                              )}
+                                            />
                                           )}
-                                        />
+                                        {order.discountCode != null &&
+                                          order.discountCode.discountPercent !=
+                                            null && (
+                                            <NumberFormat
+                                              value={
+                                                order.totalPrice -
+                                                (order.totalPrice *
+                                                  order.discountCode
+                                                    .discountPercent) /
+                                                  100
+                                              }
+                                              className="text-center text-danger text-decoration-underline  "
+                                              displayType={"text"}
+                                              thousandSeparator={true}
+                                              suffix={"đ"}
+                                              renderText={(value, props) => (
+                                                <span {...props}>{value}</span>
+                                              )}
+                                            />
+                                          )}
                                       </td>
                                       <td>{order.totalItem}</td>
                                       <td>
@@ -469,7 +511,7 @@ function ProfileOrder() {
                                       </td>
                                     </tr>
                                   );
-                                })}{" "}
+                                })}
                               </tbody>
                             )}
                           </table>
@@ -580,10 +622,57 @@ function ProfileOrder() {
           {!isLoadingOrderDetails && (
             <div className="table-responsive ">
               <p>Tổng SP : {selectedOrder.totalItem}</p>
-              <p>Tổng giá : {selectedOrder.totalPrice}</p>
+              <p>Tổng giá : {selectedOrder.totalPrice}đ</p>
 
-              <p>Shipper : Chưa có</p>
-              <p>Ngày giao : Chưa </p>
+              {selectedOrder.shipper != null && (
+                <p>Shipper : {selectedOrder.shipper.userName}</p>
+              )}
+              {selectedOrder.shipper != null &&
+                selectedOrder.shippedDate != "0001-01-01T00:00:00" && (
+                  <p>
+                    Ngày giao :{" "}
+                    {formatDate(
+                      new Date(selectedOrder.shippedDate + "Z"),
+                      "dd-MM-yyyy HH:mm:ss"
+                    )}{" "}
+                  </p>
+                )}
+              {selectedOrder.discountCode != null && (
+                <Fragment>
+                  <p>Mã giảm giá : {selectedOrder.discountCode.code}</p>
+                  {selectedOrder.discountCode.discountAmount != null && (
+                    <Fragment>
+                      <p>
+                        Giá trị giảm :{" "}
+                        {selectedOrder.discountCode.discountAmount}đ
+                      </p>
+                      <p>
+                        Tổng giá đơn hàng sau khi giảm :{" "}
+                        {selectedOrder.totalPrice -
+                          selectedOrder.discountCode.discountAmount}
+                        đ
+                      </p>
+                    </Fragment>
+                  )}
+                  {selectedOrder.discountCode.discountPercent != null && (
+                    <Fragment>
+                      <p>
+                        Giá trị giảm :{" "}
+                        {selectedOrder.discountCode.discountPercent} %
+                      </p>
+                      <p>
+                        Tổng giá đơn hàng sau khi giảm :{" "}
+                        {selectedOrder.totalPrice -
+                          (selectedOrder.totalPrice *
+                            selectedOrder.discountCode.discountPercent) /
+                            100}
+                        đ
+                      </p>
+                    </Fragment>
+                  )}
+                </Fragment>
+              )}
+
               <table className="table">
                 <thead>
                   <tr>

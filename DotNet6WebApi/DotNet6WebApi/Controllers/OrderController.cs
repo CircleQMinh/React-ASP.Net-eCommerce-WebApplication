@@ -90,7 +90,7 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-                var order = await unitOfWork.Orders.Get(q=>q.Id== id,new List<string> { "OrderDetails"});
+                var order = await unitOfWork.Orders.Get(q=>q.Id== id,new List<string> { "OrderDetails","DiscountCode", "Shipper" });
                 if (order==null)
                 {
                     return Ok(new { success = false,msg = "Không tìm thấy đơn hàng." });
@@ -128,7 +128,7 @@ namespace DotNet6WebApi.Controllers
 
         [HttpGet("history/{id}")]
         [Authorize]
-        public async Task<IActionResult> GetOrderHistory(string id, string status, string orderby, string sort, int pageNumber, int pageSize)
+        public async Task<IActionResult> GetUserOrderHistory(string id, string status, string orderby, string sort, int pageNumber, int pageSize)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace DotNet6WebApi.Controllers
 
                 var orders = await unitOfWork.Orders.GetAll(expression, 
                     orderBy,
-                    new List<string> { "OrderDetails" },
+                    new List<string> { "OrderDetails","DiscountCode","Shipper" },
                     new PaginationFilter(pageNumber,pageSize));
                 var count = await unitOfWork.Orders.GetCount(expression);
                 var result = mapper.Map<IList<OrderDTO>>(orders);
@@ -266,7 +266,7 @@ namespace DotNet6WebApi.Controllers
                         break;
                 }
 
-                var orders = await unitOfWork.Orders.GetAll(expression,orderBy,new List<string> {"OrderDetails"},new PaginationFilter(pageNumber,pageSize));
+                var orders = await unitOfWork.Orders.GetAll(expression,orderBy,new List<string> {"OrderDetails", "Shipper" ,"DiscountCode"},new PaginationFilter(pageNumber,pageSize));
                 var count = await unitOfWork.Orders.GetCount(expression);
                 var result = mapper.Map<IList<OrderDTO>>(orders);
 

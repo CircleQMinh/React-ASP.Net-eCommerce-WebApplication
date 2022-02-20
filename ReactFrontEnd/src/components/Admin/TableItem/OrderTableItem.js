@@ -55,7 +55,7 @@ function OrderTableItem(props) {
     var note = document.getElementById("edit_order_modal_note").value;
     AdminService.PutOrder({ status: status, note: note }, item.id)
       .then((response) => {
-       // console.log(response.data);
+        // console.log(response.data);
         if (response.data.success) {
           toast.success("Chỉnh sửa thành công!", {
             position: "top-center",
@@ -93,10 +93,10 @@ function OrderTableItem(props) {
         props.reRender();
       });
   }
-  function onDelete_DeleteOrderModal(){
-    setIsDeletingOrder(true)
-    AdminService.DeleteOrder(item.id).then(
-      (response)=>{
+  function onDelete_DeleteOrderModal() {
+    setIsDeletingOrder(true);
+    AdminService.DeleteOrder(item.id)
+      .then((response) => {
         if (response.data.success) {
           toast.success("Xóa thành công!", {
             position: "top-center",
@@ -116,24 +116,23 @@ function OrderTableItem(props) {
             draggable: true,
           });
         }
-      }
-    )
-    .catch((error)=>{
-      console.log(error)
-      toast.error("Có lỗi xảy ra! Xin hãy thử lại", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Có lỗi xảy ra! Xin hãy thử lại", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      })
+      .finally(() => {
+        setIsDeletingOrder(false);
+        setShowDeleteOrderModal(false);
+        props.reRender();
       });
-    })
-    .finally(()=>{
-      setIsDeletingOrder(false);
-      setShowDeleteOrderModal(false);
-      props.reRender();
-    })
   }
 
   var orderDetailsContent = orderDetailsList.map((od) => {
@@ -270,14 +269,42 @@ function OrderTableItem(props) {
           <p>Email : {item.email}</p>
         </td>
         <td className="text-white">
-          <NumberFormat
-            value={item.totalPrice}
-            className="text-center text-danger text-decoration-underline  "
-            displayType={"text"}
-            thousandSeparator={true}
-            suffix={"đ"}
-            renderText={(value, props) => <span {...props}>{value}</span>}
-          />
+          {item.discountCode == null && (
+            <NumberFormat
+              value={item.totalPrice}
+              className="text-center text-danger text-decoration-underline  "
+              displayType={"text"}
+              thousandSeparator={true}
+              suffix={"đ"}
+              renderText={(value, props) => <span {...props}>{value}</span>}
+            />
+          )}
+
+          {item.discountCode != null &&
+            item.discountCode.discountAmount != null && (
+              <NumberFormat
+                value={item.totalPrice - item.discountCode.discountAmount}
+                className="text-center text-danger text-decoration-underline  "
+                displayType={"text"}
+                thousandSeparator={true}
+                suffix={"đ"}
+                renderText={(value, props) => <span {...props}>{value}</span>}
+              />
+            )}
+          {item.discountCode != null &&
+            item.discountCode.discountPercent != null && (
+              <NumberFormat
+                value={
+                  item.totalPrice -
+                  (item.totalPrice * item.discountCode.discountPercent) / 100
+                }
+                className="text-center text-danger text-decoration-underline  "
+                displayType={"text"}
+                thousandSeparator={true}
+                suffix={"đ"}
+                renderText={(value, props) => <span {...props}>{value}</span>}
+              />
+            )}
         </td>
         <td className="text-white">
           {/* <div   className="progress-container progress-sm">
@@ -359,9 +386,46 @@ function OrderTableItem(props) {
             <div className="table-responsive ">
               <p>Tổng SP : {item.totalItem}</p>
               <p>Tổng giá : {item.totalPrice}</p>
-
-              <p>Shipper : Chưa có</p>
-              <p>Ngày giao : Chưa </p>
+              {item.shipper != null && <p>Shipper : {item.shipper.userName}</p>}
+              {item.shipper != null &&
+                item.shippedDate != "0001-01-01T00:00:00" && (
+                  <p>
+                    Ngày giao :{" "}
+                    {formatDate(
+                      new Date(item.shippedDate + "Z"),
+                      "dd-MM-yyyy HH:mm:ss"
+                    )}{" "}
+                  </p>
+                )}
+              {item.discountCode != null && (
+                <Fragment>
+                  <p>Mã giảm giá : {item.discountCode.code}</p>
+                  {item.discountCode.discountAmount != null && (
+                    <Fragment>
+                      <p>Giá trị giảm : {item.discountCode.discountAmount}đ</p>
+                      <p>
+                        Tổng giá đơn hàng sau khi giảm :{" "}
+                        {item.totalPrice - item.discountCode.discountAmount}đ
+                      </p>
+                    </Fragment>
+                  )}
+                  {item.discountCode.discountPercent != null && (
+                    <Fragment>
+                      <p>
+                        Giá trị giảm : {item.discountCode.discountPercent} %
+                      </p>
+                      <p>
+                        Tổng giá đơn hàng sau khi giảm :{" "}
+                        {item.totalPrice -
+                          (item.totalPrice *
+                            item.discountCode.discountPercent) /
+                            100}
+                        đ
+                      </p>
+                    </Fragment>
+                  )}
+                </Fragment>
+              )}
               <table className="table">
                 <thead>
                   <tr>
@@ -451,8 +515,8 @@ function OrderTableItem(props) {
         <Modal.Body>
           <p className="text-tron text-monospace">Xóa đơn hàng này?</p>
           <p className="text-center">
-            <i className="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào liên
-            quan đến đơn hàng sẽ bị xóa!
+            <i className="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào
+            liên quan đến đơn hàng sẽ bị xóa!
           </p>
         </Modal.Body>
         {isDeletingOrder && (

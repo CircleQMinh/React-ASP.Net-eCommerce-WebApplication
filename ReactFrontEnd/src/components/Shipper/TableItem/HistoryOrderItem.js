@@ -163,14 +163,42 @@ function HistoryOrderItem(props) {
           <p>Email : {item.email}</p>
         </td>
         <td className="text-white">
-          <NumberFormat
-            value={item.totalPrice}
-            className="text-center text-danger text-decoration-underline  "
-            displayType={"text"}
-            thousandSeparator={true}
-            suffix={"đ"}
-            renderText={(value, props) => <span {...props}>{value}</span>}
-          />
+        {item.discountCode == null && (
+            <NumberFormat
+              value={item.totalPrice}
+              className="text-center text-danger text-decoration-underline  "
+              displayType={"text"}
+              thousandSeparator={true}
+              suffix={"đ"}
+              renderText={(value, props) => <span {...props}>{value}</span>}
+            />
+          )}
+
+          {item.discountCode != null &&
+            item.discountCode.discountAmount != null && (
+              <NumberFormat
+                value={item.totalPrice - item.discountCode.discountAmount}
+                className="text-center text-danger text-decoration-underline  "
+                displayType={"text"}
+                thousandSeparator={true}
+                suffix={"đ"}
+                renderText={(value, props) => <span {...props}>{value}</span>}
+              />
+            )}
+          {item.discountCode != null &&
+            item.discountCode.discountPercent != null && (
+              <NumberFormat
+                value={
+                  item.totalPrice -
+                  (item.totalPrice * item.discountCode.discountPercent) / 100
+                }
+                className="text-center text-danger text-decoration-underline  "
+                displayType={"text"}
+                thousandSeparator={true}
+                suffix={"đ"}
+                renderText={(value, props) => <span {...props}>{value}</span>}
+              />
+            )}
         </td>
         <td className="text-white">
           {item.paymentMethod == "cash" && (

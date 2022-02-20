@@ -24,9 +24,10 @@ function ProductListItem(props) {
   }
   return (
     <Fragment>
-      <div className="col col-xs-8 col-md-6 col-lg-4 col-xl-3 " onClick={onProductCardClick}>
+      <div className="col col-xs-8 col-md-6 col-lg-4 col-xl-3 " >
         <div className="card border border-4 rounded-3 mb-2">
           <img
+          onClick={onProductCardClick}
             src={props.item.imgUrl}
             className="card-img-top product_img"
             alt={`Product ${props.item.id}`}

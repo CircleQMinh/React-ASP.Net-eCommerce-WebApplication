@@ -15,7 +15,9 @@ namespace DotNet6WebApi.Helper
             //User
             CreateMap<AppUser, UserRegisterDTO>().ReverseMap();
             CreateMap<AppUser, LoginUserDTO>().ReverseMap();
+            CreateMap<AppUser, UpdateUserDTO>().ReverseMap();
             CreateMap<AppUser, SimpleUserDTO>().ReverseMap();
+            CreateMap<AppUser, SimpleUserForAdminDTO>().ReverseMap();
             //Publisher
             CreateMap<Publisher, PublisherDTO>().ReverseMap();
             CreateMap<Publisher, DetailPublisherDTO>().ReverseMap();
@@ -34,6 +36,7 @@ namespace DotNet6WebApi.Helper
             CreateMap<Promotion, CreatPromotionDTO>().ReverseMap();
             //Review
             CreateMap<Review, ReviewDTO>().ReverseMap();
+            CreateMap<Review, CreateReviewDTO>().ReverseMap();
             //Order
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order,CreateOrderDTO>().ReverseMap();
@@ -46,6 +49,7 @@ namespace DotNet6WebApi.Helper
             //DiscountCode
             CreateMap<DiscountCode, DiscountCodeDTO>().ReverseMap();
             CreateMap<DiscountCode, CreateDiscountCodeDTO>().ReverseMap();
+            CreateMap<DiscountCode, SimpleDiscountStatusDTO>().ReverseMap();
         }
     }
 }

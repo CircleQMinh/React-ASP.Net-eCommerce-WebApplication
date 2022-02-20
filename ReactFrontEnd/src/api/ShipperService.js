@@ -11,7 +11,8 @@ class ShipperService {
   async getAvailableOrder(orderBy, sort, pageNumber, pageSize) {
     const response =
       await axios.get(`${apiUrl}/shipper/getAvailableOrders?orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}
-    `);
+   
+    `   ,config);
     return response;
   }
   async GetAllOrdersDetailsForOrder(id) {
@@ -32,7 +33,7 @@ class ShipperService {
   async getAcceptedOrders(id, orderBy, sort, pageNumber, pageSize) {
     const response =
       await axios.get(`${apiUrl}/Shipper/${id}/getAcceptedOrders?orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}
-    `);
+    `   ,config);
     return response;
   }
   async CompleteOrder(dto) {
@@ -47,7 +48,7 @@ class ShipperService {
   async getHistory(id, orderBy, sort, pageNumber, pageSize) {
     const response =
       await axios.get(`${apiUrl}/Shipper/${id}/getDeliverHistory?orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}
-    `);
+    `   ,config);
     return response;
   }
 }

@@ -27,8 +27,8 @@ function AdminOrder() {
   const [reRender, setReRender] = useState(true);
 
   const [status, setStatus] = useState("all");
-  const [orderby, setOrderby] = useState("Id");
-  const [sort, setSort] = useState("Asc");
+  const [orderby, setOrderby] = useState("orderDate");
+  const [sort, setSort] = useState("Desc");
   const [pageNumber, setpageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [totalPage, setTotalPage] = useState(1);
@@ -129,6 +129,7 @@ function AdminOrder() {
                         <option value="Id">Id</option>
                         <option value="Price">Giá</option>
                         <option value="Name">Tên</option>
+                        <option value="orderDate">Ngày đặt</option>
                       </select>
                     </div>
                   </div>
@@ -162,6 +163,7 @@ function AdminOrder() {
                       <option value="Id">Id</option>
                       <option value="totalPrice">Tổng giá</option>
                       <option value="contactName">Tên</option>
+                      <option value="orderDate">Ngày đặt</option>
                     </select>
                   </div>
                   <div className="mb-3 row">

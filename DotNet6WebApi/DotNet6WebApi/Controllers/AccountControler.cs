@@ -182,26 +182,26 @@ namespace DotNet6WebApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAccountInfo(string id)
-        {
-            try
-            {
-                var user = await userManager.FindByIdAsync(id);
-                if (user == null)
-                {
-                    return Ok(new { success = false, msg = "Không tìm thấy người dùng" });
-                }
-                var roles = await userManager.GetRolesAsync(user);
-                var result = mapper.Map<SimpleUserDTO>(user);
-                result.Roles=roles;
-                return Ok(new { result });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { error = ex.ToString() });
-            }
-        }
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetAccountInfo(string id)
+        //{
+        //    try
+        //    {
+        //        var user = await userManager.FindByIdAsync(id);
+        //        if (user == null)
+        //        {
+        //            return Ok(new { success = false, msg = "Không tìm thấy người dùng" });
+        //        }
+        //        var roles = await userManager.GetRolesAsync(user);
+        //        var result = mapper.Map<SimpleUserDTO>(user);
+        //        result.Roles=roles;
+        //        return Ok(new { result });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new { error = ex.ToString() });
+        //    }
+        //}
 
 
         //for testing authorize
