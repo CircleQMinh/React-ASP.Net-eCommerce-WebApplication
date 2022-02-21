@@ -1,0 +1,20 @@
+.pricePromotionWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.ProductPrice,
+.ProductPriceOld,
+.ProductPriceSimple {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.ProductPriceOld {
+    text-decoration: line-through;
+}
+
+.ProductPriceSimple {
+    height: 100%;
+    align-items: center;
+}

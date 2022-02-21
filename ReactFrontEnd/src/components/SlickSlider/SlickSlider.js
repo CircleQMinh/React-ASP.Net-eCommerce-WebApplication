@@ -1,7 +1,11 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useRef } from "react";
 import { Container } from "react-bootstrap";
 import Slider from "react-slick";
 import Arrow from "./Arrow";
+import styles from "./Slick.module.css";
+import { formatCurrencyVN } from "../../utils";
+import { useNavigate } from "react-router-dom";
+import { ProductInfo } from "../Product/ProductInfo";
 
 function SlickSlider(props) {
   let slide_to_show = props.slide_to_show == null ? 4 : props.slide_to_show;
@@ -42,6 +46,7 @@ function SlickSlider(props) {
     dots: true,
     infinite: true,
     speed: 500,
+    arrows: false,
     slidesToShow: slide_to_show,
     slidesToScroll: slide_to_scroll,
     initialSlide: 0,
@@ -77,161 +82,41 @@ function SlickSlider(props) {
       },
     ],
   };
+
+  const [productHover, setProductHover] = useState(-1)
+  const [sliderHover, setSliderHover] = useState(false)
+  const slider = useRef(null);
+  const navigate = useNavigate()
+
+  const redirectDetailProduct = (id) => {
+    window.scrollTo(0,0)
+    navigate(`/book/${id}`)
+  }
+
   return (
     <Fragment>
-      <Container className="p-3">
-        {items == null && (
-          <Slider {...settings}>
-            <div>
-              <div className="card">
-                <img
-                  src="https://picsum.photos/200/200"
-                  className="card-img-top"
-                  alt="PRODUCT 1"
-                />
-
-                <div className="card-body">
-                  <h5 className="card-title">Product 1</h5>
-                  <p className="card-text">Some quick example text.</p>
-                  <a href="/" className="btn btn-primary">
-                    ADD TO CART
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="card">
-                <img
-                  src="https://picsum.photos/197/200"
-                  className="card-img-top"
-                  alt="PRODUCT 1"
-                />
-
-                <div className="card-body">
-                  <h5 className="card-title">Product 1</h5>
-                  <p className="card-text">Some quick example text.</p>
-                  <a href="/" className="btn btn-primary">
-                    ADD TO CART
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="card">
-                <img
-                  src="https://picsum.photos/198/200"
-                  className="card-img-top"
-                  alt="PRODUCT 1"
-                />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Product 1</h5>
-                <p className="card-text">Some quick example text.</p>
-                <a href="/" className="btn btn-primary">
-                  ADD TO CART
-                </a>
-              </div>
-            </div>
-            <div>
-              <div className="card">
-                <img
-                  src="https://picsum.photos/199/200"
-                  className="card-img-top"
-                  alt="PRODUCT 1"
-                />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Product 1</h5>
-                <p className="card-text">Some quick example text.</p>
-                <a href="/" className="btn btn-primary">
-                  ADD TO CART
-                </a>
-              </div>
-            </div>
-            <div>
-              <div className="card">
-                <img
-                  src="https://picsum.photos/204/200"
-                  className="card-img-top"
-                  alt="PRODUCT 1"
-                />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Product 1</h5>
-                <p className="card-text">Some quick example text.</p>
-                <a href="/" className="btn btn-primary">
-                  ADD TO CART
-                </a>
-              </div>
-            </div>
-            <div>
-              <div className="card">
-                <img
-                  src="https://picsum.photos/203/200"
-                  className="card-img-top"
-                  alt="PRODUCT 1"
-                />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Product 1</h5>
-                <p className="card-text">Some quick example text.</p>
-                <a href="/" className="btn btn-primary">
-                  ADD TO CART
-                </a>
-              </div>
-            </div>
-            <div>
-              <div className="card">
-                <img
-                  src="https://picsum.photos/202/200"
-                  className="card-img-top"
-                  alt="PRODUCT 1"
-                />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Product 1</h5>
-                <p className="card-text">Some quick example text.</p>
-                <a href="/" className="btn btn-primary">
-                  ADD TO CART
-                </a>
-              </div>
-            </div>
-            <div>
-              <div className="card">
-                <img
-                  src="https://picsum.photos/201/200"
-                  className="card-img-top"
-                  alt="PRODUCT 1"
-                />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Product 1</h5>
-                <p className="card-text">Some quick example text.</p>
-                <a href="/" className="btn btn-primary">
-                  ADD TO CART
-                </a>
-              </div>
-            </div>
-          </Slider>
-        )}
-        {items != null && (
-          <Slider {...settings}>
-            {items.map((item) => {
+      <Container className="p-3" style={{ position: "relative" }}
+          onMouseLeave={()=>setSliderHover(false)}
+          onMouseEnter={()=>setSliderHover(true)}
+      >
+        {sliderHover &&   
+          <>
+            <button className={`btn ${styles.angleRightBtn}`} onClick={() => slider?.current?.slickNext()}>
+              <i className="fa fa-angle-right"></i>
+            </button>
+            <button className={`btn ${styles.angleLeftBtn}`} onClick={() => slider?.current?.slickPrev()}>
+              <i className="fa fa-angle-left"></i>
+            </button>
+          </>
+        }
+        {(items && items?.length > 0 )&& (
+          <Slider {...settings} ref={slider}>
+            {items.map((item, index)=>{
               return (
-                <div className="col col-xs-8 col-md-6 col-lg-4 col-xl-3 " key={item.id}>
-                  <div className="card border border-4 rounded-3 mb-2">
-                    <img
-                      src={item.imgUrl}
-                      className="card-img-top product_img"
-                      alt={`Product ${item.id}`}
-                    />
-
-                    <div className="card-body">
-                      <h5 className="card-title product_name">{item.title}</h5>
-                    </div>
-                  </div>
+                <div key={`itemSlider-${index}-${item.id}`}>
+                  <ProductInfo book={item}/>
                 </div>
-              );
+              )
             })}
           </Slider>
         )}

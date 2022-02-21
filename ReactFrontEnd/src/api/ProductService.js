@@ -21,6 +21,27 @@ class ProductService {
     return response;
   }
 
+  async getRandomProducts(numberOfBook=1) {
+    const response = await axios.get(`${apiUrl}/Book/getRandomProduct`, {
+      params: { numberOfBook }
+    });
+    return response;
+  }
+
+  async getPopularProducts(numberOfBook=1) {
+    const response = await axios.get(`${apiUrl}/Book/getPopularProduct`,{
+      params:{ numberOfBook }
+    })
+    return response
+  }
+
+  async getLateProducts(number=1) {
+    const response = await axios.get(`${apiUrl}/Book/getLatestBook`,{
+      params:{ number }
+    })
+    return response
+  } 
+
   // --------------------------------------------------------------------------------------------------------
 
   async getGenre() {

@@ -93,7 +93,7 @@ function Header(props) {
                   aria-label="Search"
                   name="search"
                 />
-                <Button variant="success" type="submit">
+                <Button variant="primary" type="submit">
                   <i className="fas fa-search"></i>
                 </Button>
               </Form>
