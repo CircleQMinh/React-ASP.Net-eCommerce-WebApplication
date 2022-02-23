@@ -139,6 +139,16 @@ class AdminService {
     );
     return response;
   }
+
+  //Employee
+  async GetEmpForAdmin(role,orderBy, sort, pageNumber, pageSize) {
+    const response = await axios.get(
+      `${apiUrl}/Employee?role=${role}&orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      config
+    );
+    return response;
+  }
+
 }
 
 export default new AdminService();

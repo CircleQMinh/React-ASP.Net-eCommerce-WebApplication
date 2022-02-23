@@ -73,7 +73,7 @@ namespace DotNet6WebApi.Controllers
                     expression = expression.AndAlso(expression_genre);
                 }
                 var books = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => book.Id),
-                    new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" }, new PaginationFilter(pageNumber, pageSize));
+                    new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" }, new PaginationFilter(pageNumber, pageSize));
                 var count = await unitOfWork.Books.GetCount(expression);
                 var result = mapper.Map<IList<BookDTO>>(books);
                 return Ok(new { result = result, totalProduct = count });
@@ -112,7 +112,7 @@ namespace DotNet6WebApi.Controllers
                     || q.Publisher == book.Publisher)
                     && q.Id != id;
                     var randomBooks = await unitOfWork.Books.GetAll(expression_revert, q => q.OrderBy(book => Guid.NewGuid()),
-                        new List<string>() { "PromotionInfo" }, 
+                        new List<string>() { "PromotionInfo", "WishlistUsers" }, 
                         new PaginationFilter(1, numberOfBook-relatedBook.Count));
                     relatedBook = relatedBook.Concat(randomBooks).ToList();
                 }
@@ -134,7 +134,7 @@ namespace DotNet6WebApi.Controllers
             {
 
 
-                var randomBooks = await unitOfWork.Books.GetAll(null, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "Authors", "Genres", "Publisher", "PromotionInfo" }, new PaginationFilter(1, numberOfBook));
+                var randomBooks = await unitOfWork.Books.GetAll(null, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" }, new PaginationFilter(1, numberOfBook));
 
                 var result = mapper.Map<IList<BookDTO>>(randomBooks);
 
@@ -178,7 +178,7 @@ namespace DotNet6WebApi.Controllers
 
                foreach (var item in result)
                 {
-                    var temp = await unitOfWork.Books.Get(q => q.Id == item.Book.Id, new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" });
+                    var temp = await unitOfWork.Books.Get(q => q.Id == item.Book.Id, new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" , "WishlistUsers" });
                     item.Book = mapper.Map<BookDTO>(temp);
                 }
                 
@@ -196,7 +196,7 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-                var books = await unitOfWork.Books.GetAll(q => true, q => q.OrderByDescending(p => p.Id), new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" }, new PaginationFilter(1, number));
+                var books = await unitOfWork.Books.GetAll(q => true, q => q.OrderByDescending(p => p.Id), new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" }, new PaginationFilter(1, number));
 
                 return Ok(new { success = true, result = books });
             }

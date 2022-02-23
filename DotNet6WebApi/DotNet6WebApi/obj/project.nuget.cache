@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "drfJ/IGb6G/sluWfhbDgtcPuinBu+4jxi1v2oqNY6G8DHD7n/NJGohx55Z4P39IM7wLeybCIp25LyoFfo9aKmA==",
+  "dgSpecHash": "SH3dCk61VLgTwGoqt56tFCotWuK1SSs2jT+eBnp6vA1Bu+HBmOdOLEImtoXWeou3cMJ7OEqrOLsD6Prm9f425A==",
   "success": true,
-  "projectFilePath": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\DotNet6WebApi.csproj",
+  "projectFilePath": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\DotNet6WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\quocm\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\quocm\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

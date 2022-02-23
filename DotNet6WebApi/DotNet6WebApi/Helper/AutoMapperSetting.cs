@@ -18,6 +18,7 @@ namespace DotNet6WebApi.Helper
             CreateMap<AppUser, UpdateUserDTO>().ReverseMap();
             CreateMap<AppUser, SimpleUserDTO>().ReverseMap();
             CreateMap<AppUser, SimpleUserForAdminDTO>().ReverseMap();
+            CreateMap<AppUser, UserIdDTO>().ReverseMap();
             //Publisher
             CreateMap<Publisher, PublisherDTO>().ReverseMap();
             CreateMap<Publisher, DetailPublisherDTO>().ReverseMap();
