@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "y+voTMX6y9esDPG/wzvYhtU+VDXxl18zpoHqgvQA+nw=",
+  "Hash": "sETMsgkIbFwL3rA+lJwGbFAaRSIVVZO7p084WXnh+iI=",
   "Source": "DotNet6WebApi",
   "BasePath": "_content/DotNet6WebApi",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "DotNet6WebApi\\wwwroot",
       "Source": "DotNet6WebApi",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\asset-manifest.json",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\asset-manifest.json",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "asset-manifest.json",
       "AssetKind": "All",
@@ -34,10 +34,10 @@
       "OriginalItemSpec": "wwwroot\\asset-manifest.json"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\favicon.ico",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\favicon.ico",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "favicon.ico",
       "AssetKind": "All",
@@ -51,10 +51,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\index.html",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\index.html",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "index.html",
       "AssetKind": "All",
@@ -68,10 +68,10 @@
       "OriginalItemSpec": "wwwroot\\index.html"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\logo192.png",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\logo192.png",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "logo192.png",
       "AssetKind": "All",
@@ -85,10 +85,10 @@
       "OriginalItemSpec": "wwwroot\\logo192.png"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\logo512.png",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\logo512.png",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "logo512.png",
       "AssetKind": "All",
@@ -102,10 +102,10 @@
       "OriginalItemSpec": "wwwroot\\logo512.png"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\manifest.json",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\manifest.json",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "manifest.json",
       "AssetKind": "All",
@@ -119,10 +119,10 @@
       "OriginalItemSpec": "wwwroot\\manifest.json"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\robots.txt",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\robots.txt",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "robots.txt",
       "AssetKind": "All",
@@ -136,10 +136,10 @@
       "OriginalItemSpec": "wwwroot\\robots.txt"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\css\\main.5d3229a8.css",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\css\\main.5d3229a8.css",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/css/main.5d3229a8.css",
       "AssetKind": "All",
@@ -153,10 +153,10 @@
       "OriginalItemSpec": "wwwroot\\static\\css\\main.5d3229a8.css"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\css\\main.5d3229a8.css.map",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\css\\main.5d3229a8.css.map",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/css/main.5d3229a8.css.map",
       "AssetKind": "All",
@@ -170,10 +170,10 @@
       "OriginalItemSpec": "wwwroot\\static\\css\\main.5d3229a8.css.map"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\787.7279dc09.chunk.js",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\787.7279dc09.chunk.js",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/js/787.7279dc09.chunk.js",
       "AssetKind": "All",
@@ -187,10 +187,10 @@
       "OriginalItemSpec": "wwwroot\\static\\js\\787.7279dc09.chunk.js"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\787.7279dc09.chunk.js.map",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\787.7279dc09.chunk.js.map",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/js/787.7279dc09.chunk.js.map",
       "AssetKind": "All",
@@ -204,10 +204,10 @@
       "OriginalItemSpec": "wwwroot\\static\\js\\787.7279dc09.chunk.js.map"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\main.436ac20f.js",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\main.436ac20f.js",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/js/main.436ac20f.js",
       "AssetKind": "All",
@@ -221,10 +221,10 @@
       "OriginalItemSpec": "wwwroot\\static\\js\\main.436ac20f.js"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\main.436ac20f.js.LICENSE.txt",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\main.436ac20f.js.LICENSE.txt",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/js/main.436ac20f.js.LICENSE.txt",
       "AssetKind": "All",
@@ -238,10 +238,10 @@
       "OriginalItemSpec": "wwwroot\\static\\js\\main.436ac20f.js.LICENSE.txt"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\main.436ac20f.js.map",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\js\\main.436ac20f.js.map",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/js/main.436ac20f.js.map",
       "AssetKind": "All",
@@ -255,10 +255,10 @@
       "OriginalItemSpec": "wwwroot\\static\\js\\main.436ac20f.js.map"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
       "AssetKind": "All",
@@ -272,10 +272,10 @@
       "OriginalItemSpec": "wwwroot\\static\\media\\logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\slick.2630a3e3eab21c607e21.svg",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\slick.2630a3e3eab21c607e21.svg",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/media/slick.2630a3e3eab21c607e21.svg",
       "AssetKind": "All",
@@ -289,10 +289,10 @@
       "OriginalItemSpec": "wwwroot\\static\\media\\slick.2630a3e3eab21c607e21.svg"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\slick.295183786cd8a1389865.woff",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\slick.295183786cd8a1389865.woff",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/media/slick.295183786cd8a1389865.woff",
       "AssetKind": "All",
@@ -306,10 +306,10 @@
       "OriginalItemSpec": "wwwroot\\static\\media\\slick.295183786cd8a1389865.woff"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\slick.a4e97f5a2a64f0ab1323.eot",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\slick.a4e97f5a2a64f0ab1323.eot",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/media/slick.a4e97f5a2a64f0ab1323.eot",
       "AssetKind": "All",
@@ -323,10 +323,10 @@
       "OriginalItemSpec": "wwwroot\\static\\media\\slick.a4e97f5a2a64f0ab1323.eot"
     },
     {
-      "Identity": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\slick.c94f7671dcc99dce43e2.ttf",
+      "Identity": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\static\\media\\slick.c94f7671dcc99dce43e2.ttf",
       "SourceId": "DotNet6WebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\My Project\\React-ASP.NET WebApp\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
+      "ContentRoot": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\wwwroot\\",
       "BasePath": "_content/DotNet6WebApi",
       "RelativePath": "static/media/slick.c94f7671dcc99dce43e2.ttf",
       "AssetKind": "All",

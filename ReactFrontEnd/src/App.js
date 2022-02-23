@@ -32,6 +32,7 @@ import ShipperHistory from "./components/Shipper/ShipperHistory";
 import AdminUser from "./components/Admin/AdminUser";
 import ContactPage from "./pages/Contact";
 import { NewsPage } from "./pages/News";
+import AdminEmp from "./components/Admin/AdminEmp";
 function App() {
   return (
     <Fragment>
@@ -58,6 +59,7 @@ function App() {
           <Route path="/admin/product" element={<AdminProduct></AdminProduct>} ></Route>
           <Route path="/admin/promotion" element={<AdminPromotion></AdminPromotion>} ></Route>
           <Route path="/admin/user" element={<AdminUser></AdminUser>} ></Route>
+          <Route path="/admin/employee" element={<AdminEmp></AdminEmp>} ></Route>
 
           <Route path="/profile/:id" element={<Profile></Profile>} ></Route>
           <Route path="/profile/:id/order" element={<ProfileOrder></ProfileOrder>} ></Route>
