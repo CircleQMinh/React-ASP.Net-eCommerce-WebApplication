@@ -6,21 +6,42 @@ import { auth_action } from "../../redux/auth_slice.js";
 import AuthService from "../../api/AuthService";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import SaleChart from "./Chart/SaleChart";
+
 function Dashboard(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [reRender, setReRender] = useState(true);
   const [authorizing, setAuthorizing] = useState(true);
+  const [saleData, setSaleData] = useState([
+    { date: new Date(2022, 2, 24).toISOString(), total: 13000 },
+    { date: new Date(2022, 2, 25).toISOString(), total: 33000 },
+    { date: new Date(2022, 2, 26).toISOString(), total: 23000 },
+    { date: new Date(2022, 2, 27).toISOString(), total: 53000 },
+  ]);
 
+  function updateData() {
+    setSaleData([
+      { date: new Date(2022, 2, 24).toISOString(), total: 53000 },
+      { date: new Date(2022, 2, 25).toISOString(), total: 23000 },
+      { date: new Date(2022, 2, 26).toISOString(), total: 33000 },
+      { date: new Date(2022, 2, 27).toISOString(), total: 13000 },
+    ])
+  }
   AuthService.GetAuthorizeAdmin()
     .then((res) => {
       //console.log(res.data);
-      setAuthorizing(false)
+      setAuthorizing(false);
     })
     .catch((e) => {
       //console.log("Không có quyền truy cập");
       window.location.href = "/error";
     })
     .finally(() => {});
+
+  function ReRender() {
+    setReRender(!reRender);
+  }
 
   return (
     <Fragment>
@@ -156,6 +177,14 @@ function Dashboard(props) {
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="container" style={{ height: 500 + "px" }}>
+                  <button className="btn btn-primary" onClick={updateData}>
+                    Update
+                  </button>
+                  <SaleChart data={saleData}></SaleChart>
                 </div>
               </div>
             </div>

@@ -250,10 +250,15 @@ function Checkout(props) {
       });
   }
 
+
   useEffect(() => {
-    dispatch(auth_action.getAuthInfoFromLocalStorage());
-    reEnterUserForm();
-  }, [isLoggedIn, dispatch]);
+    if(isLoggedIn){
+      reEnterUserForm();
+    }
+  }, [isLoggedIn])
+  
+
+
 
   return (
     <Fragment>
