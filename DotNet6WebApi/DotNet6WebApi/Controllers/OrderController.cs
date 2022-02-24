@@ -281,6 +281,12 @@ namespace DotNet6WebApi.Controllers
 
         }
 
+        [HttpGet("NewOrderNoticationForAdmin")]
+        public async Task<IActionResult> GetNewOrderNoticationForAdmin()
+        {
+            return Accepted(new {success=true});
+        }
+
 
     }
 }

@@ -71,7 +71,27 @@ namespace DotNet6WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            try
+            {
+                var user = await unitOfWork.Users.Get(q => q.Id==id);
+                if (user==null)
+                {
+                    return Accepted(new {success=false,error = "Không tìm thấy user." });
+                }
+                var roles = await userManager.GetRolesAsync(user);
+                var result = mapper.Map<SimpleUserDTO>(user);
+                result.Roles=roles;
+                return Accepted(new {result,success = true});
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateUserForAdmin([FromBody] UserRegisterDTO dto)
@@ -105,7 +125,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDTO dto,  string id)
         {
             if (!ModelState.IsValid)

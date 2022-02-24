@@ -281,14 +281,10 @@ function ProfileOrder() {
                               <strong>ID : </strong>
                               {user.id}
                             </p>
-                            <button className="btn btn-danger btn-block">
-                              <i className="fas fa-sign-out-alt"></i>
-                              Logout
-                            </button>
-                            <button className="btn btn-outline-info btn-block">
-                              <i className="fas fa-key"></i>
-                              Password?
-                            </button>
+                            <p className="text-muted font-size-sm">
+                              <strong>Shop Xu : </strong>
+                              {user.coins}
+                            </p>
                           </div>
                         </div>
                       </div>
