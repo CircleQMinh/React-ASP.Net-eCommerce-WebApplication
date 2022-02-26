@@ -42,6 +42,10 @@
         public IList<string> Roles { get; set; }
     }
 
+    public class UserIdDTO
+    {
+        public string Id { get; set; }
+    }
 
     public class ConfirmEmailDTO
     {
