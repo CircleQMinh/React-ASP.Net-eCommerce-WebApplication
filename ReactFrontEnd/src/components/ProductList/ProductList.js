@@ -58,9 +58,11 @@ function ProductList(props) {
 
   //  function
   function onPriceRangeFilterChange(event) {
+    setPageNumber(1)
     setPriceRangeFilter(event.target.value);
   }
   function onGenreFilterChange(event) {
+    setPageNumber(1)
     var genre = { name: event.target.value, id: event.target.id };
     if (genre.name != "all") {
       if (!filterGenreList.some(g=>g.name==genre.name)) {
@@ -79,6 +81,7 @@ function ProductList(props) {
     console.log(filterGenreList);
   }
   function onSearchKeyWordChange(event) {
+    setPageNumber(1)
     setKeyword(event.target.value);
   }
   function onPageNumberChange(event) {
@@ -94,12 +97,25 @@ function ProductList(props) {
   }
   function applyPriceRange(event) {
     event.preventDefault();
+    setPageNumber(1)
     if (minPrice == "" || maxPrice == "") {
       alert("Khoảng giá chưa hợp lệ");
     } else {
       setPriceRangeFilter(minPrice + "," + maxPrice);
     }
   }
+
+  function resetFilter(){
+    filterGenreList.forEach((genre)=>{
+      var cb = document.getElementById(`${genre.id}`);
+      cb.checked = false
+    })
+    setFilterGenreList([])
+    setKeyword("")
+    setPriceRangeFilter("0,99999999")
+    setPageNumber(1)
+  }
+
   let productListContent = listProduct.map((item) => {
     return (
       <Fragment key={item.id}>
@@ -134,6 +150,9 @@ function ProductList(props) {
                   />
                   <button className="searchButton">
                     <i className="fa fa-search"></i>
+                  </button>
+                  <button className="searchButton ms-2" onClick={resetFilter}>
+                    <i className="fa-solid fa-rotate-right"></i>
                   </button>
                 </div>
               </div>

@@ -18,7 +18,7 @@ export const LoadingScreen = ({
             role="status"
             style={{ height: height, width: width }}
         >
-            <span class="visually-hidden">Loading...</span>
+            <span className="visually-hidden">Loading...</span>
         </div>
     </div>
   );

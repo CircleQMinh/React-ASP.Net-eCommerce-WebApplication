@@ -23,6 +23,7 @@ function Profile() {
   const [authorizing, setAuthorizing] = useState(true);
 
   if (authorizing) {
+    console.log()
     AuthService.GetAuthorizeUser(userId)
       .then((res) => {
         console.log(res.data);
@@ -99,7 +100,7 @@ function Profile() {
       upLoadImageToCloudinary(selectedImgUrl)
         .then((res) => {
           setselectedImgUrl(res.data.url);
-          UpdateProfile(data);
+          UpdateProfile(data,res.data.url);
         })
         .catch((e) => {
           console.log(e);
@@ -111,9 +112,9 @@ function Profile() {
     }
   }
 
-  function UpdateProfile(data) {
+  function UpdateProfile(data,url) {
     var newUser = {
-      imgUrl: selectedImgUrl ? selectedImgUrl : defaultImgUrl,
+      imgUrl: url ? url : selectedImgUrl,
       userName: data.userName,
       phoneNumber: data.phoneNumber,
     };

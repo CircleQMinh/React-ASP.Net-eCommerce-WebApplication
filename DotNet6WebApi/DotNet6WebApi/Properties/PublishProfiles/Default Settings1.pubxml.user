@@ -7,7 +7,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAArsQZpNEVykCuH+8XKRorPQAAAAACAAAAAAAQZgAAAAEAACAAAAD9J1T0XtZGQ7urfS5osLfHHRCSeEXlhYp/my+9FF7LmwAAAAAOgAAAAAIAACAAAADnzK90Rnef3CvcC2W1l3g3zCYK9CbhCVVXrrWPbQXU5yAAAAAOQYF0B3INx9y9x2qCSqQqRPcftrjNXCsgN8WZ25Gh60AAAAAY7026Rtw1hwSbdw5nUBpisql/ja+xcsQ6MZjnJvjs5YJ8jMHZXA03FNXhKjU5bzhUKIx5t1X1aYBm9pTlni8N</EncryptedPassword>
-    <History>True|2022-02-21T07:51:23.0496251Z;</History>
+    <History>True|2022-02-26T04:27:02.9208469Z;True|2022-02-21T14:51:23.0496251+07:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <DestinationConnectionStrings Include="sqlConnection">

@@ -28,7 +28,7 @@ namespace DotNet6WebApi.Controllers
 
         }
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> PostReview([FromBody] CreateReviewDTO dto)
         {
             if (!ModelState.IsValid)
@@ -71,7 +71,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> DeleteReview([FromBody] DeleteReviewDTO dto)
         {
             if (!ModelState.IsValid)
