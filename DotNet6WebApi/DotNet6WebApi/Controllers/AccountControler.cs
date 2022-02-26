@@ -258,11 +258,12 @@ namespace DotNet6WebApi.Controllers
         public async Task<IActionResult> GetAuthorizeUser(string id)
         {
             var requestedName = User.Identity.Name;
-            var requestedUser = await userManager.FindByNameAsync(requestedName);
+
+            var requestedUser = await unitOfWork.Users.Get(q=>q.UserName==requestedName);
             var authorizeForUser = await userManager.FindByIdAsync(id);
             if (requestedUser == null|| authorizeForUser == null)
             {
-                return BadRequest(new { error = "Token không hợp lệ" });
+                return BadRequest(new { error = "Token không hợp lệ",requestedName,requestedUser,authorizeForUser });
             }
 
             if (requestedUser.Id!=authorizeForUser.Id)

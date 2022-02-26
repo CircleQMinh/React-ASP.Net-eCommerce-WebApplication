@@ -1,4 +1,4 @@
-import { React, useState, Fragment } from "react";
+import { React, useState, Fragment, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {useLocation ,useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
@@ -12,44 +12,52 @@ function Thankyou() {
   let { search } = useLocation();
   const url = new URLSearchParams(search);
 
-  var vnp_ResponseCode = url.get("vnp_ResponseCode")
-  console.log(vnp_ResponseCode)
-
-  var order = localStorage.getItem("order")
-  if(order){
-    order = JSON.parse(order)
-    if(vnp_ResponseCode=="00"&&localStorage.getItem("order")){
-      console.log("gửi order")
-      OrderService.PostOrder(order)
-      .then((response) => {
-        if (response.data.success) {
-          toast.success("Đặt đơn hàng thành công!", {
-            position: "top-center",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
-        } else {
-          alert("Có lỗi xảy ra!");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        localStorage.removeItem("order")
-        dispatch(cart_slice_action.resetCart());
-      });
-
-
-
+  useEffect(() => {
+ 
+    var vnp_ResponseCode = url.get("vnp_ResponseCode")
+    console.log(vnp_ResponseCode)
+  
+    var order = localStorage.getItem("order")
+    if(order){
+      order = JSON.parse(order)
+      if(order.paymentMethod=="cash"){
+        return;
+      }
+      if(vnp_ResponseCode=="00"&&localStorage.getItem("order")){
+        console.log("gửi order")
+        OrderService.PostOrder(order)
+        .then((response) => {
+          if (response.data.success) {
+            toast.success("Đặt đơn hàng thành công!", {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+          } else {
+            alert("Có lỗi xảy ra!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          localStorage.removeItem("order")
+          dispatch(cart_slice_action.resetCart());
+        });
+  
+  
+  
+      }
+      else{
+        navigate("/checkout")
+      }
     }
-    if(vnp_ResponseCode==24){
-      navigate("/checkout")
-    }
-  }
+
+  })
+  
 
   return (
     <Fragment>
