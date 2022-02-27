@@ -81,6 +81,11 @@ namespace DotNet6WebApi.Controllers
             }
             try
             {
+                var existDC = await unitOfWork.DiscountCodes.Get(q => q.Code == dto.Code);
+                if (existDC!=null)
+                {
+                    return Ok(new { error = "Đã tồn tại mã giảm giá này rồi!", success = false });
+                }
                 var newEntity = mapper.Map<DiscountCode>(dto);
                 await unitOfWork.DiscountCodes.Insert(newEntity);
                 await unitOfWork.Save();
@@ -107,6 +112,11 @@ namespace DotNet6WebApi.Controllers
                 {
                     return Ok(new { error = "Không tìm thấy dữ liệu", success = false });
                 }
+                var existDC = await unitOfWork.DiscountCodes.Get(q => q.Code == dto.Code&&q.Id!=id);
+                if (existDC != null)
+                {
+                    return Ok(new { error = "Đã tồn tại mã giảm giá này rồi!", success = false });
+                }
                 mapper.Map(dto, dc);
                 unitOfWork.DiscountCodes.Update(dc);
                 await unitOfWork.Save();
@@ -129,7 +139,7 @@ namespace DotNet6WebApi.Controllers
                 var dc = await unitOfWork.DiscountCodes.Get(q => q.Id == id);
                 if (dc == null)
                 {
-                    return Ok(new { success = false, msg = "Không tìm thấy mã!" });
+                    return Ok(new { success = false, error = "Không tìm thấy mã!" });
                 }
                 await unitOfWork.DiscountCodes.Delete(dc.Id);
                 await unitOfWork.Save();
@@ -137,7 +147,7 @@ namespace DotNet6WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.ToString() });
+                return BadRequest(new { error = ex.ToString(),success=false });
             }
         }
 

@@ -98,7 +98,7 @@ function UserTableItem(props) {
       });
   }
   function onDelete_DeleteModal() {
-    setIsEditing(true);
+    setIsDeleting(true);
     AdminService.DeleteUserForAdmin(item.id)
       .then((res) => {
         if (res.data.success) {
@@ -146,8 +146,15 @@ function UserTableItem(props) {
         </td>
         <td className="text-white">{item.email}</td>
         <td className="text-white">{item.phoneNumber}</td>
-        <td className="text-white">{item.emailConfirmed}</td>
-        <td>{item.coins}</td>
+        <td className="text-white">
+          {
+            item.emailConfirmed && ( <i className="fa-solid fa-check"></i>)
+          }
+          {
+            !item.emailConfirmed && (<i className="fa-solid fa-xmark"></i>)
+          }
+        </td>
+        <td className="text-white">{item.coins}</td>
         <td className="text-white">
           <div className="btn-group">
             <button type="button" className="btn btn-warning">

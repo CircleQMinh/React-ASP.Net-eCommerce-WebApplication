@@ -272,7 +272,7 @@ function AdminUser() {
                               type="button"
                               className="btn btn-danger"
                               onClick={handleShowAddModal}
-                            ></button>
+                            ><i className="fas fa-plus"></i></button>
                             <button
                               type="button"
                               className="btn btn-warning"

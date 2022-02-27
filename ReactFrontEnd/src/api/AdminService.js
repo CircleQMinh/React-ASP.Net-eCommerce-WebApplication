@@ -149,6 +149,27 @@ class AdminService {
     return response;
   }
 
+  //Discount Code
+  async GetDiscountCodeForAdmin(status,type,pageNumber, pageSize) {
+    const response = await axios.get(
+      `${apiUrl}/Discount?status=${status}&type=${type}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      config
+    );
+    return response;
+  }
+
+  async PostDiscountCode(dcode){
+    const response = await axios.post(`${apiUrl}/Discount`, dcode, config);
+    return response;
+  }
+  async PutDiscountCode(dcode,id){
+    const response = await axios.put(`${apiUrl}/Discount/${id}`, dcode, config);
+    return response;
+  }
+  async DeleteDiscountCode(id){
+    const response = await axios.delete(`${apiUrl}/Discount/${id}`, config);
+    return response;
+  }
 }
 
 export default new AdminService();
