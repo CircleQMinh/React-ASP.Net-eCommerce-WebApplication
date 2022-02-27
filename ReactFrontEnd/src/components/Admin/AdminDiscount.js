@@ -8,8 +8,8 @@ import Pagination from "../Pagination/Pagination";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import EmployeeTableItem from "./TableItem/EmployeeTableItem";
-function AdminEmp() {
+import DiscountTableItem from "./TableItem/DiscountTableItem";
+function AdminDiscount() {
   const [authorizing, setAuthorizing] = useState(true);
 
   if (authorizing) {
@@ -25,27 +25,6 @@ function AdminEmp() {
       .finally(() => {});
   }
 
-  const [selectedImgUrl, setselectedImgUrl] = useState(null);
-  const defaultImgUrl =
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png";
-  function onImageChange(event) {
-    //setselectedImgUrl(event.target.value)
-    if (!event.target.files[0] || event.target.files[0].length == 0) {
-      alert("Bạn phải chọn 1 hình ảnh");
-      return;
-    }
-    var mimeType = event.target.files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
-      alert("File phải là hình ảnh");
-      return;
-    }
-    var reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = (_event) => {
-      // console.log(reader.result)
-      setselectedImgUrl(reader.result);
-    };
-  }
   const [showAddModal, setShowAddModal] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   let {
@@ -58,31 +37,35 @@ function AdminEmp() {
 
   const handleCloseAddModal = () => {
     setShowAddModal(false);
-    setselectedImgUrl(null);
     resetAddModal();
+    setCode("");
   };
   const handleShowAddModal = () => {
     setShowAddModal(true);
+    resetAddModal();
+    setCode("")
   };
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
 
-  const [role, setRole] = useState("all");
-  const [orderby, setOrderby] = useState("Id");
+  const [status, setStatus] = useState("all");
+  const [type, setType] = useState("all");
   const [sort, setSort] = useState("Desc");
   const [pageNumber, setpageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [totalPage, setTotalPage] = useState(1);
 
-  const [listEmp, setListEmp] = useState([]);
+  const [listDCode, setListDCode] = useState([]);
+
+
   //function
-  function onRoleFilterChange(event) {
+  function onStatusFilterChange(event) {
     setpageNumber(1);
-    setRole(event.target.value);
+    setStatus(event.target.value);
   }
-  function onOrderByFilterChange(event) {
+  function onTypeFilterChange(event) {
     setpageNumber(1);
-    setOrderby(event.target.value);
+    setType(event.target.value);
   }
   function onSortFilterChange(event) {
     setpageNumber(1);
@@ -112,16 +95,114 @@ function AdminEmp() {
   }
 
   function onAddButtonClick(data) {
-   
+    if (data.type == "amount") {
+      if (data.value < 1000) {
+        toast.error("Giá trị giảm giá phải ít nhất là 1000VND!", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        return;
+      }
+    } else {
+      if (data.value < 10) {
+        toast.error("Giá trị giảm giá ít nhất là 10%!", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        return;
+      }
+      if (data.value > 99) {
+        toast.error("Giá trị giảm giá tối đa là 99%!", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        return;
+      }
+    }
+    //console.log(data);
+    var newDC = {
+      code: data.code,
+      discountPercent: data.type == "percent" ? data.value : null,
+      discountAmount: data.type == "amount" ? data.value : null,
+      startDate: new Date(data.startDate).toISOString(),
+      endDate: new Date(data.endDate).toISOString(),
+      status: 0,
+    };
+    console.log(newDC);
+    setIsAdding(true);
+    AdminService.PostDiscountCode(newDC)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success("Thêm thành công!", {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          toast.error(res.data.error, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsAdding(false);
+        ReRender();
+        resetAddModal();
+        setShowAddModal(false);
+      });
   }
+  const [code, setCode] = useState("");
+
+  function upperCaseMyText(event) {
+    setCode(event.target.value.toUpperCase());
+  }
+  var today = new Date();
+  var minDay = "";
+  var maxDay = "";
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; //January is 0!
+  var yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = "0" + dd;
+  }
+
+  if (mm < 10) {
+    mm = "0" + mm;
+  }
+  minDay = yyyy + "-" + mm + "-" + dd;
+  dd = today.getDate() + 1;
+  maxDay = yyyy + "-" + mm + "-" + dd;
   //run first
 
   useEffect(() => {
     setIsLoading(true);
-    AdminService.GetEmpForAdmin(role,orderby, sort, pageNumber, pageSize)
+    AdminService.GetDiscountCodeForAdmin(status, type, pageNumber, pageSize)
       .then((response) => {
-        console.log(response.data);
-        setListEmp(response.data.result);
+        // console.log(response.data);
+        setListDCode(response.data.result);
         setTotalPage(Math.ceil(Number(response.data.total / pageSize)));
       })
       .catch((error) => {
@@ -130,7 +211,9 @@ function AdminEmp() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [orderby, sort, pageNumber, pageSize, reRender]);
+  }, [status, type, sort, pageNumber, pageSize, reRender]);
+
+
 
   return (
     <Fragment>
@@ -143,8 +226,8 @@ function AdminEmp() {
               <div className="card p-3">
                 <p className="lead text-center mb-0 fw-bold fs-3 text-monospace">
                   {" "}
-                  <i className="fas fa-file-invoice-dollar me-2"></i>Quản lý
-                  nhân viên
+                  <i className="fas fa-file-invoice-dollar me-2"></i>Quản lý mã
+                  giảm giá
                 </p>
               </div>
               <div className="row">
@@ -183,28 +266,28 @@ function AdminEmp() {
               <div className="row">
                 <hr className="text-white"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">
-                <div className="mb-3 row">
-                    <label className="text-white">Loại nhân viên: </label>
+                  <div className="mb-3 row">
+                    <label className="text-white">Trạng thái: </label>
                     <select
                       className="form-select"
                       defaultValue={"all"}
-                      onChange={onRoleFilterChange}
+                      onChange={onStatusFilterChange}
                     >
                       <option value="all">Toàn bộ</option>
-                      <option value="shipper">Shipper</option>
-                      <option value="employee">Nhân Viên</option>
+                      <option value="0">Chưa sử dụng</option>
+                      <option value="1">Đã sử dụng</option>
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Sắp xếp theo: </label>
+                    <label className="text-white">Loại mã : </label>
                     <select
                       className="form-select"
                       defaultValue={"Id"}
-                      onChange={onOrderByFilterChange}
+                      onChange={onTypeFilterChange}
                     >
-                      <option value="Id">Id</option>
-                      <option value="Name">Tên</option>
-                      <option value="Email">Email</option>
+                      <option value="all">Toàn bộ</option>
+                      <option value="percent">Theo %</option>
+                      <option value="amount">Theo VND</option>
                     </select>
                   </div>
                   <div className="mb-3 row">
@@ -240,7 +323,7 @@ function AdminEmp() {
                       <div className="d-flex justify-content-between flex-wrap">
                         <div className="col-sm-12 ">
                           <h5 className="card-title">
-                            Bảng quản lý nhân viên
+                            Bảng quản lý mã giảm giá
                           </h5>
                         </div>
                         <div className="col-sm-12 ">
@@ -250,7 +333,7 @@ function AdminEmp() {
                               className="btn btn-danger"
                               onClick={handleShowAddModal}
                             >
-                              <i className="fa-solid fa-plus"></i>
+                              <i className="fas fa-plus"></i>
                             </button>
                             <button
                               type="button"
@@ -272,29 +355,27 @@ function AdminEmp() {
                           <thead className="text-primary">
                             <tr>
                               <th>Thông tin</th>
-                              <th>Ngày sinh</th>
-                              <th>Giới tính</th>
-                              <th>Liên lạc</th>
-                              <th>Lương</th>
-                              <th>Ngày bắt đầu</th>
+                              <th>Giá trị </th>
+                              <th>Có hiệu lực</th>
+                              <th>Hạn sử dụng</th>
                               <th className="text-right">Actions</th>
                             </tr>
                           </thead>
-                          {!isLoading && listEmp.length > 0 && (
+                          {!isLoading && listDCode.length > 0 && (
                             <tbody>
-                              {listEmp.map((item, i) => {
+                              {listDCode.map((item, i) => {
                                 return (
-                                  <EmployeeTableItem
+                                  <DiscountTableItem
                                     item={item}
                                     key={i}
                                     reRender={ReRender}
-                                  ></EmployeeTableItem>
+                                  ></DiscountTableItem>
                                 );
                               })}
                             </tbody>
                           )}
                         </table>
-                        {!isLoading && listEmp.length == 0 && (
+                        {!isLoading && listDCode.length == 0 && (
                           <div className="d-flex justify-content-center">
                             {/* <p className="text-center text-white">
                             Không có dữ liệu
@@ -362,117 +443,110 @@ function AdminEmp() {
         </Fragment>
       )}
 
-      {/* add modal */}
+      {/* add  modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Thêm người dùng </Modal.Title>
+          <Modal.Title>Thêm mã giảm giá </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
             <div className="form-group">
-              <label>Tên người dùng : </label>
+              <label>Mã giảm giá : </label>
               <div className="input-group">
                 <input
                   className="form-control"
-                  placeholder="Tên..."
-                  {...registerAddModal("userName", {
+                  placeholder="Mã giảm giá..."
+                  {...registerAddModal("code", {
                     required: true,
+                    minLength: 8,
                   })}
+                  value={code}
+                  onChange={upperCaseMyText}
                 ></input>
               </div>
-              {addModalError.userName?.type === "required" && (
+              {addModalError.code?.type === "required" && (
                 <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>Tên người dùng
+                  <i className="fas fa-exclamation-triangle"></i>Mã giảm giá
                   không để trống
                 </p>
               )}
-              <label>Password : </label>
+              {addModalError.code?.type === "minLength" && (
+                <p className="text-start m-0">
+                  <i className="fas fa-exclamation-triangle"></i>Mã giảm giá
+                  phải đủ 8 kí tự
+                </p>
+              )}
+              <label>Loại giảm giá</label>
+              <select
+                className="form-select"
+                {...registerAddModal("type", {
+                  required: true,
+                })}
+              >
+                <option value="amount">Theo VND</option>
+                <option value="percent">Theo %</option>
+              </select>
+              <label>Giá trị giảm giá : </label>
+              <div className="input-group">
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Giá trị giảm giá..."
+                  {...registerAddModal("value", {
+                    required: true,
+                    valueAsNumber: true,
+                  })}
+                ></input>
+              </div>
+              {addModalError.value?.type === "required" && (
+                <p className="text-start m-0">
+                  <i className="fas fa-exclamation-triangle"></i>Giá trị giảm
+                  giá không hợp lệ
+                </p>
+              )}
+              {addModalError.value?.type === "valueAsNumber" && (
+                <p className="text-start m-0">
+                  <i className="fas fa-exclamation-triangle"></i>Giá trị giảm
+                  giá không hợp lệ
+                </p>
+              )}
+
+              <label>Ngày bắt đầu : </label>
               <div className="input-group">
                 <input
                   className="form-control"
-                  placeholder="Password.."
-                  type="password"
-                  {...registerAddModal("password", {
+                  placeholder="Ngày bắt đầu.."
+                  type="date"
+                  min={minDay}
+                  {...registerAddModal("startDate", {
                     required: true,
                   })}
                 ></input>
               </div>
-              {addModalError.password?.type === "required" && (
+              {addModalError.startDate?.type === "required" && (
                 <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>Password không
-                  để trống
+                  <i className="fas fa-exclamation-triangle"></i>Ngày bắt đầu
+                  không để trống
                 </p>
               )}
-              <label>Email : </label>
+              <label>Ngày kết thúc : </label>
               <div className="input-group">
                 <input
                   className="form-control"
-                  placeholder="Email.."
-                  type="email"
-                  {...registerAddModal("email", {
+                  placeholder="Ngày bắt đầu.."
+                  type="date"
+                  min={maxDay}
+                  {...registerAddModal("endDate", {
                     required: true,
-                    pattern:
-                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                   })}
                 ></input>
               </div>
-              {addModalError.email?.type === "required" && (
+              {addModalError.endDate?.type === "required" && (
                 <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>Email không để
-                  trống
+                  <i className="fas fa-exclamation-triangle"></i>Ngày kết thúc
+                  không để trống
                 </p>
               )}
-              {addModalError.email?.type === "pattern" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>Email không hợp
-                  lệ
-                </p>
-              )}
-              <label>SDT : </label>
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  placeholder="Password.."
-                  type="tel"
-                  {...registerAddModal("phoneNumber", {
-                    required: true,
-                    minLength: 9,
-                    maxLength: 10,
-                  })}
-                ></input>
-              </div>
-              {addModalError.phoneNumber?.type === "required" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>SDT không để
-                  trống
-                </p>
-              )}
-              {addModalError.phoneNumber?.type === "minLength" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>SDT không hợp
-                  lệ
-                </p>
-              )}
-              {addModalError.phoneNumber?.type === "maxLength" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>SDT không hợp
-                  lệ
-                </p>
-              )}
-              <label>Ảnh SP</label>
-              <div className="input-group">
-                <input
-                  type="file"
-                  className="form-control"
-                  placeholder="Ảnh"
-                  onChange={onImageChange}
-                ></input>
-              </div>
-              <img
-                className="admin_img_modal"
-                alt="Ảnh sản phẩm"
-                src={selectedImgUrl ? selectedImgUrl : defaultImgUrl}
-              ></img>
             </div>
           </form>
         </Modal.Body>
@@ -501,4 +575,4 @@ function AdminEmp() {
   );
 }
 
-export default AdminEmp;
+export default AdminDiscount;

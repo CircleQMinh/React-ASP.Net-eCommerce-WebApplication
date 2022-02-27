@@ -96,7 +96,7 @@ function AdminHeader(props) {
             </NavItem>
             <NavItem as="li">
               <Nav.Link as={NavLink} to={"/admin/user"}>
-                <i className="fas fa-cog "></i>
+                <i className="fa-solid fa-user"></i>
                 <p className="d-inline show_for_991"> Người dùng</p>
               </Nav.Link>
             </NavItem>
