@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ProductPrice } from "../ProductPrice";
 import { useNavigate } from "react-router-dom";
 import styles from "./productInfo.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import {  cart_slice_action } from "../../../redux/cart_slice.js";
+import { toast } from "react-toastify";
+import ProductService from "../../../api/ProductService";
 
 export const ProductInfo = (props) => {
     const { book } = props;
 
     const [productHover, setProductHover] = useState(-1)
+    const user = JSON.parse(localStorage.getItem(`user`))
+    const [isFavorite, setIsFavorite] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -20,10 +24,54 @@ export const ProductInfo = (props) => {
         dispatch(cart_slice_action.calculateCartTotal())
     }
 
+    const favoriteBook = async () => {
+      const token = localStorage.getItem(`token`)
+      if(token && user) {
+        if(isFavorite) {
+          await ProductService.removeFromWishList(user?.id, book?.id, token)
+            .then((response) => { 
+              if(response?.data?.success) {
+                setIsFavorite(false)
+                toast.success(`Bỏ yêu thích sản phẩm ${book?.title} thành công`)
+              } else {
+                toast.error(`Có lỗi xảy ra`)
+              }
+            })
+            .catch((error) => { console.log(error); })
+        } else {
+          await ProductService.addToWishList(user?.id, book?.id, token)
+          .then((response) => { 
+            if(response?.data?.success) {
+              setIsFavorite(true)
+              toast.success(`Yêu thích sản phẩm ${book?.title} thành công`)
+            } else {
+              toast.error(`Có lỗi xảy ra`)
+            }
+          })
+          .catch((error) => { console.log(error); })
+        }
+
+      } else {
+        toast.warning("Bạn cần phải đăng nhập để thực hiện thao tác này")
+      }
+      console.log("token", token, user)
+    }
+
     const redirectDetailProduct = (id) => {
         window.scrollTo(0,0)
         navigate(`/book/${id}`)
     }
+
+    useEffect(()=>{
+      if(book && user && book?.wishlistUsers?.length > 0) {
+        const favorite =  book?.wishlistUsers.find(item => item.id === user.id)
+        if(book.id == 33) {
+          console.log("book", book, user?.id, favorite)
+        }
+        if(favorite) { setIsFavorite(true) }
+      } 
+     
+    },[book])
 
     return (
         <div 
@@ -47,11 +95,15 @@ export const ProductInfo = (props) => {
               </button>
               <div className={`${styles.addToCartWrapper} animate__animated animate__fadeIn animate__faster`}>
                 <button className={`btn btn-primary ${styles.addToCart}`} onClick={onClickAddToCart}>Thêm vào giỏ</button>
-                <button className={`btn btn-primary ${styles.iconHeart}`}><i class="fa-solid fa-heart"></i></button>
+                <button className={`btn btn-primary ${styles.iconHeart}`} onClick={() => favoriteBook()}>
+                  <i className={`fa-solid fa-heart ${isFavorite && styles.favorite}`}></i>
+                </button>
               </div>
             </div>
           }
-          <div className={`${styles.iconHeartTablet}`}><i class="fa-regular fa-heart"></i></div>
+          <div className={`${styles.iconHeartTablet}`} onClick={() => favoriteBook()}>
+            <i className={`fa-heart ${isFavorite ? styles.favorite + " fa-solid" : "fa-regular"}`}></i>
+            </div>
         </div>
         <div className={`${"card-body"}`}>
           <h5 className={`${styles.productName}`}
