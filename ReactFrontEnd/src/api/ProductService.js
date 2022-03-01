@@ -56,6 +56,30 @@ class ProductService {
     const response = await axios.get(`${apiUrl}/Publisher`);
     return response;
   }
+
+  // -----------------------------------------------------------------------------------------------------------
+
+  async addToWishList(userId, bookId, token) {
+    const response = await axios.post(`${apiUrl}/Book/addToWishlist`, 
+      {
+        userId, 
+        bookId,
+      },
+      { headers: { Authorization: `Bearer ${token}` }}
+    )
+    return response
+  }
+
+  async removeFromWishList(userId, bookId, token) {
+    const response = await axios.post(`${apiUrl}/Book/removeFromWishlist`, 
+      { 
+        userId,
+        bookId,
+      },
+      { headers: { Authorization: `Bearer ${token}` }}
+    )
+    return response
+  }
 }
 
 export default new ProductService();
