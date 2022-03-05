@@ -20,7 +20,7 @@ function AdminPromotion() {
       })
       .catch((e) => {
         //console.log("Không có quyền truy cập");
-        window.location.href = "/error";
+        window.location.href = "/login";
       })
       .finally(() => {});
   }

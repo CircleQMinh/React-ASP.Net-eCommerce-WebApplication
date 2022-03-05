@@ -41,8 +41,8 @@ namespace DotNet6WebApi.DTO
         public double Price { get; set; }
         public int PublishYear { get; set; }
         public int NumberOfPage { get; set; }
-        public  IList<string> Genres { get; set; }
-        public  IList<string> Authors { get; set; }
+        public  IList<string> GenresString { get; set; }
+        public  IList<string> AuthorsString { get; set; }
         public string PublisherName { get; set; }
   
     }

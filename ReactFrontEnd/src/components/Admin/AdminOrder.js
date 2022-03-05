@@ -17,7 +17,7 @@ function AdminOrder() {
     })
     .catch((e) => {
       //console.log("Không có quyền truy cập");
-      window.location.href = "/error";
+      window.location.href = "/login";
     })
     .finally(() => {});
   }
@@ -26,7 +26,7 @@ function AdminOrder() {
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
 
-  const [status, setStatus] = useState("all");
+  const [status, setStatus] = useState("0");
   const [orderby, setOrderby] = useState("orderDate");
   const [sort, setSort] = useState("Desc");
   const [pageNumber, setpageNumber] = useState(1);
@@ -130,6 +130,7 @@ function AdminOrder() {
                         <option value="Price">Giá</option>
                         <option value="Name">Tên</option>
                         <option value="orderDate">Ngày đặt</option>
+                        <option value="shippedDate">Ngày giao</option>
                       </select>
                     </div>
                   </div>
@@ -142,7 +143,7 @@ function AdminOrder() {
                     <label className="text-white">Trạng thái: </label>
                     <select
                       className="form-select"
-                      defaultValue={"all"}
+                      defaultValue={"0"}
                       onChange={onStatusFilterChange}
                     >
                       <option value="all">Toàn bộ</option>
@@ -164,6 +165,7 @@ function AdminOrder() {
                       <option value="totalPrice">Tổng giá</option>
                       <option value="contactName">Tên</option>
                       <option value="orderDate">Ngày đặt</option>
+                      <option value="shippedDate">Ngày giao</option>
                     </select>
                   </div>
                   <div className="mb-3 row">

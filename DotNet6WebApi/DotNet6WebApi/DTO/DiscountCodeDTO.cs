@@ -39,4 +39,13 @@
         public string DicountMode { get;set; }
         public string UserId { get; set; }
     }
+
+    public class GenerateDiscountCodeDTO
+    {
+        public int Number { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string? DiscountPercent { get; set; }
+        public string? DiscountAmount { get; set; }
+    }
 }

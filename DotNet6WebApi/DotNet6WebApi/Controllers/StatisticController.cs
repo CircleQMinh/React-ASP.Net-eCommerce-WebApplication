@@ -3,6 +3,7 @@ using DotNet6WebApi.Data;
 using DotNet6WebApi.DTO;
 using DotNet6WebApi.Helper;
 using DotNet6WebAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,15 +27,35 @@ namespace DotNet6WebApi.Controllers
             authManager = _authManager;
         }
         [HttpGet("DashboardInfo")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetDashboardInfo()
         {
-            return Accepted(new {success=true});
+            try
+            {
+                var userCount = await unitOfWork.Users.GetCount(null);
+                var productCount = await unitOfWork.Books.GetCount(null);
+                var orderCount = await unitOfWork.Orders.GetCount(q => q.Status == (int)OrderStatus.Done);
+                var uncheckOrderCount = await unitOfWork.Orders.GetCount(q => q.Status == (int)OrderStatus.NotChecked);
+
+
+                return Accepted(new { success = true,userCount,productCount,orderCount,uncheckOrderCount });
+            }
+            catch(Exception ex)
+            {
+                //return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return BadRequest(ex.Message);
+            }
+
         }
         [HttpGet("SaleStatistic")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetSaleStatistic(string from, string to)
         {
             DateTime dfrom = DateTime.ParseExact(from, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             DateTime dto = DateTime.ParseExact(to, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            dto = dto.AddDays(1);
+
+            var test = dto.ToLongDateString();
             try
             {
                 var orders = await unitOfWork.Orders.GetAll(q => q.Status == (int)OrderStatus.Done&&q.ShippedDate>dfrom&&q.ShippedDate<dto,null,null);
@@ -50,7 +71,10 @@ namespace DotNet6WebApi.Controllers
                         dic[order.ShippedDate.ToShortDateString()]+=order.TotalPrice;
                     }
                 }
-                return Accepted(new {result = dic,success=true});
+
+                var sort =dic.OrderBy(item => DateTime.ParseExact(item.Key, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+                var sortedDict = sort.ToDictionary(pair => pair.Key, pair => pair.Value);
+                return Accepted(new { result = sortedDict, success = true});
             }
             catch(Exception ex)
             {
@@ -58,13 +82,22 @@ namespace DotNet6WebApi.Controllers
             }
         }
         [HttpGet("OrderStatistic")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetOrderStatistic(string from, string to)
         {
             DateTime dfrom = DateTime.ParseExact(from, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             DateTime dto = DateTime.ParseExact(to, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            dto = dto.AddDays(1);
+
+
+            if (dfrom>dto)
+            {
+                return Ok(new { error = "Dữ liệu nhập không hợp lệ",success=true });
+            }
+
             try
             {
-                var orders = await unitOfWork.Orders.GetAll(q => q.Status == (int)OrderStatus.Done && q.ShippedDate > dfrom && q.ShippedDate < dto, null, null);
+                var orders = await unitOfWork.Orders.GetAll(q => q.Status == (int)OrderStatus.Done && q.ShippedDate > dfrom&& q.ShippedDate <= dto, null, null);
                 var dic = new Dictionary<string, int>();
                 foreach (var order in orders)
                 {
@@ -77,7 +110,9 @@ namespace DotNet6WebApi.Controllers
                         dic[order.ShippedDate.ToShortDateString()] += 1;
                     }
                 }
-                return Accepted(new { result = dic, success = true });
+                var sort = dic.OrderBy(item => DateTime.ParseExact(item.Key, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+                var sortedDict = sort.ToDictionary(pair => pair.Key, pair => pair.Value);
+                return Accepted(new { result = sortedDict, success = true });
             }
             catch (Exception ex)
             {
@@ -85,6 +120,7 @@ namespace DotNet6WebApi.Controllers
             }
         }
         [HttpGet("TopProduct")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetTopProduct(int numberOfBook)
         {
             try

@@ -59,13 +59,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<DatabaseContext>()
 .AddDefaultTokenProviders();
 
-
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-{
-    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-});
-
 //JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Convert.ToString(builder.Configuration.GetSection("Jwt").GetSection("Key").Value);
@@ -127,7 +120,7 @@ builder.Services.AddSwaggerGen(
             new string[] {}
         }
     });
-});
+    });
 
 
 

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formatDate } from "../helper/formatDate";
-const initialState = { user: {}, isLoggedIn: false };
+const initialState = { user: null, isLoggedIn: false };
 const auth_slice = createSlice({
   name: "auth_slice",
   initialState: initialState,
@@ -38,8 +38,11 @@ const auth_slice = createSlice({
          // console.log("Hết phiên đăng nhập! Xóa hết info cũ");
         } else {
           let user = JSON.parse(u)
-          state.user = user;
-          state.isLoggedIn = true;
+          if(state.user==null){
+            state.user = user;
+            state.isLoggedIn = true;
+          }
+
           //console.log("Còn phiên đăng nhập! Dùng lại info cũ");
         }
       } else {

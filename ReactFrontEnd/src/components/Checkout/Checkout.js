@@ -255,7 +255,7 @@ function Checkout(props) {
     if(isLoggedIn){
       reEnterUserForm();
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn,reEnterUserForm])
   
 
 
@@ -297,7 +297,7 @@ function Checkout(props) {
       <div className="container mt-4 ">
         <div className="row">
           {isLoggedIn && totalItem == 0 && (
-            <div className="col-sm-12 col-lg-9 p-2 border border-2 animate__animated animate__bounceInLeft">
+            <div className="col-sm-12 col-lg-9 p-2 border border-2 animate__animated animate__bounceInLeft d-flex justify-content-center">
               <img
                 className="img-fluid"
                 src="https://www.gamkart.com/frontend/img/empty-cart.png"
