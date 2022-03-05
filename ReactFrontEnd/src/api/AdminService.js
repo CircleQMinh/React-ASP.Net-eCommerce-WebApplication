@@ -170,6 +170,36 @@ class AdminService {
     const response = await axios.delete(`${apiUrl}/Discount/${id}`, config);
     return response;
   }
+  async PostDiscountCode(dcode){
+    const response = await axios.post(`${apiUrl}/Discount/generateDiscountCode`, dcode, config);
+    return response;
+  }
+
+  //Statistic
+
+  async GetDashboardInfo(){
+    const response = await axios.get(`${apiUrl}/Statistic/DashboardInfo`, config);
+    return response;
+  }
+  async GetSaleStatistic(from,to){
+    const response = await axios.get(`${apiUrl}/Statistic/SaleStatistic?from=${from}&to=${to}`, config);
+    return response;
+  }
+  async GetOrderStatistic(from,to){
+    const response = await axios.get(`${apiUrl}/Statistic/OrderStatistic?from=${from}&to=${to}`, config);
+    return response;
+  }
+  async GetTopProductStatistic(number){
+    const response = await axios.get(`${apiUrl}/Statistic/TopProduct?numberOfBook=${number}`, config);
+    return response;
+  }
+
+  //Search
+  async GetSearchResult(type,by,key,pageNumber,pageSize){
+    const response = await axios.get(`${apiUrl}/Find/all?type=${type}&searchBy=${by}&keyword=${key}&pageNumber=${pageNumber}&pageSize=${pageSize}`, config);
+    return response;
+  }
+
 }
 
 export default new AdminService();

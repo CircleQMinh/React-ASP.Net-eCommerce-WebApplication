@@ -6,7 +6,7 @@ import AdminService from "../../../api/AdminService";
 import ProductService from "../../../api/ProductService";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-
+import { upLoadImageToCloudinary } from "../../../helper/Cloudinary";
 function ProductTableItem(props) {
   var item = props.item;
 
@@ -20,6 +20,8 @@ function ProductTableItem(props) {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedPublisher, setSelectedPublisher] = useState();
+
+  const [uploadImg, setUploadImg] = useState(false);
 
   function onImageChange(event) {
     //setselectedImgUrl(event.target.value)
@@ -41,6 +43,7 @@ function ProductTableItem(props) {
     reader.onload = (_event) => {
       // console.log(reader.result)
       setselectedImgUrl(reader.result);
+      setUploadImg(true);
     };
   }
 
@@ -170,19 +173,38 @@ function ProductTableItem(props) {
       });
       return;
     }
+    setIsEditing(true);
+    if (uploadImg) {
+      upLoadImageToCloudinary(selectedImgUrl)
+        .then((res) => {
+          setselectedImgUrl(res.data.url);
+          EditProduct(data,res.data.url);
+        })
+        .catch((e) => {
+          console.log(e);
+          setIsEditing(false);
+          setShowEditModal(false);
+        });
+    } else {
+      EditProduct(data);
+    }
+
+  }
+
+  function EditProduct(data,url){
     var book = {
       title: data.title,
       description: data.description,
-      imgUrl: selectedImgUrl != null ? selectedImgUrl : defaultImgUrl,
+      imgUrl:  url ? url : selectedImgUrl,
       price: data.price,
       publishYear: data.publishYear,
       numberOfPage: data.numberOfPage,
-      genres: selectedGenres,
-      authors: selectedAuthors,
+      genresString: selectedGenres,
+      authorsString: selectedAuthors,
       publisherName: selectedPublisher,
     };
-    console.log(book);
-    setIsEditing(true);
+    //console.log(book);
+
     AdminService.EditProduct(item.id,book)
       .then((response) => {
         console.log(response.data);
@@ -215,7 +237,6 @@ function ProductTableItem(props) {
         props.reRender()
       });
   }
-
 
   const [showDeleteProductModal, setShowDeleteProductModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);

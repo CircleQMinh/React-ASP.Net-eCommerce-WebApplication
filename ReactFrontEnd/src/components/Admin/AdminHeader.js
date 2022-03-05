@@ -45,13 +45,12 @@ function AdminHeader(props) {
   //function
   function LogOut() {
     dispatch(auth_action.logOut());
-    navigate("/home")
   }
 
   //run first
-  useEffect(() => {
-    dispatch(auth_action.getAuthInfoFromLocalStorage());
-  }, [isLoggedIn, dispatch]);
+
+  dispatch(auth_action.getAuthInfoFromLocalStorage());
+
 
   // for (const [key, value] of Object.entries(user)) {
   //   console.log(`${key}: ${value}`);

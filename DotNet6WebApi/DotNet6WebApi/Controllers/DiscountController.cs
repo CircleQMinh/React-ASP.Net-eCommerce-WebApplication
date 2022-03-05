@@ -22,7 +22,7 @@ namespace DotNet6WebApi.Controllers
             mapper = _mapper;
         }
         [HttpGet]
-       // [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetDiscountCode(string status,string type , int pageNumber, int pageSize)
         {
             try
@@ -88,10 +88,49 @@ namespace DotNet6WebApi.Controllers
                 }
                 var newEntity = mapper.Map<DiscountCode>(dto);
                 await unitOfWork.DiscountCodes.Insert(newEntity);
-                await unitOfWork.Save();
+               
                 return Ok(new { discountCode = newEntity, success = true });
             }
             catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("generateDiscountCode")]
+        //[Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> GenerateDiscountCode([FromBody] GenerateDiscountCodeDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+            }
+            if (dto.Number<1)
+            {
+                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+            }
+            try
+            {
+                List<DiscountCode> list = new List<DiscountCode>();
+                for (int i = 0; i < dto.Number; i++)
+                {
+                    var dcode = new DiscountCode()
+                    {
+                        Code = Utility.RandomString(12),
+                        DiscountAmount = dto.DiscountAmount,
+                        DiscountPercent = dto.DiscountPercent,
+                        StartDate = dto.StartDate,
+                        EndDate = dto.EndDate,
+                        Status = 0
+                    };
+                    await unitOfWork.DiscountCodes.Insert(dcode);
+                    list.Add(dcode);
+                }
+                await unitOfWork.Save();
+                var result = mapper.Map<IList<DiscountCodeDTO>>(list);
+                return Accepted(new { success = true,result = result });
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }

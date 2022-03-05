@@ -28,6 +28,7 @@ namespace DotNet6WebApi.Helper
             //Book
             CreateMap<Book, BookDTO>().ReverseMap();
             CreateMap<Book, SimpleBookInfoDTO>().ReverseMap();
+            CreateMap<Book, CreateBookDTO>().ReverseMap();
             //PromotionInfo
             CreateMap<PromotionInfo, PromotionInfoDTO>().ReverseMap();
             CreateMap<PromotionInfo, SimplePromotionInfoDTO>().ReverseMap();

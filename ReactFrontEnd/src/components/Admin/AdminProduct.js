@@ -11,6 +11,7 @@ import NumberFormat from "react-number-format";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import AuthService from "../../api/AuthService";
+import { upLoadImageToCloudinary } from "../../helper/Cloudinary";
 function AdminProduct() {
   const [authorizing, setAuthorizing] = useState(true);
 
@@ -22,7 +23,7 @@ function AdminProduct() {
       })
       .catch((e) => {
         //console.log("Không có quyền truy cập");
-        window.location.href = "/error";
+        window.location.href = "/login";
       })
       .finally(() => {});
   }
@@ -48,6 +49,8 @@ function AdminProduct() {
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedPublisher, setSelectedPublisher] = useState();
   
+  const [uploadImg, setUploadImg] = useState(false);
+
   const defaultImgUrl =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png";
   function onImageChange(event) {
@@ -66,10 +69,10 @@ function AdminProduct() {
 
     var reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
-
     reader.onload = (_event) => {
       // console.log(reader.result)
       setselectedImgUrl(reader.result);
+      setUploadImg(true);
     };
   }
 
@@ -185,19 +188,36 @@ function AdminProduct() {
       });
       return;
     }
+    setIsAdding(true);
+    if (uploadImg) {
+      upLoadImageToCloudinary(selectedImgUrl)
+        .then((res) => {
+          setselectedImgUrl(res.data.url);
+          AddProduct(data,res.data.url);
+        })
+        .catch((e) => {
+          console.log(e);
+          setIsAdding(false);
+          setShowAddModal(false);
+        });
+    } else {
+      AddProduct(data);
+    }
+  }
+
+  function AddProduct(data,url){
     var book = {
       title: data.title,
       description: data.description,
-      imgUrl: selectedImgUrl != null ? selectedImgUrl : defaultImgUrl,
+      imgUrl: url ? url : selectedImgUrl,
       price: data.price,
       publishYear: data.publishYear,
       numberOfPage: data.numberOfPage,
-      genres: selectedGenres,
-      authors: selectedAuthors,
+      genresString: selectedGenres,
+      authorsString: selectedAuthors,
       publisherName: selectedPublisher,
     };
-    console.log(book);
-    setIsAdding(true);
+
     AdminService.AddProduct(book)
       .then((response) => {
         console.log(response.data);
@@ -235,7 +255,6 @@ function AdminProduct() {
         ReRender();
       });
   }
-
   //run first
   useEffect(() => {
     setIsLoading(true);

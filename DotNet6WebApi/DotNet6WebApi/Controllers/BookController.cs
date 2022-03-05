@@ -247,7 +247,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PostBook(CreateBookDTO bookDTO)
         {
             if (!ModelState.IsValid)
@@ -280,7 +280,7 @@ namespace DotNet6WebApi.Controllers
                 await unitOfWork.Books.Insert(newBook);
                 await unitOfWork.Save();
 
-                foreach (var authorName in bookDTO.Authors)
+                foreach (var authorName in bookDTO.AuthorsString)
                 {
                     var author = await unitOfWork.Authors.Get(q => q.Name == authorName);
                     if (author == null)
@@ -291,7 +291,7 @@ namespace DotNet6WebApi.Controllers
 
                 }
 
-                foreach (var item in bookDTO.Genres)
+                foreach (var item in bookDTO.GenresString)
                 {
                     var genre = await unitOfWork.Genres.Get(q => q.Name == item);
                     if (genre == null)
@@ -336,7 +336,7 @@ namespace DotNet6WebApi.Controllers
                 foreach (var author in book.Authors)
                 {
                     bool match = false;
-                    foreach (var item in bookDTO.Authors)
+                    foreach (var item in bookDTO.AuthorsString)
                     {
                         if (author.Name == item)
                         {
@@ -362,7 +362,7 @@ namespace DotNet6WebApi.Controllers
 
                 //thêm các author mới
                 List<Author> authorListToAdd = new List<Author>();
-                foreach (var item in bookDTO.Authors)
+                foreach (var item in bookDTO.AuthorsString)
                 {
                     bool match = false;
                     foreach (var author in book.Authors.ToList())
@@ -405,7 +405,7 @@ namespace DotNet6WebApi.Controllers
                 foreach (var genre in book.Genres)
                 {
                     bool match = false;
-                    foreach (var item in bookDTO.Genres)
+                    foreach (var item in bookDTO.GenresString)
                     {
                         if (genre.Name == item)
                         {
@@ -429,7 +429,7 @@ namespace DotNet6WebApi.Controllers
 
                 //thêm các genre mới
                 List<Genre> genreListToAdd = new List<Genre>();
-                foreach (var item in bookDTO.Genres)
+                foreach (var item in bookDTO.GenresString)
                 {
                     bool match = false;
                     foreach (var genre in book.Genres.ToList())

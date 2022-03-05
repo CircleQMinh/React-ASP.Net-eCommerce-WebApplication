@@ -257,7 +257,7 @@ namespace DotNet6WebApi.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetOrders(string status,string orderby,string sort,int pageNumber,int pageSize)
         {
-   
+            //shippedDate
             try
             {
                 Expression<Func<Order, bool>> expression = status=="all" ? q=>true : q => q.Status == int.Parse(status);
@@ -275,6 +275,9 @@ namespace DotNet6WebApi.Controllers
                         break;
                     case "orderDate":
                         orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.OrderDate) : q => q.OrderByDescending(order => order.OrderDate);
+                        break;
+                    case "shippedDate":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.ShippedDate) : q => q.OrderByDescending(order => order.ShippedDate);
                         break;
                     default:
                         orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);

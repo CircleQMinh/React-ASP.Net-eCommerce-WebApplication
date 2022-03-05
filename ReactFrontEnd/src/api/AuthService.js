@@ -60,9 +60,14 @@ class AuthService {
   //   return response;
   // }
   async GetAuthorizeAdmin() {
+    const newtoken = localStorage.getItem("token");
+    const newconfig = {
+      headers: { Authorization: `Bearer ${newtoken}` },
+    };
+
     const response = await axios.get(
-      `${apiUrl}/account/getAuthorize/Administrator`,
-      config
+      `${apiUrl}/account/getAuthorize/Admin`,
+      newconfig
     );
     return response;
   }
