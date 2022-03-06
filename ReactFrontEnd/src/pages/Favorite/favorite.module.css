@@ -1,0 +1,10 @@
+.bodyFavorite {
+    min-height: calc(100vh - 162px - 56px - 61px);
+    display: flex;
+    justify-content: center;
+}
+
+.listFavoriteWrapper {
+    max-width: 1030px;
+    margin: 50px;
+}

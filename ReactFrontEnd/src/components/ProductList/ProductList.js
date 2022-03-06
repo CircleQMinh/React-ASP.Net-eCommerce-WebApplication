@@ -87,7 +87,7 @@ function ProductList(props) {
   function onPageNumberChange(event) {
     // console.log(event.target.value)
     document.getElementById("searchBarProduct").scrollIntoView();
-    setPageNumber(event.target.value);
+    setPageNumber(event?.target?.value || event);
   }
   function onMinPriceChange(event) {
     setMinPrice(event.target.value);
@@ -357,7 +357,7 @@ function ProductList(props) {
                     <div className="d-flex justify-content-center">
                       <div className="paginationsa:container">
                         <div className="paginationsa:number arrow">
-                          <span className="arrow:text">
+                          <span className="arrow:text" onClick={()=>onPageNumberChange(pageNumber !== 1 ? pageNumber - 1 : pageNumber)}>
                             <i className="fas fa-chevron-left"></i>
                           </span>
                         </div>
@@ -368,7 +368,7 @@ function ProductList(props) {
                           pageNumber={pageNumber}
                         ></Pagination>
 
-                        <div className="paginationsa:number arrow">
+                        <div className="paginationsa:number arrow" onClick={()=>onPageNumberChange(pageNumber !== totalPage ? pageNumber + 1 : pageNumber)}>
                           <i className="fas fa-chevron-right"></i>
                         </div>
                       </div>

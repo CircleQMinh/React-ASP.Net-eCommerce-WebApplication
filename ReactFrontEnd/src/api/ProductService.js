@@ -80,6 +80,16 @@ class ProductService {
     )
     return response
   }
+
+  async getProductFavorite(id, pageNumber, pageSize = 6, token) {
+    const response = await axios.get(`${apiUrl}/User/${id}/getWishlist`,
+      {
+        params: {pageNumber, pageSize},
+        headers: { Authorization: `Bearer ${token}` }     
+      }
+    )
+    return response
+  }
 }
 
 export default new ProductService();

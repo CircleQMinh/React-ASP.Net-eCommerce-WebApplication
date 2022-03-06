@@ -1,6 +1,7 @@
 export const LoadingScreen = ({
   position = "relative",
   heightDiv = 250,
+  widthDiv = "100%",
   height = 50,
   width = 50,
 }) => {
@@ -9,9 +10,11 @@ export const LoadingScreen = ({
         style={{ 
             position: position, 
             height: heightDiv,
+            width: widthDiv,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            zIndex: 100
         }}>
         <div
             className="spinner-border text-primary"

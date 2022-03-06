@@ -34,6 +34,7 @@ import ContactPage from "./pages/Contact";
 import { NewsPage } from "./pages/News";
 import AdminEmp from "./components/Admin/AdminEmp";
 import AdminDiscount from "./components/Admin/AdminDiscount";
+import FavoritePage from "./pages/Favorite";
 function App() {
   return (
     <Fragment>
@@ -73,6 +74,7 @@ function App() {
 
           <Route path="/contact" element={<ContactPage/>}></Route>
           <Route path="/news" element={<NewsPage/>}></Route>
+          <Route path="/favorite/:page" element={<FavoritePage/>}></Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>

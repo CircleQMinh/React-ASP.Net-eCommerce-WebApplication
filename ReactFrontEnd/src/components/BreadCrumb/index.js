@@ -6,8 +6,8 @@ export const Breadcrumb = ({ list, title }) => {
       <nav aria-label="breadcrumb" className="my-2 mx-2 breadcrumb_nav">
         <ol className="breadcrumb my-2 mx-2">
           {list &&
-            list.map((item) => (
-              <li className="breadcrumb-item">
+            list.map((item, index) => (
+              <li className="breadcrumb-item" key={`Breadcrumb - ${index}`}>
                 <NavLink to={item.path}>{item.name}</NavLink>
               </li>
             ))}
