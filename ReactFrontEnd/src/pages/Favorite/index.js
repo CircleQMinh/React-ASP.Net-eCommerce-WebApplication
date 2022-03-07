@@ -8,7 +8,7 @@ import ProductService from "../../api/ProductService";
 import { LoadingScreen } from "../../components/Loading";
 import { NotFound } from "../../components/NotFound";
 import ProductListItem from "../../components/ProductList/ProductListItem";
-import Pagination from "../../components/Pagination/Pagination";
+import { PaginationPage } from "../../components/Pagination";
 import { LIMIT_FAVORITE_PAGE } from "../../utils/constant";
 import { ProductInfo } from "../../components/Product/ProductInfo";
 
@@ -98,7 +98,7 @@ const FavoritePage = (props) => {
                 );
               })}
               <div className="d-flex justify-content-center">
-                <div className="paginationsa:container">
+                {/* <div className="paginationsa:container">
                   <div className="paginationsa:number arrow">
                     <span
                       className="arrow:text"
@@ -130,7 +130,8 @@ const FavoritePage = (props) => {
                   >
                     <i className="fas fa-chevron-right"></i>
                   </div>
-                </div>
+                </div> */}
+                <PaginationPage count={Math.ceil(total / LIMIT_FAVORITE_PAGE)} onChangePage={onPageNumberChange} currentPage={currentPage}/>
               </div>
             </div>
           </>
