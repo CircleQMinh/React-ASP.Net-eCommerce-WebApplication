@@ -6,22 +6,25 @@ import AuthService from "../../api/AuthService";
 import OrderService from "../../api/OrderService";
 import OrderTableItem from "./TableItem/OrderTableItem";
 import Pagination from "../Pagination/Pagination";
+
+import SearchModal from "./Modal/SearchModal";
+import { formatDate } from "../../helper/formatDate";
+import { toast } from "react-toastify";
 function AdminOrder() {
   const [authorizing, setAuthorizing] = useState(true);
 
-  if(authorizing){
+  if (authorizing) {
     AuthService.GetAuthorizeAdmin()
-    .then((res) => {
-      //console.log(res.data);
-      setAuthorizing(false);
-    })
-    .catch((e) => {
-      //console.log("Không có quyền truy cập");
-      window.location.href = "/login";
-    })
-    .finally(() => {});
+      .then((res) => {
+        //console.log(res.data);
+        setAuthorizing(false);
+      })
+      .catch((e) => {
+        //console.log("Không có quyền truy cập");
+        window.location.href = "/login";
+      })
+      .finally(() => {});
   }
-
 
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
@@ -69,8 +72,73 @@ function AdminOrder() {
   function ReRender() {
     setReRender(!reRender);
   }
-  //run first
 
+  const [searchType, setSearchType] = useState("Order");
+  const [searchBy, setSearchBy] = useState("Id");
+  const [keyword, setKeyword] = useState("");
+  const [searchResult, setSearchResult] = useState([])
+  const [currentResultPage, setCurrentResultPage] = useState(1)
+  const [totalResultPage, setTotalResultPage] = useState(1)
+  function onSearchTypeChange(event) {
+    setSearchType(event.target.value);
+  }
+  function onSearchByChange(event) {
+    setSearchBy(event.target.value);
+  }
+  function onKeywordChange(event) {
+    setKeyword(event.target.value);
+  }
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [isSearching, setIsSearching] = useState(true);
+
+  const handleCloseSearchModal = () => {
+    setShowSearchModal(false);
+  };
+  const handleShowSearchModal = () => {
+    setShowSearchModal(true);
+    setIsSearching(true);
+    GetSearchResult(1,4)
+  };
+  function GetSearchResult(pageNumber,pageSize){
+    setCurrentResultPage(pageNumber)
+    var tempKeyword = keyword
+    if(searchBy=="OrderDate"||searchBy=="ShippedDate"){
+      try {
+        var date = new Date(keyword);
+        //console.log(formatDate(date,"yyyy-MM-dd"))
+        tempKeyword = formatDate(date,"yyyy-MM-dd")
+      } catch (e) {
+        toast.error("Ngày nhập không hợp lệ!", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        return;
+      }
+    }
+
+    AdminService.GetSearchResult(searchType, searchBy, tempKeyword, pageNumber, pageSize)
+      .then((res) => {
+        console.log(res.data);
+        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)))
+        setSearchResult(res.data.result)
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsSearching(false);
+      });
+  }
+  function handleKeyDown(event) {
+    if (event.keyCode === 13) {
+      handleShowSearchModal();
+    }
+  }
+  //run first
   useEffect(() => {
     setIsLoading(true);
     AdminService.GetOrdersForAdmin(status, orderby, sort, pageNumber, pageSize)
@@ -112,11 +180,13 @@ function AdminOrder() {
                     <div className="w-100 my-2">
                       <div className="search">
                         <input
+                          onKeyDown={handleKeyDown}
+                          onChange={onKeywordChange}
                           type="text"
                           className="searchTerm"
                           placeholder="Tìm kiếm..."
                         ></input>
-                        <button type="submit" className="searchButton">
+                        <button type="submit" className="searchButton" onClick={handleShowSearchModal}>
                           <i className="fa fa-search"></i>
                         </button>
                       </div>
@@ -125,12 +195,12 @@ function AdminOrder() {
                       <label className="text-white fw-bold fs-5">
                         Tìm kiếm bằng :{" "}
                       </label>
-                      <select className="form-select" defaultValue={"Id"}>
+                      <select className="form-select" defaultValue={"Id"} onChange={onSearchByChange}>
                         <option value="Id">Id</option>
-                        <option value="Price">Giá</option>
+                        <option value="TotalPrice">Giá</option>
                         <option value="Name">Tên</option>
-                        <option value="orderDate">Ngày đặt</option>
-                        <option value="shippedDate">Ngày giao</option>
+                        <option value="OrderDate">Ngày đặt</option>
+                        <option value="ShippedDate">Ngày giao</option>
                       </select>
                     </div>
                   </div>
@@ -313,6 +383,16 @@ function AdminOrder() {
           <Footer></Footer>
         </Fragment>
       )}
+      <SearchModal
+        showSearchModal={showSearchModal}
+        handleCloseSearchModal={handleCloseSearchModal}
+        isSearching={isSearching}
+        searchResult = {searchResult}
+        searchType = {searchType}
+        GetSearchResult = {GetSearchResult}
+        currentResultPage = {currentResultPage}
+        totalResultPage = {totalResultPage}
+      ></SearchModal>
     </Fragment>
   );
 }

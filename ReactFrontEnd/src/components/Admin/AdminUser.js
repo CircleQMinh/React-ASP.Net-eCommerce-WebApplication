@@ -8,6 +8,8 @@ import Pagination from "../Pagination/Pagination";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import SearchModal from "./Modal/SearchModal";
+
 function AdminUser() {
   const [authorizing, setAuthorizing] = useState(true);
 
@@ -144,8 +146,8 @@ function AdminUser() {
       .finally(() => {
         setIsAdding(false);
         ReRender();
-        resetAddModal()
-        setselectedImgUrl(null)
+        resetAddModal();
+        setselectedImgUrl(null);
         setShowAddModal(false);
       });
   }
@@ -167,6 +169,53 @@ function AdminUser() {
       });
   }, [orderby, sort, pageNumber, pageSize, reRender]);
 
+  const [searchType, setSearchType] = useState("User");
+  const [searchBy, setSearchBy] = useState("Name");
+  const [keyword, setKeyword] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [currentResultPage, setCurrentResultPage] = useState(1);
+  const [totalResultPage, setTotalResultPage] = useState(1);
+  function onSearchTypeChange(event) {
+    setSearchType(event.target.value);
+  }
+  function onSearchByChange(event) {
+    setSearchBy(event.target.value);
+  }
+  function onKeywordChange(event) {
+    setKeyword(event.target.value);
+  }
+
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [isSearching, setIsSearching] = useState(true);
+
+  const handleCloseSearchModal = () => {
+    setShowSearchModal(false);
+  };
+  const handleShowSearchModal = () => {
+    setShowSearchModal(true);
+    setIsSearching(true);
+    GetSearchResult(1, 4);
+  };
+  function GetSearchResult(pageNumber, pageSize) {
+    setCurrentResultPage(pageNumber);
+    AdminService.GetSearchResult_User(searchBy, keyword, pageNumber, pageSize)
+      .then((res) => {
+        //console.log(res.data);
+        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)));
+        setSearchResult(res.data.result);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsSearching(false);
+      });
+  }
+  function handleKeyDown(event) {
+    if (event.keyCode === 13) {
+      handleShowSearchModal();
+    }
+  }
   return (
     <Fragment>
       {!authorizing && (
@@ -195,8 +244,10 @@ function AdminUser() {
                           type="text"
                           className="searchTerm"
                           placeholder="Tìm kiếm..."
+                          onKeyDown={handleKeyDown}
+                          onChange={onKeywordChange}
                         ></input>
-                        <button type="submit" className="searchButton">
+                        <button type="submit" className="searchButton" onClick={handleShowSearchModal}>
                           <i className="fa fa-search"></i>
                         </button>
                       </div>
@@ -205,11 +256,9 @@ function AdminUser() {
                       <label className="text-white fw-bold fs-5">
                         Tìm kiếm bằng :{" "}
                       </label>
-                      <select className="form-select" defaultValue={"Id"}>
+                      <select className="form-select" defaultValue={"Name"} onChange={onSearchByChange}>
                         <option value="Id">Id</option>
-                        <option value="Price">Giá</option>
                         <option value="Name">Tên</option>
-                        <option value="orderDate">Ngày đặt</option>
                       </select>
                     </div>
                   </div>
@@ -272,7 +321,9 @@ function AdminUser() {
                               type="button"
                               className="btn btn-danger"
                               onClick={handleShowAddModal}
-                            ><i className="fas fa-plus"></i></button>
+                            >
+                              <i className="fas fa-plus"></i>
+                            </button>
                             <button
                               type="button"
                               className="btn btn-warning"
@@ -517,6 +568,20 @@ function AdminUser() {
           </button>
         </Modal.Footer>
       </Modal>
+
+
+      <SearchModal
+        showSearchModal={showSearchModal}
+        handleCloseSearchModal={handleCloseSearchModal}
+        isSearching={isSearching}
+        searchResult = {searchResult}
+        searchType = {searchType}
+        GetSearchResult = {GetSearchResult}
+        currentResultPage = {currentResultPage}
+        totalResultPage = {totalResultPage}
+      ></SearchModal>
+
+
     </Fragment>
   );
 }

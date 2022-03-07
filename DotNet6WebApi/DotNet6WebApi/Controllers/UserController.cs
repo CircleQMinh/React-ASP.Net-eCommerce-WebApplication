@@ -50,7 +50,7 @@ namespace DotNet6WebApi.Controllers
                         break;
                 }
 
-                var users = await unitOfWork.Users.GetAll(null, orderBy, null);
+                var users = await unitOfWork.Users.GetAll(null, orderBy, null,new PaginationFilter(pageNumber,pageSize));
                 var result = mapper.Map<IList<SimpleUserForAdminDTO>>(users);
 
                 var user_result = users.Zip(result, (u, r) => new {User=u,Result=r });
@@ -62,8 +62,6 @@ namespace DotNet6WebApi.Controllers
 
                 result = result.Where(u => u.Roles.Contains("User")).ToList();
                 var count = result.Count;
-                result = result.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
                 return Ok(new { success = true, result,total=count });
             }
             catch (Exception ex)

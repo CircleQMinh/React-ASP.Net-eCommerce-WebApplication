@@ -11,6 +11,11 @@
         Done = 3,
         Canceled =  4
     }
+    enum PromotionStatus
+    {
+        Hidden = 0,
+        OnGoing = 1
+    }
     enum DiscountCodeCost
     {
         Amount10K = 100,

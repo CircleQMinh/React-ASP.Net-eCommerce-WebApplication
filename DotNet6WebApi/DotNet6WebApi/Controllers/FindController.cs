@@ -28,7 +28,8 @@ namespace DotNet6WebApi.Controllers
             authManager = _authManager;
         }
 
-        [HttpGet("all")]
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> FindAll(string type,string searchBy,string keyword, int pageNumber=1, int pageSize = 10)
         {
             try
@@ -36,14 +37,26 @@ namespace DotNet6WebApi.Controllers
                 Expression<Func<Book, bool>> expression_book = null;
                 Expression<Func<AppUser, bool>> expression_user = null;
                 Expression<Func<Order, bool>> expression_order = null;
+                Expression<Func<Employee, bool>> expression_emp = null;
                 dynamic listFromQuery;
                 dynamic result;
                 int count = 0;
 
                 switch (type, searchBy)
                 {
+                    //--------------------------------------------------------------------------------------------------
                     case ("Product", "Name"):
                         expression_book = q => q.Title.Contains(keyword);
+                        listFromQuery = await unitOfWork.Books.GetAll(
+                        expression_book,
+                        null,
+                        new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" },
+                        new PaginationFilter(pageNumber, pageSize));
+                        count = await unitOfWork.Books.GetCount(expression_book);
+                        result = mapper.Map<IList<BookDTO>>(listFromQuery);
+                        return Accepted(new { success = true, result = result, total = count });
+                    case ("Product", "Price"):
+                        expression_book = q => q.Price == Int32.Parse(keyword);
                         listFromQuery = await unitOfWork.Books.GetAll(
                         expression_book,
                         null,
@@ -62,7 +75,7 @@ namespace DotNet6WebApi.Controllers
                         count = await unitOfWork.Books.GetCount(expression_book);
                         result = mapper.Map<IList<BookDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
-
+                    //--------------------------------------------------------------------------------------------------
                     case ("Order", "Name"):
                         expression_order = q=>q.ContactName.Contains(keyword);
                         listFromQuery = await unitOfWork.Orders.GetAll(
@@ -85,7 +98,39 @@ namespace DotNet6WebApi.Controllers
                         count = await unitOfWork.Orders.GetCount(expression_order);
                         result = mapper.Map<IList<OrderDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
+                    case ("Order", "TotalPrice"):
+                        expression_order = q => q.TotalPrice == Int32.Parse(keyword);
+                        listFromQuery = await unitOfWork.Orders.GetAll(
+                          expression_order,
+                          null,
+                          new List<string> { "OrderDetails", "Shipper", "DiscountCode" },
+                          new PaginationFilter(pageNumber, pageSize));
+                        count = await unitOfWork.Orders.GetCount(expression_order);
+                        result = mapper.Map<IList<OrderDTO>>(listFromQuery);
+                        return Accepted(new { success = true, result = result, total = count });
+                    case ("Order", "OrderDate"):
 
+                        expression_order = q => q.OrderDate.Date.Equals(DateTime.ParseExact(keyword, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date);
+                        listFromQuery = await unitOfWork.Orders.GetAll(
+                          expression_order,
+                          null,
+                          new List<string> { "OrderDetails", "Shipper", "DiscountCode" },
+                          new PaginationFilter(pageNumber, pageSize));
+                        count = await unitOfWork.Orders.GetCount(expression_order);
+                        result = mapper.Map<IList<OrderDTO>>(listFromQuery);
+                        return Accepted(new { success = true, result = result, total = count });
+                    case ("Order", "ShippedDate"):
+                        expression_order = q => q.ShippedDate.ToShortDateString() ==
+                        DateTime.ParseExact(keyword, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToShortDateString();
+                        listFromQuery = await unitOfWork.Orders.GetAll(
+                          expression_order,
+                          null,
+                          new List<string> { "OrderDetails", "Shipper", "DiscountCode" },
+                          new PaginationFilter(pageNumber, pageSize));
+                        count = await unitOfWork.Orders.GetCount(expression_order);
+                        result = mapper.Map<IList<OrderDTO>>(listFromQuery);
+                        return Accepted(new { success = true, result = result, total = count });
+                    //--------------------------------------------------------------------------------------------------
                     case ("User", "Id"):
                         expression_user = q => q.Id == keyword;
                         listFromQuery= await unitOfWork.Users.GetAll(
@@ -103,6 +148,37 @@ namespace DotNet6WebApi.Controllers
                         count = await unitOfWork.Users.GetCount(expression_user);
                         result = mapper.Map<IList<SimpleUserForAdminDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
+                    //--------------------------------------------------------------------------------------------------
+                    case ("Employee", "Id"):
+                        expression_emp = q => q.Id == Int32.Parse(keyword);
+                        listFromQuery = await unitOfWork.Employees.GetAll(
+                          expression_emp,
+                          null,
+                          new List<string> { "Shipper" },
+                          new PaginationFilter(pageNumber, pageSize));
+                        count = await unitOfWork.Employees.GetCount(expression_emp);
+                        result = mapper.Map<IList<EmployeeDTO>>(listFromQuery);
+                        return Accepted(new { success = true, result = result, total = count });
+                    case ("Employee", "Name"):
+                        expression_emp = q => q.Name.Contains(keyword);
+                        listFromQuery = await unitOfWork.Employees.GetAll(
+                          expression_emp,
+                          null,
+                          new List<string> { "Shipper" },
+                          new PaginationFilter(pageNumber, pageSize));
+                        count = await unitOfWork.Employees.GetCount(expression_emp);
+                        result = mapper.Map<IList<EmployeeDTO>>(listFromQuery);
+                        return Accepted(new { success = true, result = result, total = count });
+                    case ("Employee", "Email"):
+                        expression_emp = q => q.Email.Contains(keyword);
+                        listFromQuery = await unitOfWork.Employees.GetAll(
+                          expression_emp,
+                          null,
+                          new List<string> { "Shipper" },
+                          new PaginationFilter(pageNumber, pageSize));
+                        count = await unitOfWork.Employees.GetCount(expression_emp);
+                        result = mapper.Map<IList<EmployeeDTO>>(listFromQuery);
+                        return Accepted(new { success = true, result = result, total = count });
                     default:
                         return Accepted(new {success = false,error="Dữ liệu không hợp lệ"});
                 }
@@ -113,5 +189,47 @@ namespace DotNet6WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("user")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> GetSearchResult_User(string searchBy, string keyword, int pageNumber = 1, int pageSize = 10)
+        {
+            try
+            {
+                Func<IQueryable<AppUser>, IOrderedQueryable<AppUser>> orderBy = null;
+                Expression<Func<AppUser, bool>> expression_user = null;
+                switch (searchBy)
+                {
+                    case "Id":
+                        expression_user = q => q.Id == keyword;
+                        break;
+                    case "Name":
+                        expression_user = q => q.UserName.Contains(keyword);
+                        break;
+                    case "Email":
+                        expression_user = q => q.Email.Contains(keyword);
+                        break;
+                }
+
+                var users = await unitOfWork.Users.GetAll(expression_user, orderBy, null, new PaginationFilter(pageNumber, pageSize));
+                var count = await unitOfWork.Users.GetCount(expression_user);
+                var result = mapper.Map<IList<SimpleUserForAdminDTO>>(users);
+                var user_result = users.Zip(result, (u, r) => new { User = u, Result = r });
+                foreach (var ur in user_result)
+                {
+                    var roles = await userManager.GetRolesAsync(ur.User);
+                    ur.Result.Roles = roles;
+                }
+
+                result = result.Where(u => u.Roles.Contains("User")).ToList();
+                return Accepted(new { success = true, result = result, total = count });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+     
     }
 }

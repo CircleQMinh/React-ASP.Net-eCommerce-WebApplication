@@ -196,10 +196,13 @@ class AdminService {
 
   //Search
   async GetSearchResult(type,by,key,pageNumber,pageSize){
-    const response = await axios.get(`${apiUrl}/Find/all?type=${type}&searchBy=${by}&keyword=${key}&pageNumber=${pageNumber}&pageSize=${pageSize}`, config);
+    const response = await axios.get(`${apiUrl}/Find?type=${type}&searchBy=${by}&keyword=${key}&pageNumber=${pageNumber}&pageSize=${pageSize}`, config);
     return response;
   }
-
+  async GetSearchResult_User(by,key,pageNumber,pageSize){
+    const response = await axios.get(`${apiUrl}/Find/user?searchBy=${by}&keyword=${key}&pageNumber=${pageNumber}&pageSize=${pageSize}`, config);
+    return response;
+  }
 }
 
 export default new AdminService();
