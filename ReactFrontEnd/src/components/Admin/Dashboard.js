@@ -12,8 +12,8 @@ import AdminService from "../../api/AdminService";
 import { toast } from "react-toastify";
 import OrderChart from "./Chart/OrderChart";
 import TopProductChart from "./Chart/TopProductChart";
-
 import SearchModal from "./Modal/SearchModal";
+
 function Dashboard(props) {
   const defaultImgUrl =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png";
@@ -57,6 +57,8 @@ function Dashboard(props) {
   const [searchBy, setSearchBy] = useState("Name");
   const [keyword, setKeyword] = useState("");
   const [searchResult, setSearchResult] = useState([])
+  const [currentResultPage, setCurrentResultPage] = useState(1)
+  const [totalResultPage, setTotalResultPage] = useState(1)
   function onSearchTypeChange(event) {
     setSearchType(event.target.value);
   }
@@ -76,9 +78,15 @@ function Dashboard(props) {
   const handleShowSearchModal = () => {
     setShowSearchModal(true);
     setIsSearching(true);
-    AdminService.GetSearchResult(searchType, searchBy, keyword, 1, 10)
+    GetSearchResult(1,4)
+  };
+  function GetSearchResult(pageNumber,pageSize){
+    setCurrentResultPage(pageNumber)
+    if(searchType=="User"){
+      AdminService.GetSearchResult_User(searchBy, keyword, pageNumber, pageSize)
       .then((res) => {
         //console.log(res.data);
+        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)))
         setSearchResult(res.data.result)
       })
       .catch((e) => {
@@ -87,10 +95,26 @@ function Dashboard(props) {
       .finally(() => {
         setIsSearching(false);
       });
-  };
+    }
+    else{
+      AdminService.GetSearchResult(searchType, searchBy, keyword, pageNumber, pageSize)
+      .then((res) => {
+        //console.log(res.data);
+        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)))
+        setSearchResult(res.data.result)
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsSearching(false);
+      });
+    }
+
+  }
   function handleKeyDown(event) {
     if (event.keyCode === 13) {
-      setShowSearchModal(true);
+      handleShowSearchModal();
     }
   }
   useEffect(() => {
@@ -220,6 +244,7 @@ function Dashboard(props) {
                         <option value="Product">Sản phẩm</option>
                         <option value="User">Người dùng</option>
                         <option value="Order">Đơn hàng</option>
+                        <option value="Employee">Nhân viên</option>
                       </select>
                     </div>
                     <div className="form-group">
@@ -228,7 +253,7 @@ function Dashboard(props) {
                       </label>
                       <select
                         className="form-select"
-                        defaultValue={"Id"}
+                        defaultValue={"Name"}
                         onChange={onSearchByChange}
                       >
                         <option value="Id">Id</option>
@@ -413,6 +438,9 @@ function Dashboard(props) {
         isSearching={isSearching}
         searchResult = {searchResult}
         searchType = {searchType}
+        GetSearchResult = {GetSearchResult}
+        currentResultPage = {currentResultPage}
+        totalResultPage = {totalResultPage}
       ></SearchModal>
      
     </Fragment>

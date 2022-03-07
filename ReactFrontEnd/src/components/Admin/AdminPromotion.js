@@ -224,45 +224,14 @@ function AdminPromotion() {
 
           <div className="w-100 h-100" style={{ backgroundColor: "#1E1E28" }}>
             <div className="container  py-3 ">
-              <div className="card p-3">
+              <div className="card p-3 mb-3">
                 <p className="lead text-center mb-0 fw-bold fs-3 text-monospace">
                   {" "}
                   <i className="fas fa-file-invoice-dollar me-2"></i>Quản lý
                   khuyến mãi
                 </p>
               </div>
-              <div className="row">
-                <div className="col">
-                  <div
-                    className="div-center-content mt-3"
-                    style={{ marginTop: -25 + "px", marginBottom: 15 + "px" }}
-                    id="searchBarProduct"
-                  >
-                    <div className="w-100 my-2">
-                      <div className="search">
-                        <input
-                          type="text"
-                          className="searchTerm"
-                          placeholder="Tìm kiếm..."
-                        ></input>
-                        <button type="submit" className="searchButton">
-                          <i className="fa fa-search"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label className="text-white fw-bold fs-5">
-                        Tìm kiếm bằng :{" "}
-                      </label>
-                      <select className="form-select" defaultValue={"Id"}>
-                        <option value="Id">Id</option>
-                        <option value="Price">Giá</option>
-                        <option value="Name">Tên</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
               <div className="row">
                 <hr className="text-white"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">

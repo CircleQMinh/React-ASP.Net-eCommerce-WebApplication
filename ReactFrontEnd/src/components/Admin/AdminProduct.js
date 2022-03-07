@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import AuthService from "../../api/AuthService";
 import { upLoadImageToCloudinary } from "../../helper/Cloudinary";
+import SearchModal from "./Modal/SearchModal";
 function AdminProduct() {
   const [authorizing, setAuthorizing] = useState(true);
 
@@ -341,6 +342,57 @@ function AdminProduct() {
     setReRender(!reRender);
   }
 
+
+  const [searchType, setSearchType] = useState("Product");
+  const [searchBy, setSearchBy] = useState("Name");
+  const [keyword, setKeyword] = useState("");
+  const [searchResult, setSearchResult] = useState([])
+  const [currentResultPage, setCurrentResultPage] = useState(1)
+  const [totalResultPage, setTotalResultPage] = useState(1)
+  function onSearchTypeChange(event) {
+    setSearchType(event.target.value);
+  }
+  function onSearchByChange(event) {
+    setSearchBy(event.target.value);
+  }
+  function onKeywordChange(event) {
+    setKeyword(event.target.value);
+  }
+
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [isSearching, setIsSearching] = useState(true);
+
+  const handleCloseSearchModal = () => {
+    setShowSearchModal(false);
+  };
+  const handleShowSearchModal = () => {
+    setShowSearchModal(true);
+    setIsSearching(true);
+    GetSearchResult(1,4)
+  };
+  function GetSearchResult(pageNumber,pageSize){
+    setCurrentResultPage(pageNumber)
+    AdminService.GetSearchResult(searchType, searchBy, keyword, pageNumber, pageSize)
+      .then((res) => {
+        //console.log(res.data);
+        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)))
+        setSearchResult(res.data.result)
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsSearching(false);
+      });
+  }
+  function handleKeyDown(event) {
+    if (event.keyCode === 13) {
+      handleShowSearchModal();
+    }
+  }
+
+
+
   return (
     <Fragment>
       {!authorizing && (
@@ -368,8 +420,10 @@ function AdminProduct() {
                           type="text"
                           className="searchTerm"
                           placeholder="Tìm kiếm..."
+                          onKeyDown={handleKeyDown}
+                          onChange={onKeywordChange}
                         ></input>
-                        <button type="submit" className="searchButton">
+                        <button type="submit" className="searchButton" onClick={handleShowSearchModal}>
                           <i className="fa fa-search"></i>
                         </button>
                       </div>
@@ -378,7 +432,7 @@ function AdminProduct() {
                       <label className="text-white fw-bold fs-5">
                         Tìm kiếm bằng :{" "}
                       </label>
-                      <select className="form-select" defaultValue={"Id"}>
+                      <select className="form-select" defaultValue={"Name"}      onChange={onSearchByChange}>
                         <option value="Id">Id</option>
                         <option value="Price">Giá</option>
                         <option value="Name">Tên</option>
@@ -788,7 +842,6 @@ function AdminProduct() {
           </button>
         </Modal.Footer>
       </Modal>
-
       {/* add product modal - add genre */}
       <Modal
         show={showAdd_AddGenreModal}
@@ -879,6 +932,21 @@ function AdminProduct() {
           </button>
         </Modal.Footer>
       </Modal>
+
+      <SearchModal
+        showSearchModal={showSearchModal}
+        handleCloseSearchModal={handleCloseSearchModal}
+        isSearching={isSearching}
+        searchResult = {searchResult}
+        searchType = {searchType}
+        GetSearchResult = {GetSearchResult}
+        currentResultPage = {currentResultPage}
+        totalResultPage = {totalResultPage}
+        listGenre={listGenre}
+        listAuthor={listAuthor}
+        listPublisher={listPublisher}
+        reRender = {ReRender}
+      ></SearchModal>
     </Fragment>
   );
 }

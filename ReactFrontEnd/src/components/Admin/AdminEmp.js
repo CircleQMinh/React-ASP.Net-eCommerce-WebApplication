@@ -3,12 +3,12 @@ import Footer from "../Footer/Footer";
 import AdminHeader from "./AdminHeader";
 import AdminService from "../../api/AdminService";
 import AuthService from "../../api/AuthService";
-import UserTableItem from "./TableItem/UserTableItem";
 import Pagination from "../Pagination/Pagination";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import EmployeeTableItem from "./TableItem/EmployeeTableItem";
+import SearchModal from "./Modal/SearchModal";
 function AdminEmp() {
   const [authorizing, setAuthorizing] = useState(true);
 
@@ -120,7 +120,7 @@ function AdminEmp() {
     setIsLoading(true);
     AdminService.GetEmpForAdmin(role,orderby, sort, pageNumber, pageSize)
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         setListEmp(response.data.result);
         setTotalPage(Math.ceil(Number(response.data.total / pageSize)));
       })
@@ -131,6 +131,57 @@ function AdminEmp() {
         setIsLoading(false);
       });
   }, [orderby, sort, pageNumber, pageSize, reRender]);
+
+
+  
+  const [searchType, setSearchType] = useState("Employee");
+  const [searchBy, setSearchBy] = useState("Name");
+  const [keyword, setKeyword] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [currentResultPage, setCurrentResultPage] = useState(1);
+  const [totalResultPage, setTotalResultPage] = useState(1);
+  function onSearchTypeChange(event) {
+    setSearchType(event.target.value);
+  }
+  function onSearchByChange(event) {
+    setSearchBy(event.target.value);
+  }
+  function onKeywordChange(event) {
+    setKeyword(event.target.value);
+  }
+
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [isSearching, setIsSearching] = useState(true);
+
+  const handleCloseSearchModal = () => {
+    setShowSearchModal(false);
+  };
+  const handleShowSearchModal = () => {
+    setShowSearchModal(true);
+    setIsSearching(true);
+    GetSearchResult(1, 4);
+  };
+  function GetSearchResult(pageNumber, pageSize) {
+    setCurrentResultPage(pageNumber);
+    AdminService.GetSearchResult(searchType,searchBy, keyword, pageNumber, pageSize)
+      .then((res) => {
+        //console.log(res.data);
+        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)));
+        setSearchResult(res.data.result);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsSearching(false);
+      });
+  }
+  function handleKeyDown(event) {
+    if (event.keyCode === 13) {
+      handleShowSearchModal();
+    }
+  }
+
 
   return (
     <Fragment>
@@ -160,8 +211,10 @@ function AdminEmp() {
                           type="text"
                           className="searchTerm"
                           placeholder="Tìm kiếm..."
+                          onKeyDown={handleKeyDown}
+                          onChange={onKeywordChange}
                         ></input>
-                        <button type="submit" className="searchButton">
+                        <button type="submit" className="searchButton"          onClick={handleShowSearchModal}>
                           <i className="fa fa-search"></i>
                         </button>
                       </div>
@@ -170,11 +223,10 @@ function AdminEmp() {
                       <label className="text-white fw-bold fs-5">
                         Tìm kiếm bằng :{" "}
                       </label>
-                      <select className="form-select" defaultValue={"Id"}>
+                      <select className="form-select" defaultValue={"Name"}>
                         <option value="Id">Id</option>
-                        <option value="Price">Giá</option>
                         <option value="Name">Tên</option>
-                        <option value="orderDate">Ngày đặt</option>
+                        <option value="Email">Email</option>
                       </select>
                     </div>
                   </div>
@@ -497,6 +549,18 @@ function AdminEmp() {
           </button>
         </Modal.Footer>
       </Modal>
+
+      <SearchModal
+        showSearchModal={showSearchModal}
+        handleCloseSearchModal={handleCloseSearchModal}
+        isSearching={isSearching}
+        searchResult = {searchResult}
+        searchType = {searchType}
+        GetSearchResult = {GetSearchResult}
+        currentResultPage = {currentResultPage}
+        totalResultPage = {totalResultPage}
+      ></SearchModal>
+
     </Fragment>
   );
 }

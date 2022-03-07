@@ -28,11 +28,16 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-                var book = await unitOfWork.Books.Get(q => q.Id == id, new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" });
+                var book = await unitOfWork.Books.Get(q => q.Id == id, new List<string> { "Authors", "Genres", "Publisher" });
                 if (book == null)
                 {
                     return Ok(new { success = false, msg = "Không tìm thấy sản phẩm" });
                 }
+                var promoInfo = await unitOfWork.PromotionInfos.Get(
+                        q => q.Book.Id == book.Id &&
+                        q.Promotion.Status == (int)PromotionStatus.OnGoing
+                        );
+                book.PromotionInfo = promoInfo;
                 var result = mapper.Map<BookDTO>(book);
                 var rev = await unitOfWork.Reviews.GetAll(q => q.BookId == id, q => q.OrderBy(r => r.Date), new List<string> { "User" });
                 var reviews = mapper.Map<IList<ReviewDTO>>(rev);
@@ -73,7 +78,16 @@ namespace DotNet6WebApi.Controllers
                     expression = expression.AndAlso(expression_genre);
                 }
                 var books = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => book.Id),
-                    new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" }, new PaginationFilter(pageNumber, pageSize));
+                    new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" }, new PaginationFilter(pageNumber, pageSize));
+
+                foreach (var book in books)
+                {
+                    var promotionInfo = await unitOfWork.PromotionInfos.Get(
+                        q => q.Book.Id == book.Id &&
+                        q.Promotion.Status == (int)PromotionStatus.OnGoing
+                        );
+                    book.PromotionInfo = promotionInfo;
+                }
                 var count = await unitOfWork.Books.GetCount(expression);
                 var result = mapper.Map<IList<BookDTO>>(books);
                 return Ok(new { result = result, totalProduct = count });
@@ -102,7 +116,10 @@ namespace DotNet6WebApi.Controllers
                 ||  q.Publisher==book.Publisher)
                 &&  q.Id!=id;
 
-                var relatedBook = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "Authors", "Genres", "Publisher", "PromotionInfo" }, new PaginationFilter(1, numberOfBook));
+                var relatedBook = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => Guid.NewGuid()),
+                    new List<string>() { "Authors", "Genres", "Publisher"},
+                    new PaginationFilter(1, numberOfBook));
+
                 if (relatedBook.Count<numberOfBook)
                 {
                     Expression<Func<Book, bool>> expression_revert =
@@ -115,6 +132,14 @@ namespace DotNet6WebApi.Controllers
                         new List<string>() { "PromotionInfo", "WishlistUsers" }, 
                         new PaginationFilter(1, numberOfBook-relatedBook.Count));
                     relatedBook = relatedBook.Concat(randomBooks).ToList();
+                }
+                foreach (var rbook in relatedBook)
+                {
+                    var promoInfo = await unitOfWork.PromotionInfos.Get(
+                        q => q.Book.Id == rbook.Id &&
+                        q.Promotion.Status == (int)PromotionStatus.OnGoing
+                        );
+                    rbook.PromotionInfo = promoInfo;
                 }
                 var result = mapper.Map<IList<BookDTO>>(relatedBook);
 
@@ -132,13 +157,20 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-
-
-                var randomBooks = await unitOfWork.Books.GetAll(null, q => q.OrderBy(book => Guid.NewGuid()), new List<string>() { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" }, new PaginationFilter(1, numberOfBook));
-
+                var randomBooks = await unitOfWork.Books.GetAll(
+                    null,
+                    q => q.OrderBy(book => Guid.NewGuid()),
+                    new List<string>() { "Authors", "Genres", "Publisher", "WishlistUsers" },
+                    new PaginationFilter(1, numberOfBook));
+                foreach (var rbook in randomBooks)
+                {
+                    var promoInfo = await unitOfWork.PromotionInfos.Get(
+                        q => q.Book.Id == rbook.Id &&
+                        q.Promotion.Status == (int)PromotionStatus.OnGoing
+                        );
+                    rbook.PromotionInfo = promoInfo;
+                }
                 var result = mapper.Map<IList<BookDTO>>(randomBooks);
-
-
                 return Ok(new { result });
             }
             catch (Exception ex)
@@ -178,7 +210,10 @@ namespace DotNet6WebApi.Controllers
 
                foreach (var item in result)
                 {
-                    var temp = await unitOfWork.Books.Get(q => q.Id == item.Book.Id, new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" , "WishlistUsers" });
+                    var temp = await unitOfWork.Books.Get(q => q.Id == item.Book.Id, new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" });
+                    var promoinfo = await unitOfWork.PromotionInfos.Get(q => q.Book.Id == temp.Id &&
+                      q.Promotion.Status == (int)PromotionStatus.OnGoing);
+                    temp.PromotionInfo= promoinfo;
                     item.Book = mapper.Map<BookDTO>(temp);
                 }
                 
@@ -196,8 +231,15 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-                var books = await unitOfWork.Books.GetAll(q => true, q => q.OrderByDescending(p => p.Id), new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" }, new PaginationFilter(1, number));
-
+                var books = await unitOfWork.Books.GetAll(q => true, q => q.OrderByDescending(p => p.Id), new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" }, new PaginationFilter(1, number));
+                foreach (var book in books)
+                {
+                    var promoInfo = await unitOfWork.PromotionInfos.Get(
+                        q => q.Book.Id == book.Id &&
+                        q.Promotion.Status == (int)PromotionStatus.OnGoing
+                        );
+                    book.PromotionInfo = promoInfo;
+                }
                 return Ok(new { success = true, result = books });
             }
             catch (Exception ex)
@@ -234,7 +276,15 @@ namespace DotNet6WebApi.Controllers
                         break;
                 }
 
-                var books = await unitOfWork.Books.GetAll(expression, orderBy, new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" }, new PaginationFilter(pageNumber, pageSize));
+                var books = await unitOfWork.Books.GetAll(expression, orderBy, new List<string> { "Authors", "Genres", "Publisher" }, new PaginationFilter(pageNumber, pageSize));
+                foreach (var book in books)
+                {
+                    var promoInfo = await unitOfWork.PromotionInfos.Get(
+                        q => q.Book.Id == book.Id &&
+                        q.Promotion.Status == (int)PromotionStatus.OnGoing
+                        );
+                    book.PromotionInfo = promoInfo;
+                }
                 var count = await unitOfWork.Books.GetCount(expression);
                 var result = mapper.Map<IList<BookDTO>>(books);
 
@@ -266,7 +316,7 @@ namespace DotNet6WebApi.Controllers
                 newBook.Authors = new List<Author>();
                 newBook.Genres = new List<Genre>();
 
-                var publisher = await unitOfWork.Publishers.Get(q => q.Name == bookDTO.PublisherName);
+                var publisher = await unitOfWork.Publishers.Get(q => q.Name == bookDTO.PublisherName.Trim());
                 if (publisher == null)
                 {
                     publisher = new Publisher() { Name = bookDTO.PublisherName };
@@ -282,7 +332,7 @@ namespace DotNet6WebApi.Controllers
 
                 foreach (var authorName in bookDTO.AuthorsString)
                 {
-                    var author = await unitOfWork.Authors.Get(q => q.Name == authorName);
+                    var author = await unitOfWork.Authors.Get(q => q.Name == authorName.Trim());
                     if (author == null)
                     {
                         author = new Author() { Name = authorName };
@@ -293,7 +343,7 @@ namespace DotNet6WebApi.Controllers
 
                 foreach (var item in bookDTO.GenresString)
                 {
-                    var genre = await unitOfWork.Genres.Get(q => q.Name == item);
+                    var genre = await unitOfWork.Genres.Get(q => q.Name == item.Trim());
                     if (genre == null)
                     {
                         genre = new Genre() { Name = item };
@@ -338,7 +388,7 @@ namespace DotNet6WebApi.Controllers
                     bool match = false;
                     foreach (var item in bookDTO.AuthorsString)
                     {
-                        if (author.Name == item)
+                        if (author.Name == item.Trim())
                         {
                             match = true;
                             break;
@@ -367,7 +417,7 @@ namespace DotNet6WebApi.Controllers
                     bool match = false;
                     foreach (var author in book.Authors.ToList())
                     {
-                        if (item == author.Name)
+                        if (item == author.Name.Trim())
                         {
                             match = true;
                             break;
@@ -385,9 +435,9 @@ namespace DotNet6WebApi.Controllers
 
 
                 //update publisher
-                if (book.Publisher.Name != bookDTO.PublisherName)
+                if (book.Publisher.Name != bookDTO.PublisherName.Trim())
                 {
-                    var publisher = await unitOfWork.Publishers.Get(q => q.Name == bookDTO.PublisherName);
+                    var publisher = await unitOfWork.Publishers.Get(q => q.Name == bookDTO.PublisherName.Trim());
                     if (publisher != null)
                     {
                         unitOfWork.Publishers.Update(publisher);
@@ -395,7 +445,7 @@ namespace DotNet6WebApi.Controllers
                     }
                     else
                     {
-                        var newPublisher = new Publisher() { Name = bookDTO.PublisherName };
+                        var newPublisher = new Publisher() { Name = bookDTO.PublisherName.Trim() };
                         book.Publisher = newPublisher;
                     }
                 }
@@ -407,7 +457,7 @@ namespace DotNet6WebApi.Controllers
                     bool match = false;
                     foreach (var item in bookDTO.GenresString)
                     {
-                        if (genre.Name == item)
+                        if (genre.Name == item.Trim())
                         {
                             match = true;
                             break;
@@ -434,7 +484,7 @@ namespace DotNet6WebApi.Controllers
                     bool match = false;
                     foreach (var genre in book.Genres.ToList())
                     {
-                        if (item == genre.Name)
+                        if (item.Trim() == genre.Name)
                         {
                             match = true;
                             break;
