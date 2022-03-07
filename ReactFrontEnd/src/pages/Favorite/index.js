@@ -51,7 +51,7 @@ const FavoritePage = (props) => {
   };
 
   const onPageNumberChange = (event) => {
-    const page = parseInt(event?.target?.value || event);
+    const page = parseInt(event);
     navigate(`/favorite/${page}`);
     setCurrentPage(page);
     setIsLoading(true);
@@ -98,39 +98,6 @@ const FavoritePage = (props) => {
                 );
               })}
               <div className="d-flex justify-content-center">
-                {/* <div className="paginationsa:container">
-                  <div className="paginationsa:number arrow">
-                    <span
-                      className="arrow:text"
-                      onClick={() =>
-                        onPageNumberChange(
-                          currentPage !== 1 ? currentPage - 1 : 1
-                        )
-                      }
-                    >
-                      <i className="fas fa-chevron-left"></i>
-                    </span>
-                  </div>
-
-                  <Pagination
-                    totalPage={Math.ceil(total / LIMIT_FAVORITE_PAGE)}
-                    onPageNumberChange={onPageNumberChange}
-                    pageNumber={currentPage}
-                  ></Pagination>
-
-                  <div
-                    className="paginationsa:number arrow"
-                    onClick={() =>
-                      onPageNumberChange(
-                        currentPage !== Math.ceil(total / LIMIT_FAVORITE_PAGE)
-                          ? currentPage + 1
-                          : currentPage
-                      )
-                    }
-                  >
-                    <i className="fas fa-chevron-right"></i>
-                  </div>
-                </div> */}
                 <PaginationPage count={Math.ceil(total / LIMIT_FAVORITE_PAGE)} onChangePage={onPageNumberChange} currentPage={currentPage}/>
               </div>
             </div>
