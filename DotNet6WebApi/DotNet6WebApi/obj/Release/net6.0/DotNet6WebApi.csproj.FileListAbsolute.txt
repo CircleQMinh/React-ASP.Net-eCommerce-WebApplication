@@ -146,3 +146,5 @@ D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\DotNet6WebApi.dll
 D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\ref\DotNet6WebApi.dll
 D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\DotNet6WebApi.pdb
 D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\DotNet6WebApi.genruntimeconfig.cache
+D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\DotNet6WebApi.Properties.Resources.resources
+D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\DotNet6WebApi.csproj.GenerateResource.cache
