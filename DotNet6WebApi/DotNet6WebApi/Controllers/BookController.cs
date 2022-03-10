@@ -28,7 +28,7 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-                var book = await unitOfWork.Books.Get(q => q.Id == id, new List<string> { "Authors", "Genres", "Publisher" });
+                var book = await unitOfWork.Books.Get(q => q.Id == id, new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" });
                 if (book == null)
                 {
                     return Ok(new { success = false, msg = "Không tìm thấy sản phẩm" });
