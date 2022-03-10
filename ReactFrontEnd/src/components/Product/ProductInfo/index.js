@@ -19,7 +19,6 @@ export const ProductInfo = (props) => {
     function onClickAddToCart(event){
         event.preventDefault()
         var item = {product: book, quantity:1}
-        console.log("item", item)
         dispatch(cart_slice_action.addToCart(item))
         dispatch(cart_slice_action.calculateCartTotal())
     }
@@ -54,7 +53,6 @@ export const ProductInfo = (props) => {
       } else {
         toast.warning("Bạn cần phải đăng nhập để thực hiện thao tác này")
       }
-      console.log("token", token, user)
     }
 
     const redirectDetailProduct = (id) => {
@@ -65,9 +63,6 @@ export const ProductInfo = (props) => {
     useEffect(()=>{
       if(book && user && book?.wishlistUsers?.length > 0) {
         const favorite =  book?.wishlistUsers.find(item => item.id === user.id)
-        if(book.id == 33) {
-          console.log("book", book, user?.id, favorite)
-        }
         if(favorite) { setIsFavorite(true) }
       } 
      

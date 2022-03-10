@@ -11,7 +11,7 @@ import { BrowserRouter, Routes, Route,  Navigate } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import RecoverPassword from "./components/RecoverPassword/RecoverPassword";
-import ProductInfo from "./components/ProductInfo/ProductInfo";
+import ProductInfo from "./pages/Product";
 import { ToastContainer, toast } from 'react-toastify';
 import ConfimrAccount from "./components/ConfirmAccount/ConfirmAccount";
 import ErrorPage from "./components/Error/ErrorPage";

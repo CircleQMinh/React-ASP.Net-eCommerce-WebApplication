@@ -40,7 +40,7 @@ export const NewsPage = (props) => {
   return (
     <>
       <Header />
-      <Breadcrumb list={[{ path: "/", name: "Home" }]} title="Contact" />
+      <Breadcrumb list={[{ path: "/", name: "Home" }]} title="News" />
       <div className={styles.bodyNewsPage}>
         <div className={styles.title}>NEWS</div>
         <div className={styles.newsWrapper}>
