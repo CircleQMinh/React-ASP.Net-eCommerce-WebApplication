@@ -12,6 +12,8 @@ import SlickSlider from "../../components/SlickSlider/SlickSlider";
 import { LoadingScreen } from "../../components/Loading";
 import { ListReview } from "./components/reviewList";
 import { ProductDetail } from "./components/productDetail";
+import { Comment } from "./components/comment";
+import { toast } from "react-toastify";
 
 function ProductInfo(props) {
   const params = useParams();
@@ -23,6 +25,7 @@ function ProductInfo(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingRelated, setIsLoadingRelated] = useState(true);
   const [rating, setRating] = useState({});
+  const [openComment, setOpenComment] = useState(false);
 
   function onClickAddToCart(event) {
     event.preventDefault();
@@ -31,13 +34,44 @@ function ProductInfo(props) {
     dispatch(cart_slice_action.calculateCartTotal());
   }
 
+  const onClickComment = () => {
+    document.getElementById("commentWrapper").scrollIntoView();
+    setOpenComment(true)
+  }
+
+  const handleListReview = (review, isUpdate) => {
+    const reviewsSlice = reviews.slice()
+    if(reviewsSlice.length > 0) {
+      if(isUpdate) {
+        const indexReview = reviewsSlice.findIndex(value => review.userID === value.userID)
+        reviewsSlice.splice(indexReview, 1)
+        // reviewsSlice[indexReview] = review
+        toast.success("chỉnh sửa đánh giá thành công")
+      }
+      reviewsSlice.unshift(review)
+      setReview(reviewsSlice)
+    } else {
+      setReview([review])
+    }
+    if(!isUpdate) {
+      toast.success("Đánh giá thành công")
+    }
+  }
+
+  const handleDeletedComment = (review) => {
+    const reviewsSlice = reviews.slice()
+    const indexReview = reviewsSlice.findIndex(value => review.userID === value.userID)
+    reviewsSlice.splice(indexReview, 1)
+    setReview(reviewsSlice)
+  }
+
   useEffect(() => {
     setIsLoading(true);
     setIsLoadingRelated(true);
     ProductService.getProductById(params.id)
       .then((response) => {
         setProduct(response.data.result);
-        setReview(response.data.reviews);
+        setReview(response.data.reviews.reverse());
         var cal = { five: 0, four: 0, three: 0, two: 0, one: 0 };
         response.data.reviews.forEach((r) => {
           switch (r.star) {
@@ -84,6 +118,7 @@ function ProductInfo(props) {
   function ReRender() {
     setReRender(!reRender);
   }
+
   return (
     <Fragment>
       <Header></Header>
@@ -99,6 +134,7 @@ function ProductInfo(props) {
           <ProductDetail
             product={product}
             onClickAddToCart={onClickAddToCart}
+            onClickComment={onClickComment}
           />
           <div className="container mt-2">
             <h2 className="text-center text-monospace lead">
@@ -276,7 +312,15 @@ function ProductInfo(props) {
                     </select>
                   </div>
                 </div>
-                <ListReview reviews={reviews} />
+                <div id="commentWrapper">
+                  <Comment
+                    openComment={openComment}
+                    setOpenComment={setOpenComment}
+                    bookId={params.id}
+                    handleListReview={handleListReview}
+                  />
+                </div>
+                <ListReview reviews={reviews} onClickComment={onClickComment} handleDeletedComment={handleDeletedComment}/>
               </>
             )}
           </div>

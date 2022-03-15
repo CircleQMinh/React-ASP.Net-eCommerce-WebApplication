@@ -28,11 +28,21 @@ export function getRandomColor() {
 }
 
 export function getReviewDate(strDate) {
-  var date = new Date(strDate + "Z");
+  var date
+  if(strDate.includes("Z")) {
+    date = new Date(strDate);
+  } else {
+    date = new Date(strDate + "Z");
+  }
   return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
 export function getReviewTime(strDate) {
-  var date = new Date(strDate + "Z");
+  var date
+  if(strDate.includes("Z")) {
+    date = new Date(strDate);
+  } else {
+    date = new Date(strDate + "Z");
+  }
   return date.toLocaleTimeString();
 }
