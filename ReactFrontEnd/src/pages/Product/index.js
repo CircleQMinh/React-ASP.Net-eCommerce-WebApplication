@@ -36,34 +36,38 @@ function ProductInfo(props) {
 
   const onClickComment = () => {
     document.getElementById("commentWrapper").scrollIntoView();
-    setOpenComment(true)
-  }
+    setOpenComment(true);
+  };
 
   const handleListReview = (review, isUpdate) => {
-    const reviewsSlice = reviews.slice()
-    if(reviewsSlice.length > 0) {
-      if(isUpdate) {
-        const indexReview = reviewsSlice.findIndex(value => review.userID === value.userID)
-        reviewsSlice.splice(indexReview, 1)
+    const reviewsSlice = reviews.slice();
+    if (reviewsSlice.length > 0) {
+      if (isUpdate) {
+        const indexReview = reviewsSlice.findIndex(
+          (value) => review.userID === value.userID
+        );
+        reviewsSlice.splice(indexReview, 1);
         // reviewsSlice[indexReview] = review
-        toast.success("chỉnh sửa đánh giá thành công")
+        toast.success("chỉnh sửa đánh giá thành công");
       }
-      reviewsSlice.unshift(review)
-      setReview(reviewsSlice)
+      reviewsSlice.unshift(review);
+      setReview(reviewsSlice);
     } else {
-      setReview([review])
+      setReview([review]);
     }
-    if(!isUpdate) {
-      toast.success("Đánh giá thành công")
+    if (!isUpdate) {
+      toast.success("Đánh giá thành công");
     }
-  }
+  };
 
   const handleDeletedComment = (review) => {
-    const reviewsSlice = reviews.slice()
-    const indexReview = reviewsSlice.findIndex(value => review.userID === value.userID)
-    reviewsSlice.splice(indexReview, 1)
-    setReview(reviewsSlice)
-  }
+    const reviewsSlice = reviews.slice();
+    const indexReview = reviewsSlice.findIndex(
+      (value) => review.userID === value.userID
+    );
+    reviewsSlice.splice(indexReview, 1);
+    setReview(reviewsSlice);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -291,17 +295,30 @@ function ProductInfo(props) {
             </div>
             {/* Bình luận */}
             {reviews.length == 0 && (
-              <p className="text-center mt-3">
-                Chưa có nhận xét nào cho sản phẩm này.
-              </p>
+              <>
+                <p className="text-center mt-3">
+                  Chưa có nhận xét nào cho sản phẩm này.
+                </p>
+                <div id="commentWrapper">
+                  <Comment
+                    openComment={openComment}
+                    setOpenComment={setOpenComment}
+                    bookId={params.id}
+                    handleListReview={handleListReview}
+                  />
+                </div>
+              </>
             )}
             {reviews.length > 0 && (
               <>
                 <hr></hr>
                 <div className="row mt-2 justify-content-center ">
                   <div className="d-flex flex-column justify-content-center w-50">
-                    <span style={{ fontSize: 20, fontWeight: 500 }} className="text-center mb-2">
-                    Sắp xếp theo
+                    <span
+                      style={{ fontSize: 20, fontWeight: 500 }}
+                      className="text-center mb-2"
+                    >
+                      Sắp xếp theo
                     </span>
                     <select
                       className="form-select w-50 align-self-center"
@@ -320,7 +337,11 @@ function ProductInfo(props) {
                     handleListReview={handleListReview}
                   />
                 </div>
-                <ListReview reviews={reviews} onClickComment={onClickComment} handleDeletedComment={handleDeletedComment}/>
+                <ListReview
+                  reviews={reviews}
+                  onClickComment={onClickComment}
+                  handleDeletedComment={handleDeletedComment}
+                />
               </>
             )}
           </div>
