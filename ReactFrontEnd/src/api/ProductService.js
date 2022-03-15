@@ -90,6 +90,29 @@ class ProductService {
     )
     return response
   }
+
+  // ------------------------------------------------------------------------------------------------------------------ //
+
+  async postReview(body, token) {
+    const response = await axios.post(`${apiUrl}/Review`,
+      {
+        ...body
+      },
+      { headers: { Authorization: `Bearer ${token}` }}
+    )
+    return response
+  }
+
+  async deleteReview(body, token) {
+    const response = await axios.delete(`${apiUrl}/Review`,
+      {
+        ...body
+      },
+      { headers: { Authorization: `Bearer ${token}` }}
+    )
+    return response
+  }
+
 }
 
 export default new ProductService();

@@ -11,7 +11,7 @@ import {
 import ProductService from "../../../api/ProductService";
 
 export const ProductDetail = (props) => {
-  const { product, onClickAddToCart } = props;
+  const { product, onClickAddToCart, onClickComment } = props;
   const [isFavorite, setIsFavorite] = useState(false);
   const user = JSON.parse(localStorage.getItem(`user`))
 
@@ -158,11 +158,14 @@ export const ProductDetail = (props) => {
               );
             })}
           </div>
-          <button className="btn btn-round btn-info" onClick={onClickAddToCart}>
+          <button className="btn btn-round btn-info mt-2 me-2" onClick={onClickAddToCart}>
             <i className="fa fa-shopping-cart"></i> Thêm vào giỏ
           </button>
-          <button className="btn btn-round btn-info ms-2" onClick={favoriteBook}>
+          <button className="btn btn-round btn-info me-2 mt-2" onClick={favoriteBook}>
             <i className={`far fa-heart  ${isFavorite ? "favorite fa-solid" : "fa-regular"}`}></i> Thêm yêu thích
+          </button>
+          <button className="btn btn-round btn-info me-2 mt-2" onClick={onClickComment}>
+            <i className="fa-solid fa-comment"></i> Đánh giá
           </button>
         </div>
         <div>

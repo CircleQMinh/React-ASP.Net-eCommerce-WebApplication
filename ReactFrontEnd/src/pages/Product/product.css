@@ -84,10 +84,40 @@
     border-color: var(--primary-color) !important;
 }
 
+.rating {
+    font-size: 35px !important;
+}
+
+.commentColumn {
+    display: flex;
+    align-items: center;
+}
+
+.titleComment {
+    width: 180px;
+    font-size: 18px;
+}
+
+.commentContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+
+.fontSizeComment {
+    font-size: 18px !important;
+}
+
 @media (max-width: 767.98px ) { 
     .pro_des_long{
         max-height: 280px;
         overflow: auto;
+    }
+
+    .rating {
+        font-size: 30px !important;
     }
 }
 
@@ -95,5 +125,9 @@
     .pro_des_long{
         max-height: 140px;
         overflow: auto;
+    }
+
+    .rating {
+        font-size: 30px !important;
     }
 }
