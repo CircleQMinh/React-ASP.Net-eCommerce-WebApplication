@@ -104,11 +104,12 @@ class ProductService {
   }
 
   async deleteReview(body, token) {
-    const response = await axios.delete(`${apiUrl}/Review`,
-      {
-        ...body
+    const response = await axios.delete(`${apiUrl}/Review`, {
+        headers: { Authorization: `Bearer ${token}` },
+        data: {
+          ...body
+        }
       },
-      { headers: { Authorization: `Bearer ${token}` }}
     )
     return response
   }

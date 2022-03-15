@@ -1,16 +1,57 @@
 import "../product.css";
 import { getReviewDate, getReviewTime } from "../../../utils";
 import Rating from "@mui/material/Rating";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import AlertDialog from "../../../components/Dialog";
+import ProductService from "../../../api/ProductService";
+import { toast } from "react-toastify";
+import { LoadingScreen } from "../../../components/Loading"
 
 export const ListReview = (props) => {
-  const { reviews, onClickComment } = props;
+  const { reviews, onClickComment, handleDeletedComment } = props;
+  const [isOpenDeleted, setOpenDeleted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const user = JSON.parse(localStorage.getItem(`user`));
+
+  const deleteComment = () => {
+    const token = localStorage.getItem(`token`);
+    if (user && token) {
+      const review = reviews.find((value) => value.user.id === user.id);
+      const bodyRequest = {
+        bookId: review.bookId,
+        userID: user.id,
+      };
+      setIsLoading(true)
+      ProductService.deleteReview(bodyRequest, token)
+        .then((response) => {
+          if(response.data.success) {
+            handleDeletedComment(review);
+            toast.success("Xóa thành công")
+          }
+        })
+        .catch((error) => {
+          toast.error("error")
+        })
+        .finally(() => {
+          setIsLoading(false)
+        });
+    } else {
+      toast.warning("Bạn cần phải đăng nhập để thực hiện chức năng này")
+    }
+  };
 
   useEffect(() => {}, [reviews]);
 
   return (
     <>
+      {isLoading && (
+          <LoadingScreen
+            position="fixed"
+            heightDiv="100vh"
+            width={70}
+            height={70}
+          />
+        )}
       {reviews.map((review) => {
         let isAuthor = false;
         if (user) {
@@ -62,19 +103,41 @@ export const ListReview = (props) => {
               <div className="ps-3 mb-2 d-flex flex-row justify-content-between align-items-center">
                 <div>
                   Khuyến khích mua :
-                  <span className={`badge ${review.recomended ? 'bg-success' : 'bg-danger'} ms-2`}>
-                    <i className={`far ${review.recomended ? 'fa-thumbs-up' : 'fa-thumbs-down'} me-2 `}></i>
+                  <span
+                    className={`badge ${
+                      review.recomended ? "bg-success" : "bg-danger"
+                    } ms-2`}
+                  >
+                    <i
+                      className={`far ${
+                        review.recomended ? "fa-thumbs-up" : "fa-thumbs-down"
+                      } me-2 `}
+                    ></i>
                     {review.recomended ? "Nên mua" : "Không nên mua"}
                   </span>
                 </div>
                 <div>
                   {isAuthor && (
-                    <button
-                      className="btn btn-round btn-info me-3 mt-2"
-                      onClick={onClickComment}
-                    >
-                      <i className="fa-solid fa-pen-to-square"></i> Chỉnh sửa
-                    </button>
+                    <>
+                      <button
+                        className="btn btn-round btn-info me-3 mt-2"
+                        onClick={onClickComment}
+                      >
+                        <i className="fa-solid fa-pen-to-square"></i> Chỉnh sửa
+                      </button>
+                      <button
+                        className="btn btn-round btn-danger me-3 mt-2"
+                        onClick={() => setOpenDeleted(true)}
+                      >
+                        <i className="fa-solid fa-comment-xmark"></i> Xóa
+                      </button>
+                      <AlertDialog
+                        open={isOpenDeleted}
+                        setOpen={setOpenDeleted}
+                        handleAccept={deleteComment}
+                        title="Bạn có chắc muốn xóa bình luận ?"
+                      />
+                    </>
                   )}
                 </div>
               </div>

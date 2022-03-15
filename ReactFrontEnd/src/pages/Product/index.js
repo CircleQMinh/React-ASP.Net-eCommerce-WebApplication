@@ -13,6 +13,7 @@ import { LoadingScreen } from "../../components/Loading";
 import { ListReview } from "./components/reviewList";
 import { ProductDetail } from "./components/productDetail";
 import { Comment } from "./components/comment";
+import { toast } from "react-toastify";
 
 function ProductInfo(props) {
   const params = useParams();
@@ -45,12 +46,23 @@ function ProductInfo(props) {
         const indexReview = reviewsSlice.findIndex(value => review.userID === value.userID)
         reviewsSlice.splice(indexReview, 1)
         // reviewsSlice[indexReview] = review
+        toast.success("chỉnh sửa đánh giá thành công")
       }
       reviewsSlice.unshift(review)
       setReview(reviewsSlice)
     } else {
       setReview([review])
     }
+    if(!isUpdate) {
+      toast.success("Đánh giá thành công")
+    }
+  }
+
+  const handleDeletedComment = (review) => {
+    const reviewsSlice = reviews.slice()
+    const indexReview = reviewsSlice.findIndex(value => review.userID === value.userID)
+    reviewsSlice.splice(indexReview, 1)
+    setReview(reviewsSlice)
   }
 
   useEffect(() => {
@@ -308,7 +320,7 @@ function ProductInfo(props) {
                     handleListReview={handleListReview}
                   />
                 </div>
-                <ListReview reviews={reviews} onClickComment={onClickComment}/>
+                <ListReview reviews={reviews} onClickComment={onClickComment} handleDeletedComment={handleDeletedComment}/>
               </>
             )}
           </div>
