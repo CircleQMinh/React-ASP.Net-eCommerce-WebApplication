@@ -10,8 +10,8 @@ import { formatCurrencyVN } from "../../../utils/index";
 import { React, Fragment } from "react";
 
 function SaleChart(props) {
-  var saleData = props.saleData;
-  //console.log(saleData)
+  var data = props.data;
+  //console.log(data)
   
   function returnSMT(value) {
     return value.substring(0, 10);
@@ -26,7 +26,7 @@ function SaleChart(props) {
         width={800}
       >
         <VictoryAxis
-          tickValues={saleData.map((d) => d.x)}
+          tickValues={data.map((d) => d.x)}
           tickFormat={(t) => returnSMT(t)}
         />
         <VictoryAxis
@@ -38,10 +38,10 @@ function SaleChart(props) {
           style={{
             data: { stroke: "tomato" },
           }}
-          data={saleData}
+          data={data}
           x="date"
           y="total"
-          labels={saleData.map((d) => formatCurrencyVN(d.total) + " đ")}
+          labels={data.map((d) => formatCurrencyVN(d.total) + " đ")}
           labelComponent={
             <VictoryLabel
               angle={0}

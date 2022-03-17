@@ -1,24 +1,26 @@
 import { React, Fragment, useState, useEffect } from "react";
-import Footer from "../Footer/Footer";
-import AdminHeader from "./AdminHeader";
 import AdminService from "../../api/AdminService";
-import AuthService from "../../api/AuthService";
-import OrderService from "../../api/OrderService";
-import OrderTableItem from "./TableItem/OrderTableItem";
-import Pagination from "../Pagination/Pagination";
-import SearchModal from "./Modal/SearchModal";
-import { formatDate } from "../../helper/formatDate";
-import { toast } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, NavLink, useNavigate } from "react-router-dom";
 import { auth_action } from "../../redux/auth_slice.js";
+import { toast } from "react-toastify";
+import AuthService from "../../api/AuthService";
+
+import AdminHeader from "../Admin/AdminHeader";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import SearchModal from "../Admin/Modal/SearchModal";
+import Pagination from "../Pagination/Pagination";
+
+
+
 import AdminLoading from "./AdminLoading";
-function AdminOrder() {
+import GenreTableItem from "./TableItem/GenreTableItem";
+import Footer from "../Footer/Footer";
+function AdminGenre() {
   const [authorizing, setAuthorizing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
-  var navigate = useNavigate();
 
+  var navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
   const user = useSelector((state) => state.auth_slice.user);
@@ -46,19 +48,13 @@ function AdminOrder() {
       .finally(() => {});
   }, [reRender]);
 
-  const [status, setStatus] = useState("0");
-  const [orderby, setOrderby] = useState("orderDate");
-  const [sort, setSort] = useState("Desc");
+  const [listGenre, setListGenre] = useState([]);
+  const [orderby, setOrderby] = useState("Id");
+  const [sort, setSort] = useState("Asc");
   const [pageNumber, setpageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [totalPage, setTotalPage] = useState(1);
 
-  const [listOrder, setListOrder] = useState([]);
-  //function
-  function onStatusFilterChange(event) {
-    setpageNumber(1);
-    setStatus(event.target.value);
-  }
   function onOrderByFilterChange(event) {
     setpageNumber(1);
     setOrderby(event.target.value);
@@ -71,9 +67,11 @@ function AdminOrder() {
     setpageNumber(1);
     setPageSize(event.target.value);
   }
+
   function onPageNumberChange(event) {
     setpageNumber(event.target.value);
   }
+
   function onArrowPaginationClick(event) {
     var id = event.target.id.slice(0, 12);
     if (id == "pagination_r") {
@@ -90,12 +88,29 @@ function AdminOrder() {
     setReRender(!reRender);
   }
 
-  const [searchType, setSearchType] = useState("Order");
-  const [searchBy, setSearchBy] = useState("Id");
+  //run first
+  useEffect(() => {
+    setIsLoading(true);
+    AdminService.GetGenreForAdmin(orderby, sort, pageNumber, pageSize)
+      .then((response) => {
+        setListGenre(response.data.result);
+        setTotalPage(Math.ceil(Number(response.data.total / pageSize)));
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [orderby, sort, pageNumber, pageSize, reRender]);
+
+  const [searchType, setSearchType] = useState("Genre");
+  const [searchBy, setSearchBy] = useState("Name");
   const [keyword, setKeyword] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [currentResultPage, setCurrentResultPage] = useState(1);
   const [totalResultPage, setTotalResultPage] = useState(1);
+
   function onSearchTypeChange(event) {
     setSearchType(event.target.value);
   }
@@ -105,6 +120,12 @@ function AdminOrder() {
   function onKeywordChange(event) {
     setKeyword(event.target.value);
   }
+
+  const [showAddModal, setShowAddModal] = useState(false);
+  const handleShowAddModal = () => {
+    setShowAddModal(true);
+  };
+
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [isSearching, setIsSearching] = useState(true);
 
@@ -113,39 +134,22 @@ function AdminOrder() {
   };
   const handleShowSearchModal = () => {
     setShowSearchModal(true);
-    setIsSearching(true);
+
     GetSearchResult(1, 4);
   };
+
   function GetSearchResult(pageNumber, pageSize) {
     setCurrentResultPage(pageNumber);
-    var tempKeyword = keyword;
-    if (searchBy == "OrderDate" || searchBy == "ShippedDate") {
-      try {
-        var date = new Date(keyword);
-        //console.log(formatDate(date,"yyyy-MM-dd"))
-        tempKeyword = formatDate(date, "yyyy-MM-dd");
-      } catch (e) {
-        toast.error("Ngày nhập không hợp lệ!", {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-        return;
-      }
-    }
-
+    setIsSearching(true);
     AdminService.GetSearchResult(
       searchType,
       searchBy,
-      tempKeyword,
+      keyword,
       pageNumber,
       pageSize
     )
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)));
         setSearchResult(res.data.result);
       })
@@ -161,36 +165,19 @@ function AdminOrder() {
       handleShowSearchModal();
     }
   }
-  //run first
-  useEffect(() => {
-    setIsLoading(true);
-    AdminService.GetOrdersForAdmin(status, orderby, sort, pageNumber, pageSize)
-      .then((response) => {
-        // console.log(response.data);
-        setListOrder(response.data.result);
-        setTotalPage(Math.ceil(Number(response.data.totalOrder / pageSize)));
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [status, orderby, sort, pageNumber, pageSize, reRender]);
 
   return (
     <Fragment>
       {!authorizing && (
         <Fragment>
           <AdminHeader></AdminHeader>
-
           <div className="w-100 h-100" style={{ backgroundColor: "#1E1E28" }}>
             <div className="container  py-3 ">
               <div className="card p-3">
                 <p className="lead text-center mb-0 fw-bold fs-3 text-monospace">
                   {" "}
-                  <i className="fas fa-file-invoice-dollar me-2"></i>Quản lý đơn
-                  hàng
+                  <i className="fas fa-file-invoice-dollar me-2"></i>Quản lý thể
+                  loại sách
                 </p>
               </div>
               <div className="row">
@@ -203,11 +190,11 @@ function AdminOrder() {
                     <div className="w-100 my-2">
                       <div className="search">
                         <input
-                          onKeyDown={handleKeyDown}
-                          onChange={onKeywordChange}
                           type="text"
                           className="searchTerm"
                           placeholder="Tìm kiếm..."
+                          onKeyDown={handleKeyDown}
+                          onChange={onKeywordChange}
                         ></input>
                         <button
                           type="submit"
@@ -224,14 +211,12 @@ function AdminOrder() {
                       </label>
                       <select
                         className="form-select"
-                        defaultValue={"Id"}
+                        defaultValue={"Name"}
                         onChange={onSearchByChange}
                       >
                         <option value="Id">Id</option>
-                        <option value="TotalPrice">Giá</option>
+                        <option value="Price">Giá</option>
                         <option value="Name">Tên</option>
-                        <option value="OrderDate">Ngày đặt</option>
-                        <option value="ShippedDate">Ngày giao</option>
                       </select>
                     </div>
                   </div>
@@ -241,21 +226,6 @@ function AdminOrder() {
                 <hr className="text-white"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">
                   <div className="mb-3 row">
-                    <label className="text-white">Trạng thái: </label>
-                    <select
-                      className="form-select"
-                      defaultValue={"0"}
-                      onChange={onStatusFilterChange}
-                    >
-                      <option value="all">Toàn bộ</option>
-                      <option value="0">Chưa duyệt</option>
-                      <option value="1">Đã duyệt</option>
-                      <option value="2">Đang giao</option>
-                      <option value="3">Hoàn thành</option>
-                      <option value="4">Hủy</option>
-                    </select>
-                  </div>
-                  <div className="mb-3 row">
                     <label className="text-white">Sắp xếp theo: </label>
                     <select
                       className="form-select"
@@ -263,10 +233,8 @@ function AdminOrder() {
                       onChange={onOrderByFilterChange}
                     >
                       <option value="Id">Id</option>
-                      <option value="totalPrice">Tổng giá</option>
-                      <option value="contactName">Tên</option>
-                      <option value="orderDate">Ngày đặt</option>
-                      <option value="shippedDate">Ngày giao</option>
+                      <option value="Name">Tên</option>
+                      <option value="NumberOfBook">Số sách thuộc thể loại</option>
                     </select>
                   </div>
                   <div className="mb-3 row">
@@ -301,10 +269,19 @@ function AdminOrder() {
                     <div className="card-header">
                       <div className="d-flex justify-content-between flex-wrap">
                         <div className="col-sm-12 ">
-                          <h5 className="card-title">Bảng quản lý đơn hàng</h5>
+                          <h5 className="card-title">
+                            Bảng quản lý thể loại sách
+                          </h5>
                         </div>
                         <div className="col-sm-12 ">
                           <div className="btn-group mb-2">
+                            <button
+                              type="button"
+                              className="btn btn-danger"
+                              onClick={handleShowAddModal}
+                            >
+                              <i className="fas fa-plus"></i>
+                            </button>
                             <button
                               type="button"
                               className="btn btn-warning"
@@ -325,33 +302,28 @@ function AdminOrder() {
                           <thead className="text-primary">
                             <tr>
                               <th className="text-center">#</th>
-                              <th>Thông tin liên lạc</th>
-                              <th>Tổng giá</th>
-                              <th>Thanh toán</th>
-                              <th>Trạng thái</th>
-                              <th className="text-right">Ngày đặt</th>
+                              <th>Tên</th>
+                              <th>Mô tả</th>
+                              <th>Số sách</th>
                               <th className="text-right">Actions</th>
                             </tr>
                           </thead>
-                          {!isLoading && listOrder.length > 0 && (
+                          {!isLoading && listGenre.length > 0 && (
                             <tbody>
-                              {listOrder.map((item, i) => {
+                              {listGenre.map((item, i) => {
                                 return (
-                                  <OrderTableItem
+                                  <GenreTableItem
                                     item={item}
                                     key={i}
                                     reRender={ReRender}
-                                  ></OrderTableItem>
+                                  ></GenreTableItem>
                                 );
                               })}
                             </tbody>
                           )}
                         </table>
-                        {!isLoading && listOrder.length == 0 && (
+                        {!isLoading && listGenre.length == 0 && (
                           <div className="d-flex justify-content-center">
-                            {/* <p className="text-center text-white">
-                            Không có dữ liệu
-                          </p> */}
                             <img
                               className="img-fluid"
                               alt="nodata"
@@ -415,6 +387,12 @@ function AdminOrder() {
         </Fragment>
       )}
       {authorizing && <AdminLoading></AdminLoading>}
+      {/* <AddGenreModal
+        showAddModal={showAddModal}
+        setShowAddModal={setShowAddModal}
+        reRender={ReRender}
+      ></AddGenreModal> */}
+
       <SearchModal
         showSearchModal={showSearchModal}
         handleCloseSearchModal={handleCloseSearchModal}
@@ -425,8 +403,9 @@ function AdminOrder() {
         currentResultPage={currentResultPage}
         totalResultPage={totalResultPage}
       ></SearchModal>
+
     </Fragment>
   );
 }
 
-export default AdminOrder;
+export default AdminGenre;

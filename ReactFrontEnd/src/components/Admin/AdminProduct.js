@@ -2,35 +2,52 @@ import { React, Fragment, useState, useEffect } from "react";
 import Footer from "../Footer/Footer";
 import AdminHeader from "./AdminHeader";
 import AdminService from "../../api/AdminService";
-import OrderService from "../../api/OrderService";
 import ProductTableItem from "./TableItem/ProductTableItem";
 import Pagination from "../Pagination/Pagination";
 import ProductService from "../../api/ProductService";
 import Modal from "react-bootstrap/Modal";
-import NumberFormat from "react-number-format";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import AuthService from "../../api/AuthService";
 import { upLoadImageToCloudinary } from "../../helper/Cloudinary";
 import SearchModal from "./Modal/SearchModal";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { auth_action } from "../../redux/auth_slice.js";
+import AdminLoading from "./AdminLoading";
 function AdminProduct() {
   const [authorizing, setAuthorizing] = useState(true);
-
-  if (authorizing) {
-    AuthService.GetAuthorizeAdmin()
-      .then((res) => {
-        //console.log(res.data);
-        setAuthorizing(false);
-      })
-      .catch((e) => {
-        //console.log("Không có quyền truy cập");
-        window.location.href = "/login";
-      })
-      .finally(() => {});
-  }
-
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
+  var navigate = useNavigate()
+
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
+  const user = useSelector((state) => state.auth_slice.user);
+
+  useEffect(() => {
+    AuthService.GetAuthorizeAdmin()
+    .then((res) => {
+      //console.log(res.data);
+      setAuthorizing(false);
+    })
+    .catch((e) => {
+      toast.success("Xác thực không thành công! Xin hãy đăng nhập trước", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setTimeout(()=>{
+        dispatch(auth_action.logOut());
+        navigate("/login")
+      },2500)
+    })
+    .finally(() => {});
+  },[reRender])
+
 
   const [listGenre, setListGenre] = useState([]);
   const [listAuthor, setListAuthor] = useState([]);
@@ -625,7 +642,9 @@ function AdminProduct() {
           <Footer></Footer>
         </Fragment>
       )}
-
+      {authorizing && (
+        <AdminLoading></AdminLoading>
+      )}
       {/* add product modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal} size="lg">
         <Modal.Header closeButton>

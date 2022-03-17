@@ -86,7 +86,12 @@ function AdminHeader(props) {
                 <p className="d-inline show_for_991"> Sản phẩm</p>
               </Nav.Link>
             </NavItem>
-
+            <NavItem as="li">
+              <Nav.Link as={NavLink} to={"/admin/genre"}>
+              <i className="fa-solid fa-chart-bar"></i>
+                <p className="d-inline show_for_991"> Thể loại</p>
+              </Nav.Link>
+            </NavItem>
             <NavItem as="li">
               <Nav.Link as={NavLink} to={"/admin/employee"}>
                 <i className="far fa-id-card"></i>

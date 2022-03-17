@@ -9,22 +9,42 @@ import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import SearchModal from "./Modal/SearchModal";
-
+import { useSelector, useDispatch } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { auth_action } from "../../redux/auth_slice.js";
+import AdminLoading from "./AdminLoading";
 function AdminUser() {
   const [authorizing, setAuthorizing] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [reRender, setReRender] = useState(true);
+  var navigate = useNavigate();
 
-  if (authorizing) {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
+  const user = useSelector((state) => state.auth_slice.user);
+
+  useEffect(() => {
     AuthService.GetAuthorizeAdmin()
       .then((res) => {
         //console.log(res.data);
         setAuthorizing(false);
       })
       .catch((e) => {
-        //console.log("Không có quyền truy cập");
-        window.location.href = "/login";
+        toast.success("Xác thực không thành công! Xin hãy đăng nhập trước", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setTimeout(() => {
+          dispatch(auth_action.logOut());
+          navigate("/login");
+        }, 2500);
       })
       .finally(() => {});
-  }
+  }, [reRender]);
 
   const [selectedImgUrl, setselectedImgUrl] = useState(null);
   const defaultImgUrl =
@@ -65,8 +85,6 @@ function AdminUser() {
   const handleShowAddModal = () => {
     setShowAddModal(true);
   };
-  const [isLoading, setIsLoading] = useState(false);
-  const [reRender, setReRender] = useState(true);
 
   const [orderby, setOrderby] = useState("orderDate");
   const [sort, setSort] = useState("Desc");
@@ -247,7 +265,11 @@ function AdminUser() {
                           onKeyDown={handleKeyDown}
                           onChange={onKeywordChange}
                         ></input>
-                        <button type="submit" className="searchButton" onClick={handleShowSearchModal}>
+                        <button
+                          type="submit"
+                          className="searchButton"
+                          onClick={handleShowSearchModal}
+                        >
                           <i className="fa fa-search"></i>
                         </button>
                       </div>
@@ -256,7 +278,11 @@ function AdminUser() {
                       <label className="text-white fw-bold fs-5">
                         Tìm kiếm bằng :{" "}
                       </label>
-                      <select className="form-select" defaultValue={"Name"} onChange={onSearchByChange}>
+                      <select
+                        className="form-select"
+                        defaultValue={"Name"}
+                        onChange={onSearchByChange}
+                      >
                         <option value="Id">Id</option>
                         <option value="Name">Tên</option>
                       </select>
@@ -432,7 +458,7 @@ function AdminUser() {
           <Footer></Footer>
         </Fragment>
       )}
-
+      {authorizing && <AdminLoading></AdminLoading>}
       {/* add product modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal} size="lg">
         <Modal.Header closeButton>
@@ -569,19 +595,16 @@ function AdminUser() {
         </Modal.Footer>
       </Modal>
 
-
       <SearchModal
         showSearchModal={showSearchModal}
         handleCloseSearchModal={handleCloseSearchModal}
         isSearching={isSearching}
-        searchResult = {searchResult}
-        searchType = {searchType}
-        GetSearchResult = {GetSearchResult}
-        currentResultPage = {currentResultPage}
-        totalResultPage = {totalResultPage}
+        searchResult={searchResult}
+        searchType={searchType}
+        GetSearchResult={GetSearchResult}
+        currentResultPage={currentResultPage}
+        totalResultPage={totalResultPage}
       ></SearchModal>
-
-
     </Fragment>
   );
 }

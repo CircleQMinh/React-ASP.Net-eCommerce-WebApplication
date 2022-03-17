@@ -1,5 +1,6 @@
 import axios from "axios";
-import { GetAPIUrl } from "./API";
+import { GetAPIUrl,GetConfig } from "./API";
+
 const apiUrl = GetAPIUrl()
 const token = localStorage.getItem("token");
 const config = {
@@ -170,7 +171,7 @@ class AdminService {
     const response = await axios.delete(`${apiUrl}/Discount/${id}`, config);
     return response;
   }
-  async PostDiscountCode(dcode){
+  async PostGenerateDiscountCode(dcode){
     const response = await axios.post(`${apiUrl}/Discount/generateDiscountCode`, dcode, config);
     return response;
   }
@@ -201,6 +202,38 @@ class AdminService {
   }
   async GetSearchResult_User(by,key,pageNumber,pageSize){
     const response = await axios.get(`${apiUrl}/Find/user?searchBy=${by}&keyword=${key}&pageNumber=${pageNumber}&pageSize=${pageSize}`, config);
+    return response;
+  }
+
+  //Genre
+  async GetGenreForAdmin( orderBy, sort, pageNumber, pageSize) {
+    const response = await axios.get(
+      `${apiUrl}/Genre/details?orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      GetConfig()
+    );
+    return response;
+  }
+  async AddGenreForAdmin(o) {
+    const response = await axios.post(
+      `${apiUrl}/genre`,
+      o,
+      GetConfig()
+    );
+    return response;
+  }
+  async EditGenreForAdmin(id,o) {
+    const response = await axios.put(
+      `${apiUrl}/genre/${id}`,
+      o,
+      GetConfig()
+    );
+    return response;
+  }
+  async DeleteGenreForAdmin(id) {
+    const response = await axios.delete(
+      `${apiUrl}/genre/${id}`,
+      GetConfig()
+    );
     return response;
   }
 }

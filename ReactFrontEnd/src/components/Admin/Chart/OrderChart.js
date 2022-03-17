@@ -10,7 +10,7 @@ import { formatCurrencyVN } from "../../../utils/index";
 import { React, Fragment } from "react";
 
 function OrderChart(props) {
-  var saleData = props.saleData;
+  var data = props.data;
   function returnSMT(value) {
     return value.substring(0, 10);
   }
@@ -24,7 +24,7 @@ function OrderChart(props) {
         width={800}
       >
         <VictoryAxis
-          tickValues={saleData.map((d) => d.x)}
+          tickValues={data.map((d) => d.x)}
           tickFormat={(t) => returnSMT(t)}
         />
         <VictoryAxis dependentAxis tickFormat={(x) => `${x } đơn`} />
@@ -33,10 +33,10 @@ function OrderChart(props) {
           style={{
             data: { stroke: "blue" },
           }}
-          data={saleData}
+          data={data}
           x="date"
           y="total"
-          labels={saleData.map((d) => d.total + " đơn" )}
+          labels={data.map((d) => d.total + " đơn" )}
           labelComponent={
             <VictoryLabel
               angle={0}

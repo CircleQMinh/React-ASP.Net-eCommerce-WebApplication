@@ -5,6 +5,7 @@ import ProductTableItem from "../TableItem/ProductTableItem";
 import UserTableItem from "../TableItem/UserTableItem";
 import OrderTableItem from "../TableItem/OrderTableItem";
 import EmployeeTableItem from "../TableItem/EmployeeTableItem";
+import GenreTableItem from "../TableItem/GenreTableItem";
 function SearchModal(props) {
   var data = props.searchResult;
   //console.log(data);
@@ -152,6 +153,33 @@ function SearchModal(props) {
                       key={i}
                       reRender={null}
                     ></EmployeeTableItem>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+            {!props.isSearching && type == "Genre" && data.length > 0 && (
+          <div className="table-responsive ">
+            <table className="table">
+              <thead className="text-primary">
+                <tr>
+                  <th className="text-center">#</th>
+                  <th>Tên</th>
+                  <th>Mô tả</th>
+                  <th>Số sách</th>
+                  <th className="text-right">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {data.map((item, i) => {
+                  return (
+                    <GenreTableItem
+                      item={item}
+                      key={i}
+                      reRender={null}
+                    ></GenreTableItem>
                   );
                 })}
               </tbody>

@@ -6,34 +6,18 @@ import { auth_action } from "../../redux/auth_slice.js";
 import AuthService from "../../api/AuthService";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import SaleChart from "./Chart/SaleChart";
-import { formatDate } from "../../helper/formatDate";
 import AdminService from "../../api/AdminService";
 import { toast } from "react-toastify";
-import OrderChart from "./Chart/OrderChart";
-import TopProductChart from "./Chart/TopProductChart";
 import SearchModal from "./Modal/SearchModal";
+import AdminLoading from "./AdminLoading";
+import AdminStatistic from "./AdminStatistic";
 
 function Dashboard(props) {
-  const defaultImgUrl =
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png";
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [reRender, setReRender] = useState(true);
   const [authorizing, setAuthorizing] = useState(true);
-  const [saleData, setSaleData] = useState([
-    { date: new Date(2022, 2, 24).toISOString(), total: 13000 },
-    { date: new Date(2022, 2, 25).toISOString(), total: 33000 },
-    { date: new Date(2022, 2, 26).toISOString(), total: 23000 },
-    { date: new Date(2022, 2, 27).toISOString(), total: 53000 },
-  ]);
-
-  const [orderData, setOrderData] = useState([
-    { date: new Date(2022, 2, 24).toISOString(), total: 13000 },
-    { date: new Date(2022, 2, 25).toISOString(), total: 33000 },
-    { date: new Date(2022, 2, 26).toISOString(), total: 23000 },
-    { date: new Date(2022, 2, 27).toISOString(), total: 53000 },
-  ]);
 
   const [dashboardInfo, setDashboardInfo] = useState({
     orderCount: 0,
@@ -42,23 +26,12 @@ function Dashboard(props) {
     userCount: 0,
   });
 
-  const [topProduct, setTopProduct] = useState([
-    { book: { title: "Placeholder 1", imgUrl: defaultImgUrl }, sales: 0 },
-    { book: { title: "Placeholder 1", imgUrl: defaultImgUrl }, sales: 0 },
-    { book: { title: "Placeholder 1", imgUrl: defaultImgUrl }, sales: 0 },
-  ]);
-
-  var date = new Date();
-  date.setDate(date.getDate() - 7);
-  const [dfrom, setDfrom] = useState(formatDate(date, "dd-MM-yyyy"));
-  const [dto, setDto] = useState(formatDate(new Date(), "dd-MM-yyyy"));
-
   const [searchType, setSearchType] = useState("Product");
   const [searchBy, setSearchBy] = useState("Name");
   const [keyword, setKeyword] = useState("");
-  const [searchResult, setSearchResult] = useState([])
-  const [currentResultPage, setCurrentResultPage] = useState(1)
-  const [totalResultPage, setTotalResultPage] = useState(1)
+  const [searchResult, setSearchResult] = useState([]);
+  const [currentResultPage, setCurrentResultPage] = useState(1);
+  const [totalResultPage, setTotalResultPage] = useState(1);
   function onSearchTypeChange(event) {
     setSearchType(event.target.value);
   }
@@ -78,39 +51,43 @@ function Dashboard(props) {
   const handleShowSearchModal = () => {
     setShowSearchModal(true);
     setIsSearching(true);
-    GetSearchResult(1,4)
+    GetSearchResult(1, 4);
   };
-  function GetSearchResult(pageNumber,pageSize){
-    setCurrentResultPage(pageNumber)
-    if(searchType=="User"){
+  function GetSearchResult(pageNumber, pageSize) {
+    setCurrentResultPage(pageNumber);
+    if (searchType == "User") {
       AdminService.GetSearchResult_User(searchBy, keyword, pageNumber, pageSize)
-      .then((res) => {
-        //console.log(res.data);
-        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)))
-        setSearchResult(res.data.result)
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {
-        setIsSearching(false);
-      });
+        .then((res) => {
+          //console.log(res.data);
+          setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)));
+          setSearchResult(res.data.result);
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          setIsSearching(false);
+        });
+    } else {
+      AdminService.GetSearchResult(
+        searchType,
+        searchBy,
+        keyword,
+        pageNumber,
+        pageSize
+      )
+        .then((res) => {
+          //console.log(res.data);
+          setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)));
+          setSearchResult(res.data.result);
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          setIsSearching(false);
+        });
     }
-    else{
-      AdminService.GetSearchResult(searchType, searchBy, keyword, pageNumber, pageSize)
-      .then((res) => {
-        //console.log(res.data);
-        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)))
-        setSearchResult(res.data.result)
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {
-        setIsSearching(false);
-      });
-    }
-
   }
   function handleKeyDown(event) {
     if (event.keyCode === 13) {
@@ -126,69 +103,28 @@ function Dashboard(props) {
         });
       })
       .catch((e) => {
-        //console.log("Không có quyền truy cập");
-
-        window.location.href = "/login";
+        toast.success("Xác thực không thành công! Xin hãy đăng nhập trước", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setTimeout(() => {
+          dispatch(auth_action.logOut());
+          navigate("/login");
+        }, 2500);
       })
       .finally(() => {});
   }, [reRender]);
+
 
   function ReRender() {
     setReRender(!reRender);
   }
 
   async function LoadDashboardInfo() {
-    var today = new Date();
-    //console.log(formatDate(today, "yyyy-MM-dd"));
-    var priorDate = new Date(new Date().setDate(today.getDate() - 7));
-    //console.log(formatDate(priorDate, "yyyy-MM-dd"));
-    AdminService.GetSaleStatistic(
-      formatDate(priorDate, "yyyy-MM-dd"),
-      formatDate(today, "yyyy-MM-dd")
-    )
-      .then((res) => {
-        //console.log(res.data);
-        var result = res.data.result;
-        var list = [];
-        for (const item in result) {
-          // console.log(item)
-          // console.log(result[item])
-          var newTK = {
-            date: item,
-            total: result[item],
-          };
-          list.push(newTK);
-        }
-        setSaleData(list);
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {});
-
-    AdminService.GetOrderStatistic(
-      formatDate(priorDate, "yyyy-MM-dd"),
-      formatDate(today, "yyyy-MM-dd")
-    )
-      .then((res) => {
-        //console.log(res.data.result)
-        var result = res.data.result;
-        var list = [];
-        for (const item in result) {
-          // console.log(item);
-          // console.log(result[item]);
-          var newTK = {
-            date: item,
-            total: result[item],
-          };
-          list.push(newTK);
-        }
-        setOrderData(list);
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {});
 
     AdminService.GetDashboardInfo()
       .then((res) => {
@@ -207,15 +143,7 @@ function Dashboard(props) {
       })
       .finally(() => {});
 
-    AdminService.GetTopProductStatistic(10)
-      .then((res) => {
-        setTopProduct(res.data.result);
-        //console.log(res.data)
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {});
+
   }
 
   return (
@@ -387,62 +315,29 @@ function Dashboard(props) {
                   </div>
                 </div>
               </div>
-              <div className="row" id="saleChart">
-                <p className="lead text-white border border-3 p-3 lh-1">
-                  <i className="fa-solid fa-chart-line me-2"></i> Thống kê doanh
-                  thu từ {dfrom} đến {dto}{" "}
-                  <i
-                    className="fa-solid fa-arrows-rotate float-end"
-                    onClick={ReRender}
-                  ></i>
-                </p>
-                <div className="container" style={{ height: 500 + "px" }}>
-                  <SaleChart saleData={saleData}></SaleChart>
-                </div>
-              </div>
-              <div className="row" id="topProductChart">
-                <p className="lead text-white border border-3 p-3 lh-1">
-                  <i className="fa-solid fa-chart-line me-2"></i> Thống kê sản
-                  phẩm bán chạy nhất
-                  <i
-                    className="fa-solid fa-arrows-rotate float-end"
-                    onClick={ReRender}
-                  ></i>
-                </p>
-                <div className="container" style={{ height: 500 + "px" }}>
-                  <TopProductChart productData={topProduct}></TopProductChart>
-                </div>
-              </div>
-              <div className="row" id="orderChart">
-                <p className="lead text-white border border-3 p-3 lh-1">
-                  <i className="fa-solid fa-chart-line me-2"></i> Thống kê đơn
-                  hàng từ {dfrom} đến {dto}{" "}
-                  <i
-                    className="fa-solid fa-arrows-rotate float-end"
-                    onClick={ReRender}
-                  ></i>
-                </p>
-                <div className="container" style={{ height: 500 + "px" }}>
-                  <OrderChart saleData={orderData}></OrderChart>
-                </div>
-              </div>
+
+
+              <AdminStatistic>
+
+              </AdminStatistic>
             </div>
           </div>
           <Footer></Footer>
         </Fragment>
       )}
-
+      {authorizing && (
+        <AdminLoading></AdminLoading>
+      )}
       <SearchModal
         showSearchModal={showSearchModal}
         handleCloseSearchModal={handleCloseSearchModal}
         isSearching={isSearching}
-        searchResult = {searchResult}
-        searchType = {searchType}
-        GetSearchResult = {GetSearchResult}
-        currentResultPage = {currentResultPage}
-        totalResultPage = {totalResultPage}
+        searchResult={searchResult}
+        searchType={searchType}
+        GetSearchResult={GetSearchResult}
+        currentResultPage={currentResultPage}
+        totalResultPage={totalResultPage}
       ></SearchModal>
-     
     </Fragment>
   );
 }

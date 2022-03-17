@@ -9,24 +9,42 @@ import Pagination from "../Pagination/Pagination";
 import { useForm } from "react-hook-form";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { auth_action } from "../../redux/auth_slice.js";
+import AdminLoading from "./AdminLoading";
 function AdminPromotion() {
   const [authorizing, setAuthorizing] = useState(true);
-
-  if (authorizing) {
-    AuthService.GetAuthorizeAdmin()
-      .then((res) => {
-        //console.log(res.data);
-        setAuthorizing(false);
-      })
-      .catch((e) => {
-        //console.log("Không có quyền truy cập");
-        window.location.href = "/login";
-      })
-      .finally(() => {});
-  }
-
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
+  var navigate = useNavigate()
+
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
+  const user = useSelector((state) => state.auth_slice.user);
+
+  useEffect(() => {
+    AuthService.GetAuthorizeAdmin()
+    .then((res) => {
+      //console.log(res.data);
+      setAuthorizing(false);
+    })
+    .catch((e) => {
+      toast.success("Xác thực không thành công! Xin hãy đăng nhập trước", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setTimeout(()=>{
+        dispatch(auth_action.logOut());
+        navigate("/login")
+      },2500)
+    })
+    .finally(() => {});
+  },[reRender])
 
   const [status, setStatus] = useState("all");
   const [orderby, setOrderby] = useState("Id");
@@ -131,7 +149,7 @@ function AdminPromotion() {
       });
     } else {
       setIsAdding(true);
-      console.log()
+      console.log();
       var promo = {
         name: data.name,
         description: data.description,
@@ -412,6 +430,7 @@ function AdminPromotion() {
           <Footer></Footer>
         </Fragment>
       )}
+      {authorizing && <AdminLoading></AdminLoading>}
       {/* add modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal} size="lg">
         <Modal.Header closeButton>
@@ -526,7 +545,6 @@ function AdminPromotion() {
           </button>
         </Modal.Footer>
       </Modal>
-      
     </Fragment>
   );
 }
