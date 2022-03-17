@@ -9,21 +9,42 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import EmployeeTableItem from "./TableItem/EmployeeTableItem";
 import SearchModal from "./Modal/SearchModal";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { auth_action } from "../../redux/auth_slice.js";
+import AdminLoading from "./AdminLoading";
 function AdminEmp() {
   const [authorizing, setAuthorizing] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [reRender, setReRender] = useState(true);
+  var navigate = useNavigate();
 
-  if (authorizing) {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
+  const user = useSelector((state) => state.auth_slice.user);
+
+  useEffect(() => {
     AuthService.GetAuthorizeAdmin()
       .then((res) => {
         //console.log(res.data);
         setAuthorizing(false);
       })
       .catch((e) => {
-        //console.log("Không có quyền truy cập");
-        window.location.href = "/login";
+        toast.success("Xác thực không thành công! Xin hãy đăng nhập trước", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setTimeout(() => {
+          dispatch(auth_action.logOut());
+          navigate("/login");
+        }, 2500);
       })
       .finally(() => {});
-  }
+  }, [reRender]);
 
   const [selectedImgUrl, setselectedImgUrl] = useState(null);
   const defaultImgUrl =
@@ -64,8 +85,6 @@ function AdminEmp() {
   const handleShowAddModal = () => {
     setShowAddModal(true);
   };
-  const [isLoading, setIsLoading] = useState(false);
-  const [reRender, setReRender] = useState(true);
 
   const [role, setRole] = useState("all");
   const [orderby, setOrderby] = useState("Id");
@@ -111,14 +130,12 @@ function AdminEmp() {
     setReRender(!reRender);
   }
 
-  function onAddButtonClick(data) {
-   
-  }
+  function onAddButtonClick(data) {}
   //run first
 
   useEffect(() => {
     setIsLoading(true);
-    AdminService.GetEmpForAdmin(role,orderby, sort, pageNumber, pageSize)
+    AdminService.GetEmpForAdmin(role, orderby, sort, pageNumber, pageSize)
       .then((response) => {
         //console.log(response.data);
         setListEmp(response.data.result);
@@ -132,8 +149,6 @@ function AdminEmp() {
       });
   }, [orderby, sort, pageNumber, pageSize, reRender]);
 
-
-  
   const [searchType, setSearchType] = useState("Employee");
   const [searchBy, setSearchBy] = useState("Name");
   const [keyword, setKeyword] = useState("");
@@ -163,7 +178,13 @@ function AdminEmp() {
   };
   function GetSearchResult(pageNumber, pageSize) {
     setCurrentResultPage(pageNumber);
-    AdminService.GetSearchResult(searchType,searchBy, keyword, pageNumber, pageSize)
+    AdminService.GetSearchResult(
+      searchType,
+      searchBy,
+      keyword,
+      pageNumber,
+      pageSize
+    )
       .then((res) => {
         //console.log(res.data);
         setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)));
@@ -181,7 +202,6 @@ function AdminEmp() {
       handleShowSearchModal();
     }
   }
-
 
   return (
     <Fragment>
@@ -214,7 +234,11 @@ function AdminEmp() {
                           onKeyDown={handleKeyDown}
                           onChange={onKeywordChange}
                         ></input>
-                        <button type="submit" className="searchButton"          onClick={handleShowSearchModal}>
+                        <button
+                          type="submit"
+                          className="searchButton"
+                          onClick={handleShowSearchModal}
+                        >
                           <i className="fa fa-search"></i>
                         </button>
                       </div>
@@ -235,7 +259,7 @@ function AdminEmp() {
               <div className="row">
                 <hr className="text-white"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">
-                <div className="mb-3 row">
+                  <div className="mb-3 row">
                     <label className="text-white">Loại nhân viên: </label>
                     <select
                       className="form-select"
@@ -291,9 +315,7 @@ function AdminEmp() {
                     <div className="card-header">
                       <div className="d-flex justify-content-between flex-wrap">
                         <div className="col-sm-12 ">
-                          <h5 className="card-title">
-                            Bảng quản lý nhân viên
-                          </h5>
+                          <h5 className="card-title">Bảng quản lý nhân viên</h5>
                         </div>
                         <div className="col-sm-12 ">
                           <div className="btn-group mb-2">
@@ -413,7 +435,7 @@ function AdminEmp() {
           <Footer></Footer>
         </Fragment>
       )}
-
+      {authorizing && <AdminLoading></AdminLoading>}
       {/* add modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal} size="lg">
         <Modal.Header closeButton>
@@ -554,13 +576,12 @@ function AdminEmp() {
         showSearchModal={showSearchModal}
         handleCloseSearchModal={handleCloseSearchModal}
         isSearching={isSearching}
-        searchResult = {searchResult}
-        searchType = {searchType}
-        GetSearchResult = {GetSearchResult}
-        currentResultPage = {currentResultPage}
-        totalResultPage = {totalResultPage}
+        searchResult={searchResult}
+        searchType={searchType}
+        GetSearchResult={GetSearchResult}
+        currentResultPage={currentResultPage}
+        totalResultPage={totalResultPage}
       ></SearchModal>
-
     </Fragment>
   );
 }

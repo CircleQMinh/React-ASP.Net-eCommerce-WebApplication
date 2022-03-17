@@ -5,7 +5,32 @@ Medium	          md	        ≥768px  ---
 Large	            lg	        ≥992px   
 Extra large	      xl	        ≥1200px 
 Extra extra large	xxl	        ≥1400px */
-
+.loading_screen {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+.text-spin {
+  font-size: 5rem;
+}
+.spin {
+  width: 20rem !important;
+  height: 20rem !important;
+}
+.chart_spinner{
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+.text-white {
+  color: white;
+}
 .body {
   overflow-x: hidden;
 }

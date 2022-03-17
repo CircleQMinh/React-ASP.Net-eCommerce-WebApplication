@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formatDate } from "../helper/formatDate";
+import { toast } from "react-toastify";
 const initialState = { user: null, isLoggedIn: false };
 const auth_slice = createSlice({
   name: "auth_slice",
@@ -50,13 +51,20 @@ const auth_slice = createSlice({
       }
     },
     logOut(state, action) {
-      state=initialState
       localStorage.removeItem("user");
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("token");
       localStorage.removeItem("loginTimeOut")
       console.log("Đăng xuất! Xóa hết info cũ");
-      window.location.reload()
+      toast.success("Đăng xuất thành công!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      window.location.href="/login"
     },
   },
 });

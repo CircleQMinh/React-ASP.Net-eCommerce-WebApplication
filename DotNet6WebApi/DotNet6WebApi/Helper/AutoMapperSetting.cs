@@ -12,6 +12,8 @@ namespace DotNet6WebApi.Helper
             //Genre
             CreateMap<Genre, GenreDTO>().ReverseMap();
             CreateMap<Genre, SmallerGenreDTO>().ReverseMap();
+            CreateMap<Genre, CreateGenreDTO>().ReverseMap();
+            CreateMap<Genre, GenreInfoAdminDTO>().ReverseMap();
             //User
             CreateMap<AppUser, UserRegisterDTO>().ReverseMap();
             CreateMap<AppUser, LoginUserDTO>().ReverseMap();
@@ -29,11 +31,12 @@ namespace DotNet6WebApi.Helper
             CreateMap<Book, BookDTO>().ReverseMap();
             CreateMap<Book, SimpleBookInfoDTO>().ReverseMap();
             CreateMap<Book, CreateBookDTO>().ReverseMap();
+            CreateMap<Book, AdminBookDTO>().ReverseMap();
             //PromotionInfo
             CreateMap<PromotionInfo, PromotionInfoDTO>().ReverseMap();
             CreateMap<PromotionInfo, SimplePromotionInfoDTO>().ReverseMap();
             //Promotion
-            CreateMap<Promotion,PromotionDTO>().ReverseMap();
+            CreateMap<Promotion, PromotionDTO>().ReverseMap();
             CreateMap<Promotion, FullPromotionDTO>().ReverseMap();
             CreateMap<Promotion, CreatPromotionDTO>().ReverseMap();
             //Review
@@ -41,7 +44,7 @@ namespace DotNet6WebApi.Helper
             CreateMap<Review, CreateReviewDTO>().ReverseMap();
             //Order
             CreateMap<Order, OrderDTO>().ReverseMap();
-            CreateMap<Order,CreateOrderDTO>().ReverseMap();
+            CreateMap<Order, CreateOrderDTO>().ReverseMap();
             //Order Details
             CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
             CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();

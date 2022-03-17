@@ -20,7 +20,11 @@ namespace DotNet6WebApi.DTO
         public PromotionInfoDTO PromotionInfo { get; set; }
         public virtual IList<UserIdDTO> WishlistUsers { get; set; }
     }
-
+    public class AdminBookDTO : BookDTO
+    {
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+    }
     public class SimpleBookInfoDTO
     {
         public int Id { get; set; }

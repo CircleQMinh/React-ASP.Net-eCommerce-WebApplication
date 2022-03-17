@@ -51,8 +51,8 @@ namespace DotNet6WebApi.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetSaleStatistic(string from, string to)
         {
-            DateTime dfrom = DateTime.ParseExact(from, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            DateTime dto = DateTime.ParseExact(to, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime dfrom = DateTime.ParseExact(from, "yyyy-MM-dd", null);
+            DateTime dto = DateTime.ParseExact(to, "yyyy-MM-dd", null);
             dto = dto.AddDays(1);
 
             var test = dto.ToLongDateString();
@@ -62,17 +62,17 @@ namespace DotNet6WebApi.Controllers
                 var dic = new Dictionary<string, double>();
                 foreach (var order in orders)
                 {
-                    if (!dic.ContainsKey(order.ShippedDate.ToShortDateString()))
+                    if (!dic.ContainsKey(order.ShippedDate.ToString("dd/MM/yyyy")))
                     {
-                        dic.Add(order.ShippedDate.ToShortDateString(),order.TotalPrice);
+                        dic.Add(order.ShippedDate.ToString("dd/MM/yyyy"),order.TotalPrice);
                     }
                     else
                     {
-                        dic[order.ShippedDate.ToShortDateString()]+=order.TotalPrice;
+                        dic[order.ShippedDate.ToString("dd/MM/yyyy")] +=order.TotalPrice;
                     }
                 }
 
-                var sort =dic.OrderBy(item => DateTime.ParseExact(item.Key, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+                var sort =dic.OrderBy(item => DateTime.ParseExact(item.Key, "dd/MM/yyyy", null));
                 var sortedDict = sort.ToDictionary(pair => pair.Key, pair => pair.Value);
                 return Accepted(new { result = sortedDict, success = true});
             }
@@ -85,8 +85,8 @@ namespace DotNet6WebApi.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetOrderStatistic(string from, string to)
         {
-            DateTime dfrom = DateTime.ParseExact(from, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            DateTime dto = DateTime.ParseExact(to, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime dfrom = DateTime.ParseExact(from, "yyyy-MM-dd", null);
+            DateTime dto = DateTime.ParseExact(to, "yyyy-MM-dd", null);
             dto = dto.AddDays(1);
 
 
@@ -101,13 +101,13 @@ namespace DotNet6WebApi.Controllers
                 var dic = new Dictionary<string, int>();
                 foreach (var order in orders)
                 {
-                    if (!dic.ContainsKey(order.ShippedDate.ToShortDateString()))
+                    if (!dic.ContainsKey(order.ShippedDate.ToString("dd/MM/yyyy")))
                     {
-                        dic.Add(order.ShippedDate.ToShortDateString(), 1);
+                        dic.Add(order.ShippedDate.ToString("dd/MM/yyyy"), 1);
                     }
                     else
                     {
-                        dic[order.ShippedDate.ToShortDateString()] += 1;
+                        dic[order.ShippedDate.ToString("dd/MM/yyyy")] += 1;
                     }
                 }
                 var sort = dic.OrderBy(item => DateTime.ParseExact(item.Key, "dd/MM/yyyy", CultureInfo.InvariantCulture));

@@ -34,7 +34,11 @@ import ContactPage from "./pages/Contact";
 import { NewsPage } from "./pages/News";
 import AdminEmp from "./components/Admin/AdminEmp";
 import AdminDiscount from "./components/Admin/AdminDiscount";
+
+import AdminGenre from "./components/Admin/AdminGenre";
+
 import FavoritePage from "./pages/Favorite";
+
 function App() {
   return (
     <Fragment>
@@ -63,6 +67,7 @@ function App() {
           <Route path="/admin/user" element={<AdminUser></AdminUser>} ></Route>
           <Route path="/admin/employee" element={<AdminEmp></AdminEmp>} ></Route>
           <Route path="/admin/discount" element={<AdminDiscount></AdminDiscount>} ></Route>
+          <Route path="/admin/genre" element={<AdminGenre></AdminGenre>} ></Route>
 
           <Route path="/profile/:id" element={<Profile></Profile>} ></Route>
           <Route path="/profile/:id/order" element={<ProfileOrder></ProfileOrder>} ></Route>

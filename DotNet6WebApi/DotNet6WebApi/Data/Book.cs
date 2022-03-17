@@ -16,8 +16,9 @@
         public virtual IList<Review> Reviews { get; set; }
         public int? PromotionInfoID { get; set; }
         public PromotionInfo? PromotionInfo { get; set; }
-
         public virtual IList<AppUser> WishlistUsers { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
 
         public Book()
         {

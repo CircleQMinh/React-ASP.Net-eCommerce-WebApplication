@@ -9,21 +9,42 @@ import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import DiscountTableItem from "./TableItem/DiscountTableItem";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { auth_action } from "../../redux/auth_slice.js";
+import AdminLoading from "./AdminLoading";
 function AdminDiscount() {
   const [authorizing, setAuthorizing] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [reRender, setReRender] = useState(true);
+  var navigate = useNavigate();
 
-  if (authorizing) {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
+  const user = useSelector((state) => state.auth_slice.user);
+
+  useEffect(() => {
     AuthService.GetAuthorizeAdmin()
       .then((res) => {
         //console.log(res.data);
         setAuthorizing(false);
       })
       .catch((e) => {
-        //console.log("Không có quyền truy cập");
-        window.location.href = "/login";
+        toast.success("Xác thực không thành công! Xin hãy đăng nhập trước", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setTimeout(() => {
+          dispatch(auth_action.logOut());
+          navigate("/login");
+        }, 2500);
       })
       .finally(() => {});
-  }
+  }, [reRender]);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -43,10 +64,8 @@ function AdminDiscount() {
   const handleShowAddModal = () => {
     setShowAddModal(true);
     resetAddModal();
-    setCode("")
+    setCode("");
   };
-  const [isLoading, setIsLoading] = useState(false);
-  const [reRender, setReRender] = useState(true);
 
   const [status, setStatus] = useState("all");
   const [type, setType] = useState("all");
@@ -56,7 +75,6 @@ function AdminDiscount() {
   const [totalPage, setTotalPage] = useState(1);
 
   const [listDCode, setListDCode] = useState([]);
-
 
   //function
   function onStatusFilterChange(event) {
@@ -212,8 +230,6 @@ function AdminDiscount() {
         setIsLoading(false);
       });
   }, [status, type, sort, pageNumber, pageSize, reRender]);
-
-
 
   return (
     <Fragment>
@@ -442,7 +458,7 @@ function AdminDiscount() {
           <Footer></Footer>
         </Fragment>
       )}
-
+      {authorizing && <AdminLoading></AdminLoading>}
       {/* add  modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal} size="lg">
         <Modal.Header closeButton>

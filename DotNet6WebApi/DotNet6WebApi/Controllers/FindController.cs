@@ -2,6 +2,7 @@
 using DotNet6WebApi.Data;
 using DotNet6WebApi.DTO;
 using DotNet6WebApi.Helper;
+using DotNet6WebAPI.DTO;
 using DotNet6WebAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +39,7 @@ namespace DotNet6WebApi.Controllers
                 Expression<Func<AppUser, bool>> expression_user = null;
                 Expression<Func<Order, bool>> expression_order = null;
                 Expression<Func<Employee, bool>> expression_emp = null;
+                Expression<Func<Genre, bool>> expression_genre = null;
                 dynamic listFromQuery;
                 dynamic result;
                 int count = 0;
@@ -178,6 +180,27 @@ namespace DotNet6WebApi.Controllers
                           new PaginationFilter(pageNumber, pageSize));
                         count = await unitOfWork.Employees.GetCount(expression_emp);
                         result = mapper.Map<IList<EmployeeDTO>>(listFromQuery);
+                        return Accepted(new { success = true, result = result, total = count });
+                    //--------------------------------------------------------------------------------------------------
+                    case ("Genre", "Name"):
+                        expression_genre = q => q.Name.Contains(keyword);
+                        listFromQuery = await unitOfWork.Genres.GetAll(
+                        expression_genre,
+                        null,
+                        new List<string> { "Books" },
+                        new PaginationFilter(pageNumber, pageSize));
+                        count = await unitOfWork.Genres.GetCount(expression_genre);
+                        result = mapper.Map<IList<GenreInfoAdminDTO>>(listFromQuery);
+                        return Accepted(new { success = true, result = result, total = count });
+                    case ("Genre", "Id"):
+                        expression_genre = q => q.Id == Int32.Parse(keyword);
+                        listFromQuery = await unitOfWork.Genres.GetAll(
+                        expression_genre,
+                        null,
+                        new List<string> { "Books" },
+                        new PaginationFilter(pageNumber, pageSize));
+                        count = await unitOfWork.Genres.GetCount(expression_genre);
+                        result = mapper.Map<IList<GenreInfoAdminDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
                     default:
                         return Accepted(new {success = false,error="Dữ liệu không hợp lệ"});
