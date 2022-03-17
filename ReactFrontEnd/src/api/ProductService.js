@@ -56,6 +56,64 @@ class ProductService {
     const response = await axios.get(`${apiUrl}/Publisher`);
     return response;
   }
+
+  // -----------------------------------------------------------------------------------------------------------
+
+  async addToWishList(userId, bookId, token) {
+    const response = await axios.post(`${apiUrl}/Book/addToWishlist`, 
+      {
+        userId, 
+        bookId,
+      },
+      { headers: { Authorization: `Bearer ${token}` }}
+    )
+    return response
+  }
+
+  async removeFromWishList(userId, bookId, token) {
+    const response = await axios.post(`${apiUrl}/Book/removeFromWishlist`, 
+      { 
+        userId,
+        bookId,
+      },
+      { headers: { Authorization: `Bearer ${token}` }}
+    )
+    return response
+  }
+
+  async getProductFavorite(id, pageNumber, pageSize = 6, token) {
+    const response = await axios.get(`${apiUrl}/User/${id}/getWishlist`,
+      {
+        params: {pageNumber, pageSize},
+        headers: { Authorization: `Bearer ${token}` }     
+      }
+    )
+    return response
+  }
+
+  // ------------------------------------------------------------------------------------------------------------------ //
+
+  async postReview(body, token) {
+    const response = await axios.post(`${apiUrl}/Review`,
+      {
+        ...body
+      },
+      { headers: { Authorization: `Bearer ${token}` }}
+    )
+    return response
+  }
+
+  async deleteReview(body, token) {
+    const response = await axios.delete(`${apiUrl}/Review`, {
+        headers: { Authorization: `Bearer ${token}` },
+        data: {
+          ...body
+        }
+      },
+    )
+    return response
+  }
+
 }
 
 export default new ProductService();

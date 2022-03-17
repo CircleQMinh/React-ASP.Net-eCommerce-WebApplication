@@ -60,6 +60,15 @@ function Header(props) {
     navigate("/login");
   }
 
+  const redirectFavorite = () => {
+    window.scrollTo(0, 0);
+    if(isLoggedIn) {
+      navigate(`/favorite/1`)
+    } else {
+      navigate(`/login`);
+    }
+  }
+
   return (
     <Fragment>
       <CartIcon></CartIcon>
@@ -117,8 +126,8 @@ function Header(props) {
                 }
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
+                <NavDropdown.Item onClick={redirectFavorite}>Yêu thích</NavDropdown.Item>
+                {/* <NavDropdown.Item href="#action/3.2">
                   Another action
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">
@@ -127,7 +136,7 @@ function Header(props) {
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">
                   Separated link
-                </NavDropdown.Item>
+                </NavDropdown.Item> */}
               </NavDropdown>
               <NavItem as="li">
                 <Nav.Link as={NavLink} to={"/news"}>

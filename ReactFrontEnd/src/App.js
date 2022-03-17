@@ -11,7 +11,7 @@ import { BrowserRouter, Routes, Route,  Navigate } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import RecoverPassword from "./components/RecoverPassword/RecoverPassword";
-import ProductInfo from "./components/ProductInfo/ProductInfo";
+import ProductInfo from "./pages/Product";
 import { ToastContainer, toast } from 'react-toastify';
 import ConfimrAccount from "./components/ConfirmAccount/ConfirmAccount";
 import ErrorPage from "./components/Error/ErrorPage";
@@ -34,7 +34,11 @@ import ContactPage from "./pages/Contact";
 import { NewsPage } from "./pages/News";
 import AdminEmp from "./components/Admin/AdminEmp";
 import AdminDiscount from "./components/Admin/AdminDiscount";
+
 import AdminGenre from "./components/Admin/AdminGenre";
+
+import FavoritePage from "./pages/Favorite";
+
 function App() {
   return (
     <Fragment>
@@ -75,6 +79,7 @@ function App() {
 
           <Route path="/contact" element={<ContactPage/>}></Route>
           <Route path="/news" element={<NewsPage/>}></Route>
+          <Route path="/favorite/:page" element={<FavoritePage/>}></Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>

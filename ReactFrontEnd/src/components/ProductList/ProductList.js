@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import ProductService from "../../api/ProductService";
-import Pagination from "../Pagination/Pagination";
+import { PaginationPage } from "../Pagination";
 import "./ProductList.css";
 import ProductListItem from "./ProductListItem";
 
@@ -84,10 +84,9 @@ function ProductList(props) {
     setPageNumber(1)
     setKeyword(event.target.value);
   }
-  function onPageNumberChange(event) {
-    // console.log(event.target.value)
+  function onPageNumberChange(page) {
     document.getElementById("searchBarProduct").scrollIntoView();
-    setPageNumber(event.target.value);
+    setPageNumber(page);
   }
   function onMinPriceChange(event) {
     setMinPrice(event.target.value);
@@ -355,23 +354,7 @@ function ProductList(props) {
                       )}
                     </div>
                     <div className="d-flex justify-content-center">
-                      <div className="paginationsa:container">
-                        <div className="paginationsa:number arrow">
-                          <span className="arrow:text">
-                            <i className="fas fa-chevron-left"></i>
-                          </span>
-                        </div>
-
-                        <Pagination
-                          totalPage={totalPage}
-                          onPageNumberChange={onPageNumberChange}
-                          pageNumber={pageNumber}
-                        ></Pagination>
-
-                        <div className="paginationsa:number arrow">
-                          <i className="fas fa-chevron-right"></i>
-                        </div>
-                      </div>
+                      <PaginationPage count={totalPage} onChangePage={onPageNumberChange} currentPage={pageNumber}/>
                     </div>
                   </div>
                 </div>

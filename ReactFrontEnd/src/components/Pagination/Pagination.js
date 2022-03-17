@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 
 function Pagination(props) {
+  console.log("props", props)
   //console.log(typeof(props.pageNumber))
   let pagi = [...Array(props.totalPage)].map((e, i) => {
     //  console.log(typeof(i+1))
