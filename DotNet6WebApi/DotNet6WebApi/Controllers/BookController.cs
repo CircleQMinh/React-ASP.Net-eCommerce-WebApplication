@@ -102,7 +102,7 @@ namespace DotNet6WebApi.Controllers
                     }
                 }
 
-                return Ok(new { result = result, totalProduct = (int)Math.Ceiling((double)count / pageSize) });
+                return Ok(new { result = result, totalProduct = count  });
             }
             catch (Exception ex)
             {

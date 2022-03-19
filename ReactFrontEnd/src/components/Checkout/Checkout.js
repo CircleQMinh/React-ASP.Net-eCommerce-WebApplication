@@ -111,14 +111,14 @@ function Checkout(props) {
       setValue("paymentMethod",data.paymentMethod)
       setValue("note",data.note)
       setValue("email",data.email)
-      toast.success("Tự động điền form cho bạn!", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      // toast.success("Tự động điền form cho bạn!", {
+      //   position: "top-center",
+      //   autoClose: 1000,
+      //   hideProgressBar: true,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      // });
     }
   }
 

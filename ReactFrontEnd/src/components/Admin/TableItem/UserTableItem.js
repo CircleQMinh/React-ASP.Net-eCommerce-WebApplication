@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Modal from "react-bootstrap/Modal";
 import AdminService from "../../../api/AdminService";
 import { useForm } from "react-hook-form";
+import OrderHistoryModal from "../Modal/OrderHistoryModal";
 function UserTableItem(props) {
   var item = props.item;
   //console.log(item);
@@ -131,9 +132,45 @@ function UserTableItem(props) {
       });
   }
 
+  const [reRender, setReRender] = useState(true);
+  function ReRender() {
+    setReRender(!reRender);
+  }
+
+  const [showOrderHistoryModal, setShowOrderHistoryModal] = useState(false);
+  const [isGettingOrderHistory, setIsGettingOrderHistory] = useState(false);
+  const [listOrderHistory, setListOrderHistory] = useState([]);
+  const [currentOrderHistoryPage, setCurrentOrderHistoryPage] = useState(1);
+  const [totalOrderHistoryPage, setTotalOrderHistoryPage] = useState(1);
+  const handleCloseOrderHistoryModal = () => {
+    setShowOrderHistoryModal(false);
+  };
+  const handleShowOrderHistoryModal = () => {
+    setShowOrderHistoryModal(true);
+
+    GetOrderHistory( 1, 4);
+  };
+
+  function GetOrderHistory(pageNumber, pageSize) {
+    setCurrentOrderHistoryPage(pageNumber);
+    setIsGettingOrderHistory(true);
+    AdminService.GetUserOrderForAdmin(item.id, "date", "Desc", pageNumber, pageSize)
+      .then((res) => {
+        setTotalOrderHistoryPage(Math.ceil(Number(res.data.totalOrder / pageSize)));
+        setListOrderHistory(res.data.result);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsGettingOrderHistory(false);
+      });
+  }
+
+
   return (
     <Fragment>
-      <tr>
+  <tr className="animate__animated animate__fadeIn">
         <td className="text-center text-white">
           <div className="photo d-flex justify-content-start align-items-center">
             <img
@@ -141,23 +178,25 @@ function UserTableItem(props) {
               src={item.imgUrl}
               alt="photoimg"
             ></img>
-            <p>{item.userName}</p>
+            <p>
+              {item.userName} ({item.roles[0]})
+            </p>
           </div>
         </td>
         <td className="text-white">{item.email}</td>
         <td className="text-white">{item.phoneNumber}</td>
         <td className="text-white">
-          {
-            item.emailConfirmed && ( <i className="fa-solid fa-check"></i>)
-          }
-          {
-            !item.emailConfirmed && (<i className="fa-solid fa-xmark"></i>)
-          }
+          {item.emailConfirmed && <i className="fa-solid fa-check"></i>}
+          {!item.emailConfirmed && <i className="fa-solid fa-xmark"></i>}
         </td>
         <td className="text-white">{item.coins}</td>
         <td className="text-white">
           <div className="btn-group">
-            <button type="button" className="btn btn-warning">
+            <button
+              type="button"
+              className="btn btn-warning"
+              onClick={handleShowOrderHistoryModal}
+            >
               <i className="fas fa-info-circle"></i>
             </button>
             <button
@@ -167,16 +206,31 @@ function UserTableItem(props) {
             >
               <i className="far fa-edit"></i>
             </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={handleShowDeleteModal}
-            >
-              <i className="far fa-trash-alt"></i>
-            </button>
+            {!item.roles.some((x) => x == "Administrator") && (
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleShowDeleteModal}
+              >
+                <i className="far fa-trash-alt"></i>
+              </button>
+            )}
           </div>
         </td>
       </tr>
+
+
+      <OrderHistoryModal
+        showOrderHistoryModal={showOrderHistoryModal}
+        setShowOrderHistoryModal={setShowOrderHistoryModal}
+        isGettingOrderHistory={isGettingOrderHistory}
+        reRender={ReRender}
+        handleCloseOrderHistoryModal={handleCloseOrderHistoryModal}
+        listOrderHistory={listOrderHistory}
+        GetOrderHistory={GetOrderHistory}
+        currentOrderHistoryPage={currentOrderHistoryPage}
+        totalOrderHistoryPage={totalOrderHistoryPage}
+      ></OrderHistoryModal>
 
       {/* edit modal */}
       <Modal show={showEditModal} onHide={handleCloseEditModal} size="lg">

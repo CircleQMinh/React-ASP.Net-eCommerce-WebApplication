@@ -62,12 +62,12 @@ function Header(props) {
 
   const redirectFavorite = () => {
     window.scrollTo(0, 0);
-    if(isLoggedIn) {
-      navigate(`/favorite/1`)
+    if (isLoggedIn) {
+      navigate(`/favorite/1`);
     } else {
       navigate(`/login`);
     }
-  }
+  };
 
   return (
     <Fragment>
@@ -126,7 +126,9 @@ function Header(props) {
                 }
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item onClick={redirectFavorite}>Yêu thích</NavDropdown.Item>
+                <NavDropdown.Item onClick={redirectFavorite}>
+                  Yêu thích
+                </NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action/3.2">
                   Another action
                 </NavDropdown.Item>
@@ -187,6 +189,10 @@ function Header(props) {
                     <NavDropdown.Item as={NavLink} to={`/profile/${user.id}`}>
                       <i className="fas fa-user me-2"></i>
                       <p className="d-inline show_for_991">Tài khoản</p>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} to={`/favorite/1`}>
+                      <i className="fa-solid fa-heart me-2"></i>
+                      <p className="d-inline show_for_991">Yêu thích</p>
                     </NavDropdown.Item>
                     {user.roles.includes("Administrator") && (
                       <NavDropdown.Item as={NavLink} to={`/admin/dashboard`}>
