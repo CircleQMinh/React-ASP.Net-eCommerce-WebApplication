@@ -7,6 +7,7 @@ namespace DotNet6WebApi.DTO
         public int Id { get; set; }
         public int PromotionId { get; set; }
         public PromotionDTO Promotion { get; set; }
+        public BookDTO Book { get; set; }
         public string? PromotionPercent { get; set; }
         public string? PromotionAmount { get; set; }
     }

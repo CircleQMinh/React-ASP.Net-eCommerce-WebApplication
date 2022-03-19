@@ -28,8 +28,8 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Administrator")]
-        public async Task<IActionResult> GetUser(string orderby,string sort, int pageNumber,int pageSize)
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> GetUser(string orderby, string sort, int pageNumber, int pageSize)
         {
             try
             {
@@ -50,19 +50,19 @@ namespace DotNet6WebApi.Controllers
                         break;
                 }
 
-                var users = await unitOfWork.Users.GetAll(null, orderBy, null,new PaginationFilter(pageNumber,pageSize));
+                var users = await unitOfWork.Users.GetAll(null, orderBy, null, new PaginationFilter(pageNumber, pageSize));
                 var result = mapper.Map<IList<SimpleUserForAdminDTO>>(users);
 
-                var user_result = users.Zip(result, (u, r) => new {User=u,Result=r });
+                var user_result = users.Zip(result, (u, r) => new { User = u, Result = r });
                 foreach (var ur in user_result)
                 {
                     var roles = await userManager.GetRolesAsync(ur.User);
                     ur.Result.Roles = roles;
                 }
 
-                result = result.Where(u => u.Roles.Contains("User")).ToList();
-                var count = result.Count;
-                return Ok(new { success = true, result,total=count });
+                //result = result.Where(u => u.Roles.Contains("User")).ToList();
+                var count = await unitOfWork.Users.GetCount(null);
+                return Ok(new { success = true, result, total = count });
             }
             catch (Exception ex)
             {
@@ -180,6 +180,47 @@ namespace DotNet6WebApi.Controllers
                 var return_result = result.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
                 return Ok(new { success = true, result= return_result,total = result.Count });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/history")]
+        [Authorize]
+        public async Task<IActionResult> GetUserOrderHistory(string id, string status, string orderby, string sort, int pageNumber, int pageSize)
+        {
+            try
+            {
+                Expression<Func<Order, bool>> expression = q => q.UserID == id;
+                Expression<Func<Order, bool>> expression_status = status == "all" ? q => true : q => q.Status == int.Parse(status);
+                expression = expression.AndAlso(expression_status);
+
+                Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;
+                switch (orderby)
+                {
+                    case "Id":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);
+                        break;
+                    case "totalPrice":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.TotalPrice) : q => q.OrderByDescending(order => order.TotalPrice);
+                        break;
+                    case "date":
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.OrderDate) : q => q.OrderByDescending(order => order.OrderDate);
+                        break;
+                    default:
+                        orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);
+                        break;
+                }
+
+                var orders = await unitOfWork.Orders.GetAll(expression,
+                    orderBy,
+                    new List<string> { "OrderDetails" },
+                    new PaginationFilter(pageNumber, pageSize));
+                var count = await unitOfWork.Orders.GetCount(expression);
+                var result = mapper.Map<IList<OrderDTO>>(orders);
+                return Ok(new { success = true, result = result, totalOrder = count });
             }
             catch (Exception ex)
             {
