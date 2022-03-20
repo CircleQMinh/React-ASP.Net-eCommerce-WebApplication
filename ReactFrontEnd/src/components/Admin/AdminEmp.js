@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { auth_action } from "../../redux/auth_slice.js";
 import AdminLoading from "./AdminLoading";
+import AddEmployeeModal from "./Modal/AddEmployeeModal";
 function AdminEmp() {
   const [authorizing, setAuthorizing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +89,7 @@ function AdminEmp() {
 
   const [role, setRole] = useState("all");
   const [orderby, setOrderby] = useState("Id");
-  const [sort, setSort] = useState("Desc");
+  const [sort, setSort] = useState("Asc");
   const [pageNumber, setpageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [totalPage, setTotalPage] = useState(1);
@@ -437,140 +438,12 @@ function AdminEmp() {
       )}
       {authorizing && <AdminLoading></AdminLoading>}
       {/* add modal */}
-      <Modal show={showAddModal} onHide={handleCloseAddModal} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Thêm người dùng </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="form-group">
-              <label>Tên người dùng : </label>
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  placeholder="Tên..."
-                  {...registerAddModal("userName", {
-                    required: true,
-                  })}
-                ></input>
-              </div>
-              {addModalError.userName?.type === "required" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>Tên người dùng
-                  không để trống
-                </p>
-              )}
-              <label>Password : </label>
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  placeholder="Password.."
-                  type="password"
-                  {...registerAddModal("password", {
-                    required: true,
-                  })}
-                ></input>
-              </div>
-              {addModalError.password?.type === "required" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>Password không
-                  để trống
-                </p>
-              )}
-              <label>Email : </label>
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  placeholder="Email.."
-                  type="email"
-                  {...registerAddModal("email", {
-                    required: true,
-                    pattern:
-                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                  })}
-                ></input>
-              </div>
-              {addModalError.email?.type === "required" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>Email không để
-                  trống
-                </p>
-              )}
-              {addModalError.email?.type === "pattern" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>Email không hợp
-                  lệ
-                </p>
-              )}
-              <label>SDT : </label>
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  placeholder="Password.."
-                  type="tel"
-                  {...registerAddModal("phoneNumber", {
-                    required: true,
-                    minLength: 9,
-                    maxLength: 10,
-                  })}
-                ></input>
-              </div>
-              {addModalError.phoneNumber?.type === "required" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>SDT không để
-                  trống
-                </p>
-              )}
-              {addModalError.phoneNumber?.type === "minLength" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>SDT không hợp
-                  lệ
-                </p>
-              )}
-              {addModalError.phoneNumber?.type === "maxLength" && (
-                <p className="text-start m-0">
-                  <i className="fas fa-exclamation-triangle"></i>SDT không hợp
-                  lệ
-                </p>
-              )}
-              <label>Ảnh SP</label>
-              <div className="input-group">
-                <input
-                  type="file"
-                  className="form-control"
-                  placeholder="Ảnh"
-                  onChange={onImageChange}
-                ></input>
-              </div>
-              <img
-                className="admin_img_modal"
-                alt="Ảnh sản phẩm"
-                src={selectedImgUrl ? selectedImgUrl : defaultImgUrl}
-              ></img>
-            </div>
-          </form>
-        </Modal.Body>
-        {isAdding && (
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border text-info" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-            <p className="text monospace ms-2">Đang xủ lý xin chờ tí...</p>
-          </div>
-        )}
-        <Modal.Footer>
-          <button className="btn btn-danger" onClick={handleCloseAddModal}>
-            Close
-          </button>
-          <button
-            disabled={isAdding}
-            className="btn btn-success"
-            onClick={handleSubmitAddModal(onAddButtonClick)}
-          >
-            Save
-          </button>
-        </Modal.Footer>
-      </Modal>
+      <AddEmployeeModal
+        showAddModal={showAddModal}
+        setShowAddModal={setShowAddModal}
+        reRender={ReRender}
+      ></AddEmployeeModal>
+
 
       <SearchModal
         showSearchModal={showSearchModal}

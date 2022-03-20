@@ -309,7 +309,7 @@ function CurrentOrderItem(props) {
         </td>
       </tr>
       {/* order details modal */}
-      <Modal show={showInfoModal} onHide={handleCloseInfoModal} size="lg">
+      <Modal centered show={showInfoModal} onHide={handleCloseInfoModal} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Thông tin đơn hàng </Modal.Title>
         </Modal.Header>
@@ -354,6 +354,7 @@ function CurrentOrderItem(props) {
         show={showCompleteOrderModal}
         onHide={handleShowCompleteOrderModal}
         size="lg"
+        centered
       >
         <Modal.Header closeButton>
           <Modal.Title>Hoàn thành giao đơn hàng </Modal.Title>
