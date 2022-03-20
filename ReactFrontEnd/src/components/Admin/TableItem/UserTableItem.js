@@ -103,31 +103,31 @@ function UserTableItem(props) {
     AdminService.DeleteUserForAdmin(item.id)
       .then((res) => {
         if (res.data.success) {
-            toast.success("Xóa thành công!", {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-            });
-          } else {
-            toast.error("Không thể xóa người dùng! Xin hãy thử lại", {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-            });
-          }
+          toast.success("Xóa thành công!", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          toast.error("Không thể xóa người dùng! Xin hãy thử lại", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
       })
       .finally(() => {
-        setIsDeleting(false)
-        setShowDeleteModal(false)
+        setIsDeleting(false);
+        setShowDeleteModal(false);
         props.reRender();
       });
   }
@@ -148,15 +148,23 @@ function UserTableItem(props) {
   const handleShowOrderHistoryModal = () => {
     setShowOrderHistoryModal(true);
 
-    GetOrderHistory( 1, 4);
+    GetOrderHistory(1, 4);
   };
 
   function GetOrderHistory(pageNumber, pageSize) {
     setCurrentOrderHistoryPage(pageNumber);
     setIsGettingOrderHistory(true);
-    AdminService.GetUserOrderForAdmin(item.id, "date", "Desc", pageNumber, pageSize)
+    AdminService.GetUserOrderForAdmin(
+      item.id,
+      "date",
+      "Desc",
+      pageNumber,
+      pageSize
+    )
       .then((res) => {
-        setTotalOrderHistoryPage(Math.ceil(Number(res.data.totalOrder / pageSize)));
+        setTotalOrderHistoryPage(
+          Math.ceil(Number(res.data.totalOrder / pageSize))
+        );
         setListOrderHistory(res.data.result);
       })
       .catch((e) => {
@@ -167,10 +175,9 @@ function UserTableItem(props) {
       });
   }
 
-
   return (
     <Fragment>
-  <tr className="animate__animated animate__fadeIn">
+      <tr className="animate__animated animate__fadeIn">
         <td className="text-center text-white">
           <div className="photo d-flex justify-content-start align-items-center">
             <img
@@ -218,7 +225,6 @@ function UserTableItem(props) {
           </div>
         </td>
       </tr>
-
 
       <OrderHistoryModal
         showOrderHistoryModal={showOrderHistoryModal}

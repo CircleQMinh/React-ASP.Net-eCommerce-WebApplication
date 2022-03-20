@@ -5,27 +5,45 @@ import ShipperService from "../../api/ShipperService";
 import AuthService from "../../api/AuthService";
 import Pagination from "../Pagination/Pagination";
 import HistoryOrderItem from "./TableItem/HistoryOrderItem";
+import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { auth_action } from "../../redux/auth_slice.js";
+import AdminLoading from "../Admin/AdminLoading";
+import { NavLink, useNavigate } from "react-router-dom";
 function ShipperHistory() {
   const [authorizing, setAuthorizing] = useState(true);
-
-  if(authorizing){
-    AuthService.GetAuthorizeShipper()
-    .then((res) => {
-      //console.log(res.data);
-      setAuthorizing(false);
-    })
-    .catch((e) => {
-      //console.log("Không có quyền truy cập");
-      window.location.href = "/login";
-    })
-    .finally(() => {});
-  }
-
-
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
+  var navigate = useNavigate();
 
-  var shipperId = JSON.parse(localStorage.getItem("user")).id
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
+  const user = useSelector((state) => state.auth_slice.user);
+
+  useEffect(() => {
+    AuthService.GetAuthorizeShipper()
+      .then((res) => {
+        //console.log(res.data);
+        setAuthorizing(false);
+      })
+      .catch((e) => {
+        toast.success("Xác thực không thành công! Xin hãy đăng nhập trước", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setTimeout(() => {
+          dispatch(auth_action.logOut());
+          navigate("/login");
+        }, 2500);
+      })
+      .finally(() => {});
+  }, [reRender]);
+
+  var shipperId = JSON.parse(localStorage.getItem("user")).id;
 
   const [orderby, setOrderby] = useState("Id");
   const [sort, setSort] = useState("Asc");
@@ -74,7 +92,7 @@ function ShipperHistory() {
       .then((response) => {
         //console.log(response.data);
         setListOrder(response.data.result);
-        setTotalPage(Math.ceil(Number(response.data.total/ pageSize)));
+        setTotalPage(Math.ceil(Number(response.data.total / pageSize)));
       })
       .catch((error) => {
         console.log(error);
@@ -82,7 +100,7 @@ function ShipperHistory() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [ orderby, sort, pageNumber, pageSize, reRender]);
+  }, [orderby, sort, pageNumber, pageSize, reRender]);
 
   return (
     <Fragment>
@@ -95,45 +113,14 @@ function ShipperHistory() {
               <div className="card p-3">
                 <p className="lead text-center mb-0 fw-bold fs-3 text-monospace">
                   {" "}
-                  <i className="fa-solid fa-magnifying-glass me-2"></i>Lịch sử giao hàng
+                  <i className="fa-solid fa-magnifying-glass me-2"></i>Lịch sử
+                  giao hàng
                 </p>
               </div>
-              <div className="row">
-                <div className="col">
-                  <div
-                    className="div-center-content mt-3"
-                    style={{ marginTop: -25 + "px", marginBottom: 15 + "px" }}
-                    id="searchBarProduct"
-                  >
-                    <div className="w-100 my-2">
-                      <div className="search">
-                        <input
-                          type="text"
-                          className="searchTerm"
-                          placeholder="Tìm kiếm..."
-                        ></input>
-                        <button type="submit" className="searchButton">
-                          <i className="fa fa-search"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label className="text-white fw-bold fs-5">
-                        Tìm kiếm bằng :{" "}
-                      </label>
-                      <select className="form-select" defaultValue={"Id"}>
-                        <option value="Id">Id</option>
-                        <option value="Price">Giá</option>
-                        <option value="Name">Tên</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
               <div className="row">
                 <hr className="text-white"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">
-    
                   <div className="mb-3 row">
                     <label className="text-white">Sắp xếp theo: </label>
                     <select
@@ -143,7 +130,7 @@ function ShipperHistory() {
                     >
                       <option value="Id">Id</option>
                       <option value="totalPrice">Tổng giá</option>
-                      <option value="contactName">Tên</option>
+                      <option value="shippedDate">Ngày giao</option>
                       <option value="orderDate">Ngày đặt</option>
                     </select>
                   </div>
@@ -292,6 +279,7 @@ function ShipperHistory() {
           <Footer></Footer>
         </Fragment>
       )}
+      {authorizing && <AdminLoading></AdminLoading>}
     </Fragment>
   );
 }

@@ -186,6 +186,9 @@ namespace DotNet6WebApi.Controllers
                 case "orderDate":
                     orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.OrderDate) : q => q.OrderByDescending(order => order.OrderDate);
                     break;
+                case "shippedDate":
+                    orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.ShippedDate) : q => q.OrderByDescending(order => order.ShippedDate);
+                    break;
                 default:
                     orderBy = (sort == "Asc") ? q => q.OrderBy(order => order.Id) : q => q.OrderByDescending(order => order.Id);
                     break;
@@ -204,5 +207,26 @@ namespace DotNet6WebApi.Controllers
             }
         }
 
+
+        [HttpGet("{id}/dashboardInfo")]
+        [Authorize(Roles = "Shipper,Administrator")]
+        public async Task<IActionResult> GetDashboardInfo(string id)
+        {
+            Expression<Func<Order, bool>> expression_available = q => q.Status == (int)OrderStatus.Checked;
+            Expression<Func<Order, bool>> expression_accepted = q => q.Status == (int)OrderStatus.Delivering && q.ShipperID == id;
+            Expression<Func<Order, bool>> expression_history = q => (q.Status == (int)OrderStatus.Done || q.Status == (int)OrderStatus.Canceled) && q.ShipperID == id;
+            try
+            {
+                var orderAvailable = await unitOfWork.Orders.GetCount(expression_available);
+                var orderAccepted = await unitOfWork.Orders.GetCount(expression_accepted);
+                var orderHistory = await unitOfWork.Orders.GetCount(expression_history);
+
+                return Ok(new { success = true, done=orderHistory, delivering=orderAccepted,available=orderAvailable });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.ToString() });
+            }
+        }
     }
 }

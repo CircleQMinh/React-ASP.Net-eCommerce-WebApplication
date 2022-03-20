@@ -60,7 +60,7 @@ function ShipperHeader(props) {
         className="p-0 me-auto"
         style={{ backgroundColor: "#2732A4" }}
       >
-        <Navbar.Brand as={NavLink} to={"/admin/dashboard"} className="ms-3">
+        <Navbar.Brand as={NavLink} to={"/shipper/dashboard"} className="ms-3">
           <p className={"show_for_991"} style={{ display: "inline" }}>
             <i className="fas fa-home me-2" ></i> Shipper
           </p>

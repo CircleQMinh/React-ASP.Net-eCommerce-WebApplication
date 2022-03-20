@@ -297,7 +297,7 @@ function FindOrderItem(props) {
         </td>
       </tr>
       {/* order details modal */}
-      <Modal show={showInfoModal} onHide={handleCloseInfoModal} size="lg">
+      <Modal show={showInfoModal}  centered onHide={handleCloseInfoModal} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Thông tin đơn hàng </Modal.Title>
         </Modal.Header>
@@ -342,6 +342,7 @@ function FindOrderItem(props) {
         show={showAcceptOrderModal}
         onHide={handleShowAcceptOrderModal}
         size="lg"
+        centered
       >
         <Modal.Header closeButton>
           <Modal.Title>Nhận giao đơn hàng </Modal.Title>

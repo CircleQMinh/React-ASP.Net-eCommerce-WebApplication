@@ -177,7 +177,7 @@ function DiscountTableItem(props) {
 
   return (
     <Fragment>
-      <tr>
+      <tr className="animate__animated animate__fadeIn">
         <td className="text-white">{item.code}</td>
         <td className="text-white">
           {item.discountAmount ? (

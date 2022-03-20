@@ -227,6 +227,9 @@ function HistoryOrderItem(props) {
           {formatDate(orderDate, "dd-MM-yyyy HH:mm:ss")}
         </td>
         <td className="text-white">
+          {formatDate(shippedDate, "dd-MM-yyyy HH:mm:ss")}
+        </td>
+        <td className="text-white">
           <div className="btn-group">
             <button
               type="button"
@@ -240,7 +243,7 @@ function HistoryOrderItem(props) {
         </td>
       </tr>
       {/* order details modal */}
-      <Modal show={showInfoModal} onHide={handleCloseInfoModal} size="lg">
+      <Modal show={showInfoModal} centered onHide={handleCloseInfoModal} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Thông tin đơn hàng </Modal.Title>
         </Modal.Header>

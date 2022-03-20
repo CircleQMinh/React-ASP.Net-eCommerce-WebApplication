@@ -156,6 +156,23 @@ class AdminService {
     );
     return response;
   }
+  async CreateEmployee(e){
+    const response = await axios.post(`${apiUrl}/Employee/createEmployee`, e, config);
+    return response;
+  }
+  async CreateShipper(e){
+    const response = await axios.post(`${apiUrl}/Employee/createShipper`, e, config);
+    return response;
+  }
+
+  async EditEmployee(id,e){
+    const response = await axios.put(`${apiUrl}/Employee/${id}`, e, config);
+    return response;
+  }
+  async DeleteEmployee(id){
+    const response = await axios.delete(`${apiUrl}/Employee/${id}`, config);
+    return response;
+  }
 
   //Discount Code
   async GetDiscountCodeForAdmin(status,type,pageNumber, pageSize) {

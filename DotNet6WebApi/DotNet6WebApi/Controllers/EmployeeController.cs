@@ -128,7 +128,7 @@ namespace DotNet6WebApi.Controllers
 
         [HttpPost("createEmployee")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDTO dto,int id)
+        public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDTO dto)
         {
             if (!ModelState.IsValid)
             {
