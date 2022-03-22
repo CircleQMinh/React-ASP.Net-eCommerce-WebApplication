@@ -179,7 +179,13 @@ namespace DotNet6WebApi.Controllers
             {
                 //lưu OK
                 var newOrder = mapper.Map<Order>(order);
+                newOrder.DiscountCodeID = null;
                 await unitOfWork.Orders.Insert(newOrder);
+                await unitOfWork.Save();
+                var discountCode = await unitOfWork.DiscountCodes.Get(q=>q.Id == order.DiscountCodeID);
+                discountCode.Order = newOrder;
+                unitOfWork.DiscountCodes.Update(discountCode);
+
                 await unitOfWork.Save();
                 // lấy thông tin để gửi email
                 var orderInfo = await unitOfWork.Orders.Get(q => q.Id == newOrder.Id, new List<string> { "OrderDetails", "DiscountCode", "Shipper" });

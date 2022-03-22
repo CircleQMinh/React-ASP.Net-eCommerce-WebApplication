@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { auth_action } from "../../redux/auth_slice.js";
 import AdminLoading from "./AdminLoading";
+import AddRandomDCModal from "./Modal/AddRandomDCModal";
 function AdminDiscount() {
   const [authorizing, setAuthorizing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -231,6 +232,14 @@ function AdminDiscount() {
       });
   }, [status, type, sort, pageNumber, pageSize, reRender]);
 
+  const [showAddRandomDCModal, setShowAddRandomDCModal] = useState(false);
+  const handleShowAddRandomDCModal = () => {
+    setShowAddRandomDCModal(true);
+  };
+  const handleCloseAddRandomDCModal = () => {
+    setShowAddRandomDCModal(false);
+  };
+
   return (
     <Fragment>
       {!authorizing && (
@@ -350,6 +359,13 @@ function AdminDiscount() {
                               onClick={handleShowAddModal}
                             >
                               <i className="fas fa-plus"></i>
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-info"
+                              onClick={handleShowAddRandomDCModal}
+                            >
+                              <i className="fa-solid fa-circle-plus"></i>
                             </button>
                             <button
                               type="button"
@@ -587,6 +603,17 @@ function AdminDiscount() {
           </button>
         </Modal.Footer>
       </Modal>
+
+      {/* add random dc modal */}
+      {showAddRandomDCModal && (
+        <AddRandomDCModal
+          close={handleCloseAddRandomDCModal}
+          reRender={ReRender}
+          maxDay={maxDay}
+          minDay={minDay}
+          upperCaseMyText={upperCaseMyText}
+        ></AddRandomDCModal>
+      )}
     </Fragment>
   );
 }

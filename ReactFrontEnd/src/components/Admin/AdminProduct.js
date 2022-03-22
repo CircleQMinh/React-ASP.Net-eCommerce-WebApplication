@@ -371,6 +371,7 @@ function AdminProduct() {
   }
   function onSearchByChange(event) {
     setSearchBy(event.target.value);
+
   }
   function onKeywordChange(event) {
     setKeyword(event.target.value);
@@ -383,6 +384,11 @@ function AdminProduct() {
     setShowSearchModal(false);
   };
   const handleShowSearchModal = () => {
+    if(searchBy=="Price"&&isNaN(keyword)){
+      alert("Từ khóa tìm kiếm không hợp lệ!")
+      return;
+    }
+
     setShowSearchModal(true);
     setIsSearching(true);
     GetSearchResult(1,4)

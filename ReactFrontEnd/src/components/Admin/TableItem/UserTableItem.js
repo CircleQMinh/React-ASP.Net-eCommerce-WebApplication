@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import AdminService from "../../../api/AdminService";
 import { useForm } from "react-hook-form";
 import OrderHistoryModal from "../Modal/OrderHistoryModal";
+import EditCoinsModal from "../Modal/EditCoinsModal";
 function UserTableItem(props) {
   var item = props.item;
   //console.log(item);
@@ -135,6 +136,7 @@ function UserTableItem(props) {
   const [reRender, setReRender] = useState(true);
   function ReRender() {
     setReRender(!reRender);
+    props.reRender()
   }
 
   const [showOrderHistoryModal, setShowOrderHistoryModal] = useState(false);
@@ -175,6 +177,14 @@ function UserTableItem(props) {
       });
   }
 
+  const [showEditCoinsModal, setShowEditCoinsModal] = useState(false);
+  const handleShowEditCoinsModal = () => {
+    setShowEditCoinsModal(true);
+  };
+  const handleCloseEditCoinsModal = () => {
+    setShowEditCoinsModal(false);
+  };
+
   return (
     <Fragment>
       <tr className="animate__animated animate__fadeIn">
@@ -205,6 +215,13 @@ function UserTableItem(props) {
               onClick={handleShowOrderHistoryModal}
             >
               <i className="fas fa-info-circle"></i>
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleShowEditCoinsModal}
+            >
+              <i className="fa-solid fa-coins"></i>
             </button>
             <button
               type="button"
@@ -361,6 +378,15 @@ function UserTableItem(props) {
           </button>
         </Modal.Footer>
       </Modal>
+      {/* edit coins modal */}
+      {showEditCoinsModal && (
+        <EditCoinsModal
+          userId={item.id}
+          coins={item.coins}
+          close={handleCloseEditCoinsModal}
+          reRender={ReRender}
+        ></EditCoinsModal>
+      )}
     </Fragment>
   );
 }

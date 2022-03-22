@@ -26,7 +26,6 @@ function ShipperHistoryModal(props) {
 
   function handleCloseInfoModal() {
     props.close();
-    setIsLoading(true);
   }
 
   function GetOrderHistory(id, pageNumber) {

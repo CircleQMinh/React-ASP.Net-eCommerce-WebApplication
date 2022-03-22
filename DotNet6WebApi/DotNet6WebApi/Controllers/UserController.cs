@@ -148,6 +148,32 @@ namespace DotNet6WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPut("coins")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> UpdateUserCoins([FromBody] UpdateUserCoinDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+            }
+            try
+            {
+                var user = await unitOfWork.Users.Get(q => q.Id == dto.Id);
+                if (user == null)
+                {
+                    return Ok(new { error = "Không tìm thấy dữ liệu", success = false });
+                }
+                user.Coins = dto.Coins;
+                unitOfWork.Users.Update(user);
+                await unitOfWork.Save();
+
+                return Ok(new { user = mapper.Map<SimpleUserForAdminDTO>(user), success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Administrator")]

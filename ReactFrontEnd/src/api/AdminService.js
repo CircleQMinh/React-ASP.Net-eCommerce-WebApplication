@@ -133,6 +133,14 @@ class AdminService {
     );
     return response;
   }
+  async EditUserCoinsForAdmin(dto) {
+    const response = await axios.put(
+      `${apiUrl}/user/coins`,
+      dto,
+      config
+    );
+    return response;
+  }
   async DeleteUserForAdmin(id) {
     const response = await axios.delete(
       `${apiUrl}/user/${id}`,
