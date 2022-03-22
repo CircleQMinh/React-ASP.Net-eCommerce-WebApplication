@@ -19,6 +19,11 @@
         public string UserName { get; set; }
         public string PhoneNumber { get; set; }
     }
+    public class UpdateUserCoinDTO
+    {
+        public string Id { get; set; }
+        public int Coins { get; set; }   
+    }
     public class SimpleUserDTO
     {
         public string Id { get; set; }

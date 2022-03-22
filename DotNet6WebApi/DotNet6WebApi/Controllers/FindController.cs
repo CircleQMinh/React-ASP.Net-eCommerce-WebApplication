@@ -52,30 +52,30 @@ namespace DotNet6WebApi.Controllers
                         listFromQuery = await unitOfWork.Books.GetAll(
                         expression_book,
                         null,
-                        new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" },
+                        new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" },
                         new PaginationFilter(pageNumber, pageSize));
                         count = await unitOfWork.Books.GetCount(expression_book);
-                        result = mapper.Map<IList<BookDTO>>(listFromQuery);
+                        result = mapper.Map<IList<AdminBookDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
                     case ("Product", "Price"):
                         expression_book = q => q.Price == Int32.Parse(keyword);
                         listFromQuery = await unitOfWork.Books.GetAll(
                         expression_book,
                         null,
-                        new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" },
+                        new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" },
                         new PaginationFilter(pageNumber, pageSize));
                         count = await unitOfWork.Books.GetCount(expression_book);
-                        result = mapper.Map<IList<BookDTO>>(listFromQuery);
+                        result = mapper.Map<IList<AdminBookDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
                     case ("Product", "Id"):
                         expression_book = q => q.Id == Int32.Parse(keyword);
                         listFromQuery = await unitOfWork.Books.GetAll(
                         expression_book,
                         null,
-                        new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo", "WishlistUsers" },
+                        new List<string> { "Authors", "Genres", "Publisher", "PromotionInfo" },
                         new PaginationFilter(pageNumber, pageSize));
                         count = await unitOfWork.Books.GetCount(expression_book);
-                        result = mapper.Map<IList<BookDTO>>(listFromQuery);
+                        result = mapper.Map<IList<AdminBookDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
                     //--------------------------------------------------------------------------------------------------
                     case ("Order", "Name"):
