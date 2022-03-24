@@ -167,7 +167,7 @@ function ProductList(props) {
                 >
                   <h4>Theo danh mục</h4>
                   <div className="genre_filter">
-                    <form>
+                    <form className="ps-1">
                       <div className="form-check">
                         <input
                           className="form-check-input"
@@ -201,7 +201,7 @@ function ProductList(props) {
                   <hr></hr>
 
                   <h4>Giá</h4>
-                  <form>
+                  <form className="ps-1">
                     <div className="form-check">
                       <input
                         className="form-check-input"

@@ -14,8 +14,10 @@ import { auth_action } from "../../redux/auth_slice.js";
 import AuthService from "../../api/AuthService";
 import { useSelector, useDispatch } from "react-redux";
 import CartIcon from "../Cart/CartIcon";
+import ProductService from "../../api/ProductService";
 
 function Header(props) {
+  const [listGenre, setListGenre] = useState([]);
   //dropdown
   const [show, setShow] = useState(false);
   const showDropdown = (e) => {
@@ -45,9 +47,22 @@ function Header(props) {
     dispatch(auth_action.logOut());
   }
 
+  const loadGenre = () => {
+    ProductService.getGenre()
+    .then((response) => {
+      // console.log(response.data);
+      setListGenre(response.data.result);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .finally(() => {});
+  }
+
   //run first
   useEffect(() => {
     dispatch(auth_action.getAuthInfoFromLocalStorage());
+    loadGenre();
   }, [isLoggedIn, dispatch]);
 
   // for (const [key, value] of Object.entries(user)) {
@@ -126,19 +141,11 @@ function Header(props) {
                 }
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item onClick={redirectFavorite}>
-                  Yêu thích
-                </NavDropdown.Item>
-                {/* <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item> */}
+                {listGenre.length > 0 && listGenre.map((item, index)=>
+                  <NavDropdown.Item key={`NavGenre-${index}`}>
+                    {item.name}
+                  </NavDropdown.Item>
+                )}
               </NavDropdown>
               <NavItem as="li">
                 <Nav.Link as={NavLink} to={"/news"}>
