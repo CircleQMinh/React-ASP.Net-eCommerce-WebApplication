@@ -77,7 +77,7 @@ function Home(props) {
         }
        
       </div>
-      {/* <Container className="mt-5">
+      <Container className="mt-5">
         <hr></hr>
         <p className="text-monospace">
           FIND YOUR PLACE AT B&N'S ONLINE BOOKSTORE Over 5 million books ready
@@ -88,7 +88,7 @@ function Home(props) {
       </Container>
       <Container fluid>
         <ProductList></ProductList>
-      </Container> */}
+      </Container>
 
       <Container className="mt-5">
         <hr></hr>
