@@ -32,6 +32,7 @@ import ShipperHistory from "./components/Shipper/ShipperHistory";
 import AdminUser from "./components/Admin/AdminUser";
 import ContactPage from "./pages/Contact";
 import { NewsPage } from "./pages/News";
+import { SearchPage } from "./pages/Search";
 import AdminEmp from "./components/Admin/AdminEmp";
 import AdminDiscount from "./components/Admin/AdminDiscount";
 
@@ -80,6 +81,7 @@ function App() {
           <Route path="/contact" element={<ContactPage/>}></Route>
           <Route path="/news" element={<NewsPage/>}></Route>
           <Route path="/favorite/:page" element={<FavoritePage/>}></Route>
+          <Route path="/search" element={<SearchPage/>}></Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>

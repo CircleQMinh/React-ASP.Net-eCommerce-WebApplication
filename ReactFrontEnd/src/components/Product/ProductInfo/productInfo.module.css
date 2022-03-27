@@ -93,6 +93,10 @@
     color: #f0002a;
 }
 
+.NoneFavorite {
+    color: var(--grayBrown-background);
+}
+
 @media screen and (min-width: 575.98px) and ( max-width: 767.98px) {
     .addToCart {
         font-size: 12px;
