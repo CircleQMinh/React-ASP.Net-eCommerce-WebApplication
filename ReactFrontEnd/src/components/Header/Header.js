@@ -50,7 +50,6 @@ function Header(props) {
   const loadGenre = () => {
     ProductService.getGenre()
     .then((response) => {
-      // console.log(response.data);
       setListGenre(response.data.result);
     })
     .catch((error) => {
@@ -75,13 +74,11 @@ function Header(props) {
     navigate("/login");
   }
 
-  const redirectFavorite = () => {
+  const redirectSearch = (value) => {
     window.scrollTo(0, 0);
-    if (isLoggedIn) {
-      navigate(`/favorite/1`);
-    } else {
-      navigate(`/login`);
-    }
+    const genre = JSON.stringify([value])
+    navigate(`/search?genre=${genre}`)
+    window.location.reload(false)
   };
 
   return (
@@ -142,7 +139,7 @@ function Header(props) {
                 id="basic-nav-dropdown"
               >
                 {listGenre.length > 0 && listGenre.map((item, index)=>
-                  <NavDropdown.Item key={`NavGenre-${index}`}>
+                  <NavDropdown.Item key={`NavGenre-${index}`} onClick={()=>redirectSearch(item)}>
                     {item.name}
                   </NavDropdown.Item>
                 )}

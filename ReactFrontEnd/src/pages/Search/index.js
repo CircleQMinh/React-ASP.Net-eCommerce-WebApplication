@@ -1,4 +1,6 @@
 import React, { Fragment, useEffect, useState, useCallback } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -6,76 +8,78 @@ import { Container } from "react-bootstrap";
 import ProductService from "../../api/ProductService";
 import "./SearchResult.css";
 
+import { useQuery } from "../../utils";
+import { PAGE_SIZE_SEARCH, RANGE_PRICE_SEARCH } from "../../utils/constant";
+
 import { SearchField } from "./components/searchField";
 import { FilterProduct } from "./components/filterProduct";
 import { ListProductComponent } from "./components/listProduct";
 
 export const SearchPage = (props) => {
+  const navigate = useNavigate();
+  let query = useQuery();
   const [isLoading, setIsLoading] = useState(false);
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  //Query param
+  const pageQuery = parseInt(query.get("page") || 1);
+  const nameQuery = query.get("name") || "";
+  let genreQuery = [];
+  let priceRangeQuery = RANGE_PRICE_SEARCH;
+  const pageSizeQuery = parseInt(query.get("pageSize") || PAGE_SIZE_SEARCH);
+  try {
+    priceRangeQuery = query.get("priceRange").split(",").map(Number) || RANGE_PRICE_SEARCH;
+  } catch {}
+  try {
+    genreQuery = JSON.parse(query.get("genre")) || [];
+  } catch {}
+
+  //State param
+  const [pageNumber, setPageNumber] = useState(pageQuery || 1);
+  const [pageSize, setPageSize] = useState(pageSizeQuery || PAGE_SIZE_SEARCH);
+  const [keyword, setKeyword] = useState(nameQuery || ""); //
+  const [filterGenreList, setFilterGenreList] = useState(genreQuery || []);
+  const [priceRangeFilter, setPriceRangeFilter] = useState(priceRangeQuery || RANGE_PRICE_SEARCH);
+
+  //Form
+  let {
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+    watch,
+    setValue,
+    register,
+  } = useForm({
+    defaultValues: {
+      minPrice: "",
+      maxPrice: ""
+    },
+  });
+  const minPrice = watch("minPrice")
+  const maxPrice = watch("maxPrice")
 
   const [listProduct, setListProduct] = useState([]);
   const [listGenre, setListGenre] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
 
-  const [keyword, setKeyword] = useState("");
-  const [filterGenreList, setFilterGenreList] = useState([]);
-  const [priceRangeFilter, setPriceRangeFilter] = useState("0,99999999");
-
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-
-  useEffect(() => {
-    setIsLoading(true);
-    ProductService.getProduct(
-      pageNumber,
-      pageSize,
-      keyword,
-      priceRangeFilter,
-      getFilterGenreString(filterGenreList)
-    )
-      .then((response) => {
-        //console.log(response.data);
-        setListProduct(response.data.result);
-        //console.log(Math.ceil(Number(response.data.totalProduct / 8)))
-        setTotalPage(Math.ceil(Number(response.data.totalProduct / 8)));
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-
-    ProductService.getGenre()
-      .then((response) => {
-        //console.log(response.data);
-        setListGenre(response.data.result);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {});
-  }, [pageNumber, pageSize, keyword, filterGenreList, priceRangeFilter]);
-
   //  function
   function onPriceRangeFilterChange(event) {
+    const value = event.target.value.split(",").map(Number);
+    setPriceRangeFilter(value);
     setPageNumber(1);
-    setPriceRangeFilter(event.target.value);
+    redirectSearch(keyword, filterGenreList, 1, pageSize, value);
   }
 
   function onGenreFilterChange(event) {
     setPageNumber(1);
+    let tempGenre = [];
     var genre = { name: event.target.value, id: event.target.id };
     if (genre.name != "all") {
       if (!filterGenreList.some((g) => g.name == genre.name)) {
-        // console.log("chưa có thêm vào")
         setFilterGenreList((state) => [...state, genre]);
+        tempGenre = [...filterGenreList, genre];
       } else {
         setFilterGenreList(filterGenreList.filter((q) => q.id != genre.id));
-        //console.log("có rồi bỏ ra")
+        tempGenre = filterGenreList.filter((q) => q.id != genre.id);
       }
     } else {
       setFilterGenreList([]);
@@ -83,59 +87,105 @@ export const SearchPage = (props) => {
         document.getElementById(element.id).checked = false;
       });
     }
-    console.log(filterGenreList);
+    redirectSearch(keyword, tempGenre, 1, pageSize, priceRangeFilter);
   }
 
   function onSearchKeyWordChange(event) {
-    setPageNumber(1);
     setKeyword(event.target.value);
   }
+
+  const handleSearch = () => {
+    setPageNumber(1);
+    redirectSearch(keyword, filterGenreList, 1, pageSize, priceRangeFilter);
+  };
+
   function onPageNumberChange(page) {
     document.getElementById("searchBarProduct").scrollIntoView();
     setPageNumber(page);
+    redirectSearch(keyword, filterGenreList, page, pageSize, priceRangeFilter);
   }
 
   function onMinPriceChange(event) {
-    setMinPrice(event.target.value);
+    setValue("minPrice", event.target.value, { shouldDirty: true, shouldValidate: true })
   }
 
   function onMaxPriceChange(event) {
-    setMaxPrice(event.target.value);
+    setValue("maxPrice", event.target.value, { shouldDirty: true, shouldValidate: true })
   }
 
-  function applyPriceRange(event) {
-    event.preventDefault();
+  function applyPriceRange(data) {
+    const value = [parseInt(data.minPrice), parseInt(data.maxPrice)]
+    setPriceRangeFilter(value)
     setPageNumber(1);
-    if (minPrice == "" || maxPrice == "") {
-      alert("Khoảng giá chưa hợp lệ");
-    } else {
-      setPriceRangeFilter(minPrice + "," + maxPrice);
-    }
+    redirectSearch(keyword, filterGenreList, 1, pageSize, value);
+    reset(data);
   }
 
   function resetFilter() {
-    filterGenreList.forEach((genre) => {
-      var cb = document.getElementById(`${genre.id}`);
-      cb.checked = false;
-    });
-    setFilterGenreList([]);
-    setKeyword("");
-    setPriceRangeFilter("0,99999999");
     setPageNumber(1);
+    setPageSize(PAGE_SIZE_SEARCH);
+    setKeyword("");
+    setFilterGenreList([]);
+    setPriceRangeFilter(RANGE_PRICE_SEARCH);
+    redirectSearch("", [], 1, PAGE_SIZE_SEARCH, RANGE_PRICE_SEARCH);
   }
+
+  const redirectSearch = (name, genre, page, pageSize, priceRange) => {
+    let urlRedirect = "/search?";
+    if (name) {
+      urlRedirect += `name=${name}`;
+    }
+    if (genre) {
+      urlRedirect += `&genre=${JSON.stringify(genre)}`;
+    }
+    if (page) {
+      urlRedirect += `&page=${page}`;
+    }
+    if (pageSize) {
+      urlRedirect += `&pageSize=${pageSize}`;
+    }
+    if (priceRange) {
+      urlRedirect += `&priceRange=${priceRange.join(",")}`;
+    }
+    navigate(urlRedirect);
+    getListProduct(page, pageSize, name, priceRange, genre);
+  };
+
+  const getListProduct = (pageQuery, pageSizeQuery, nameQuery, priceRangeQuery, genreQuery) => {
+    setIsLoading(true);
+    ProductService.getProduct(pageQuery, pageSizeQuery, nameQuery, priceRangeQuery.join(","), getFilterGenreString(genreQuery))
+      .then((response) => {
+        setListProduct(response.data.result);
+        setTotalPage(Math.ceil(Number(response.data.totalProduct / pageSizeQuery)));
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getListProduct(pageQuery, pageSizeQuery, nameQuery, priceRangeQuery, genreQuery);
+    ProductService.getGenre()
+      .then((response) => {
+        setListGenre(response.data.result);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {});
+  }, []);
 
   return (
     <>
       <Header></Header>
-      <Container fluid className="pt-3 pb-5">
+      <Container fluid className="pt-2 pb-5">
         <Container fluid>
           <div className="row">
             <div className="col">
-              <SearchField
-                onSearchKeyWordChange={onSearchKeyWordChange}
-                resetFilter={resetFilter}
-                keyword={keyword}
-              />
+              <SearchField onSearchKeyWordChange={onSearchKeyWordChange} resetFilter={resetFilter} handleSearch={handleSearch} keyword={keyword} />
               <hr />
             </div>
           </div>
@@ -152,6 +202,9 @@ export const SearchPage = (props) => {
                 onMaxPriceChange={onMaxPriceChange}
                 maxPrice={maxPrice}
                 applyPriceRange={applyPriceRange}
+                register={register}
+                isDirty={isDirty}
+                handleSubmit={handleSubmit}
               />
               <ListProductComponent
                 keyword={keyword}

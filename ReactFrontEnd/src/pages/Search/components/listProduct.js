@@ -16,7 +16,7 @@ export const ListProductComponent = (props) => {
     <>
       <div className="col col-md-9">
         <div className="container-fluid">
-          <div className="d-flex justify-content-center ">
+          {/* <div className="d-flex justify-content-center ">
             {keyword != "" && (
               <h4 className="tag-search-h4">
                 <span className="badge rounded-pill bg-info mx-2 hover_badge">
@@ -25,7 +25,7 @@ export const ListProductComponent = (props) => {
                 </span>
               </h4>
             )}
-          </div>
+          </div> */}
           <div className="row flex-row flex-wrap justify-content-center">
             {listProduct.length > 0 &&
               !isLoading &&

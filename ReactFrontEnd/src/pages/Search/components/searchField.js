@@ -1,7 +1,15 @@
 import "./ProductList.css";
 import { Button } from "react-bootstrap";
 
-export const SearchField = ({onSearchKeyWordChange, resetFilter, keyword}) => {
+export const SearchField = (props) => {
+  const { onSearchKeyWordChange, resetFilter, keyword, handleSearch } = props;
+
+  const handleKeyEnter = (event) => {
+    if (event.key === "Enter") {
+      handleSearch && handleSearch()
+    }
+  };
+
   return (
     <>
       <p className="lead text-monospace text-center mt-5">
@@ -20,11 +28,12 @@ export const SearchField = ({onSearchKeyWordChange, resetFilter, keyword}) => {
               placeholder="Bạn đang tìm sản phẩm nào?"
               value={keyword}
               onChange={onSearchKeyWordChange}
+              onKeyDown={handleKeyEnter}
             />
-            <button className="searchButton">
+            <button className="searchButton btn btn-primary" onClick={handleSearch}>
               <i className="fa fa-search"></i>
             </button>
-            <button className="searchButton ms-2" onClick={resetFilter}>
+            <button className="searchButton ms-2 btn btn-primary" onClick={resetFilter}>
               <i className="fa-solid fa-rotate-right"></i>
             </button>
           </div>

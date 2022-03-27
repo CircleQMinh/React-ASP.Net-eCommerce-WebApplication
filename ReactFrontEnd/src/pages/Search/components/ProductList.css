@@ -142,6 +142,15 @@
 .featured__controls ul li:last-child {
   margin-right: 0;
 }
+
+.textFieldRangePrice > div > label {
+  display: none;
+}
+
+.textFieldRangePrice > div > div > fieldset > legend > span {
+  display: none;
+}
+
 @media only screen and (max-width: 479px) {
   .featured__controls ul li {
     margin-bottom: 10px;
@@ -278,7 +287,9 @@ color: #9DBFAF;
 }
 
 .searchTerm:hover {
-  border: 3px solid var(--primary-color);
+  border-bottom: 3px solid var(--primary-color);
+  border-left: 3px solid var(--primary-color);
+  border-top: 3px solid var(--primary-color);
 }
 
 .searchTerm:focus{
@@ -288,13 +299,14 @@ color: #00B4CC;
 .searchButton {
 width: 40px;
 height: 36px;
-border: 1px solid #00B4CC;
+border-radius: 0px;
+/* border: 1px solid #00B4CC;
 background: #00B4CC;
 text-align: center;
 color: #fff;
 border-radius: 0 5px 5px 0;
 cursor: pointer;
-font-size: 20px;
+font-size: 20px; */
 }
 
 /*Resize the wrap to see the search bar change!*/

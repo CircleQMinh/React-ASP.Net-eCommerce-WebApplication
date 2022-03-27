@@ -1,4 +1,30 @@
+import { TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
 import "./ProductList.css";
+import { LIST_RANGE_PRICE, color } from "../../../utils/constant";
+
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    backgroundColor: "#fff",
+    border: "none",
+    width: "100%",
+    "& .MuiInputBase-input": {
+      fontSize: "16px",
+      fontWeight: "400",
+      lineHeight: "24px",
+      letterSpacing: "0em",
+      padding: "8px 12px",
+      height: "initial",
+    },
+    "& .MuiOutlinedInput-adornedEnd": {
+      paddingRight: "5px",
+    },
+    "& .MuiInputAdornment-positionStart": {
+      color: color.gray,
+    },
+  },
+}));
 
 export const FilterProduct = (props) => {
   const {
@@ -12,7 +38,28 @@ export const FilterProduct = (props) => {
     onMaxPriceChange,
     maxPrice,
     applyPriceRange,
+    register,
+    isDirty,
+    handleSubmit,
   } = props;
+
+  const classes = useStyles();
+
+  const checkErrorRange = () => {
+    if (minPrice === "" || maxPrice === "") {
+      return false;
+    } else if (parseInt(minPrice) > parseInt(maxPrice)) {
+      return true;
+    }
+  };
+
+  const checkErrorBtn = () => {
+    if (isDirty && minPrice !== "" && maxPrice !== "" && !checkErrorRange()) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <>
       <div className="col-3 border-end border-secondary" id="filter_search">
@@ -40,6 +87,7 @@ export const FilterProduct = (props) => {
                     type="checkbox"
                     onChange={onGenreFilterChange}
                     value={genre.name}
+                    checked={!!filterGenreList.find((item) => item.id === genre.id)}
                   />
                   <label className="form-check-label">{genre.name}</label>
                 </div>
@@ -50,99 +98,67 @@ export const FilterProduct = (props) => {
         <hr></hr>
         <h4>Giá</h4>
         <form className="ps-1">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              id="flexRadioDefault1"
-              value="0,99999999"
-              name="pr1"
-              checked={priceRangeFilter == "0,99999999"}
-              onChange={onPriceRangeFilterChange}
-            />
-            <label className="form-check-label">Toàn bộ</label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              id="flexRadioDefault2"
-              value="0,20000"
-              name="pr2"
-              onChange={onPriceRangeFilterChange}
-              checked={priceRangeFilter == "0,20000"}
-            />
-            <label className="form-check-label">Dưới 20.000</label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              id="flexRadioDefault3"
-              value="20000,40000"
-              name="pr3"
-              onChange={onPriceRangeFilterChange}
-              checked={priceRangeFilter == "20000,40000"}
-            />
-            <label className="form-check-label">Từ 20.000 đến 40.000</label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              id="flexRadioDefault4"
-              value="40000,120000"
-              name="pr4"
-              onChange={onPriceRangeFilterChange}
-              checked={priceRangeFilter == "40000,120000"}
-            />
-            <label className="form-check-label">Từ 40.000 đến 120.000</label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              id="flexRadioDefault5"
-              value="120000,99999999"
-              name="pr5"
-              onChange={onPriceRangeFilterChange}
-              checked={priceRangeFilter == "120000,99999999"}
-            />
-            <label className="form-check-label">Trên 120.000</label>
-          </div>
+          {LIST_RANGE_PRICE.map((item, index) => (
+            <div className="form-check" key={`range-filter-price-${index}`}>
+              <input
+                className="form-check-input"
+                type="radio"
+                id={`flexRadioDefault${index}`}
+                value={item.value}
+                name="pr1"
+                checked={priceRangeFilter.join(",") === item.value.join(",")}
+                onChange={onPriceRangeFilterChange}
+              />
+              <label className="form-check-label">{item.title}</label>
+            </div>
+          ))}
         </form>
         <hr />
         <h4>Khoảng giá</h4>
         <form>
-          <div className="form-check ">
+          <div className="form-check ps-0">
             <div className="input-group mb-3">
               <span className="input-group-text" id="basic-addon1">
                 Từ
               </span>
-              <input
-                type="number"
-                className="form-control"
-                placeholder="từ"
-                name="minPrice"
-                onChange={onMinPriceChange}
-                value={minPrice}
-              />
+              <div style={{ width: "calc(100% - 42px)" }} className="textFieldRangePrice" {...register("minPrice")}>
+                <TextField
+                  value={minPrice}
+                  onChange={onMinPriceChange}
+                  type="number"
+                  variant="outlined"
+                  label="Từ"
+                  placeholder="Từ"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  className={classes.textField}
+                  error={checkErrorRange()}
+                />
+              </div>
             </div>
             <div className="input-group mb-3">
               <span className="input-group-text" id="basic-addon1">
                 Đến
               </span>
-              <input
-                type="number"
-                className="form-control"
-                placeholder="đến"
-                name="maxPrice"
-                onChange={onMaxPriceChange}
-                value={maxPrice}
-              />
+              <div style={{ width: "calc(100% - 53px)" }} className="textFieldRangePrice" {...register("maxPrice")}>
+                <TextField
+                  value={maxPrice}
+                  onChange={onMaxPriceChange}
+                  type="number"
+                  variant="outlined"
+                  label="Đến"
+                  placeholder="Đến"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  className={classes.textField}
+                  error={checkErrorRange()}
+                />
+              </div>
             </div>
             <div className="input-group mb-3">
-              <button onClick={applyPriceRange} className="btn btn-primary">
+              <button onClick={handleSubmit(applyPriceRange)} disabled={checkErrorBtn()} className="btn btn-primary">
                 Áp dụng
               </button>
             </div>
