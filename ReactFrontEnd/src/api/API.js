@@ -1,6 +1,6 @@
 export function GetAPIUrl() {
-  const apiUrl = "https://localhost:7251/api";
-  // const apiUrl = "http://bookstore18110-001-site1.itempurl.com/api";
+  // const apiUrl = "https://localhost:7251/api";
+  const apiUrl = "https://bookstore18110hcmute.azurewebsites.net/api";
   return apiUrl;
 }
 export function GetConfig() {

@@ -148,3 +148,9 @@ D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\DotNet6WebApi.pdb
 D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\DotNet6WebApi.genruntimeconfig.cache
 D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\DotNet6WebApi.Properties.Resources.resources
 D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\DotNet6WebApi.csproj.GenerateResource.cache
+D:\pull\DotNet6WebApi\DotNet6WebApi\bin\Release\net6.0\Microsoft.AspNetCore.NodeServices.dll
+D:\pull\DotNet6WebApi\DotNet6WebApi\bin\Release\net6.0\Microsoft.AspNetCore.SpaServices.dll
+D:\pull\DotNet6WebApi\DotNet6WebApi\bin\Release\net6.0\Microsoft.AspNetCore.SpaServices.Extensions.dll
+D:\pull\DotNet6WebApi\DotNet6WebApi\bin\Release\net6.0\spa.proxy.json
+D:\pull\DotNet6WebApi\DotNet6WebApi\bin\Release\net6.0\Microsoft.AspNetCore.SpaProxy.dll
+D:\pull\DotNet6WebApi\DotNet6WebApi\obj\Release\net6.0\spa.proxy.json
