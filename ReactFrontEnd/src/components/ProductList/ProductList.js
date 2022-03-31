@@ -33,9 +33,7 @@ function ProductList(props) {
       getFilterGenreString(filterGenreList)
     )
       .then((response) => {
-        //console.log(response.data);
         setListProduct(response.data.result);
-        //console.log(Math.ceil(Number(response.data.totalProduct / 8)))
         setTotalPage(Math.ceil(Number(response.data.totalProduct / 8)));
       })
       .catch((error) => {
@@ -47,7 +45,6 @@ function ProductList(props) {
 
     ProductService.getGenre()
       .then((response) => {
-        //console.log(response.data);
         setListGenre(response.data.result);
       })
       .catch((error) => {
@@ -66,11 +63,9 @@ function ProductList(props) {
     var genre = { name: event.target.value, id: event.target.id };
     if (genre.name != "all") {
       if (!filterGenreList.some(g=>g.name==genre.name)) {
-       // console.log("chưa có thêm vào")
         setFilterGenreList((state) => [...state, genre]);
       } else {
         setFilterGenreList(filterGenreList.filter((q) => q.id != genre.id));
-        //console.log("có rồi bỏ ra")
       }
     } else {
       setFilterGenreList([]);
@@ -78,7 +73,6 @@ function ProductList(props) {
         document.getElementById(element.id).checked = false;
       });
     }
-    console.log(filterGenreList);
   }
   function onSearchKeyWordChange(event) {
     setPageNumber(1)
@@ -167,7 +161,7 @@ function ProductList(props) {
                 >
                   <h4>Theo danh mục</h4>
                   <div className="genre_filter">
-                    <form>
+                    <form className="ps-1">
                       <div className="form-check">
                         <input
                           className="form-check-input"
@@ -201,7 +195,7 @@ function ProductList(props) {
                   <hr></hr>
 
                   <h4>Giá</h4>
-                  <form>
+                  <form className="ps-1">
                     <div className="form-check">
                       <input
                         className="form-check-input"
@@ -370,7 +364,6 @@ function ProductList(props) {
 export default ProductList;
 
 function AlertA() {
-  console.log("A");
   alert("A");
 }
 function getFilterGenreString(genres) {

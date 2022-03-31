@@ -7,6 +7,8 @@
   /* background */
   --primary-background: rgb(139, 203, 255);
 
+  --grayBrown-background: rgb(50, 50, 50, 0.5); /* #323232 */
+
   /* font-size */
   --font-size-medium: 16px;
 

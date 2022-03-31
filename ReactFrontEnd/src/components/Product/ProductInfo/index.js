@@ -91,13 +91,13 @@ export const ProductInfo = (props) => {
               <div className={`${styles.addToCartWrapper} animate__animated animate__fadeIn animate__faster`}>
                 <button className={`btn btn-primary ${styles.addToCart}`} onClick={onClickAddToCart}>Thêm vào giỏ</button>
                 <button className={`btn btn-primary ${styles.iconHeart}`} onClick={() => favoriteBook()}>
-                  <i className={`fa-solid fa-heart ${isFavorite && styles.favorite}`}></i>
+                  <i className={`fa-solid ${isFavorite ? styles.favorite + " fa-heart" : " fa-heart-crack"}`}></i>
                 </button>
               </div>
             </div>
           }
           <div className={`${styles.iconHeartTablet}`} onClick={() => favoriteBook()}>
-            <i className={`fa-heart ${isFavorite ? styles.favorite + " fa-solid" : "fa-regular"}`}></i>
+            <i className={`${isFavorite ? styles.favorite + " fa-heart fa-solid" : styles.NoneFavorite + " fa-solid fa-heart-crack"}`}></i>
             </div>
         </div>
         <div className={`${"card-body"}`}>

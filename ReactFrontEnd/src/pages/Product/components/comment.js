@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const Comment = (props) => {
   const styleForm = useStyles();
-  const { openComment, setOpenComment, bookId, handleListReview } = props;
+  const { openComment, setOpenComment, bookId, handleListReview, getRating } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   let {
@@ -104,6 +104,7 @@ export const Comment = (props) => {
               comment: "",
             })
             handleListReview(response.data.review, response.data.update)
+            getRating()
           }
           
         })

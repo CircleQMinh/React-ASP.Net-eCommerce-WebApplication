@@ -69,9 +69,8 @@ function ProductInfo(props) {
     setReview(reviewsSlice);
   };
 
-  useEffect(() => {
+  const getRating = () => {
     setIsLoading(true);
-    setIsLoadingRelated(true);
     ProductService.getProductById(params.id)
       .then((response) => {
         setProduct(response.data.result);
@@ -106,7 +105,11 @@ function ProductInfo(props) {
       .finally(() => {
         setIsLoading(false);
       });
+  }
 
+  useEffect(() => {
+    getRating();
+    setIsLoadingRelated(true);
     ProductService.getRelatedProductById(params.id, 8)
       .then((response) => {
         setRelatedProduct(response.data.result);
@@ -335,12 +338,14 @@ function ProductInfo(props) {
                     setOpenComment={setOpenComment}
                     bookId={params.id}
                     handleListReview={handleListReview}
+                    getRating={getRating}
                   />
                 </div>
                 <ListReview
                   reviews={reviews}
                   onClickComment={onClickComment}
                   handleDeletedComment={handleDeletedComment}
+                  getRating={getRating}
                 />
               </>
             )}

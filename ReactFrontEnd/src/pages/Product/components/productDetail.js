@@ -162,7 +162,7 @@ export const ProductDetail = (props) => {
             <i className="fa fa-shopping-cart"></i> Thêm vào giỏ
           </button>
           <button className="btn btn-round btn-info me-2 mt-2" onClick={favoriteBook}>
-            <i className={`far fa-heart  ${isFavorite ? "favorite fa-solid" : "fa-regular"}`}></i> Thêm yêu thích
+            <i className={` fa-solid ${isFavorite ? "favorite fa-heart" : "fa-heart-crack"}`}></i> Thêm yêu thích
           </button>
           <button className="btn btn-round btn-info me-2 mt-2" onClick={onClickComment}>
             <i className="fa-solid fa-comment"></i> Đánh giá

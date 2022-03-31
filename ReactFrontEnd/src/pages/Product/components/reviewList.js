@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { LoadingScreen } from "../../../components/Loading"
 
 export const ListReview = (props) => {
-  const { reviews, onClickComment, handleDeletedComment } = props;
+  const { reviews, onClickComment, handleDeletedComment, getRating } = props;
   const [isOpenDeleted, setOpenDeleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const user = JSON.parse(localStorage.getItem(`user`));
@@ -27,6 +27,7 @@ export const ListReview = (props) => {
           if(response.data.success) {
             handleDeletedComment(review);
             toast.success("Xóa thành công")
+            getRating()
           }
         })
         .catch((error) => {
