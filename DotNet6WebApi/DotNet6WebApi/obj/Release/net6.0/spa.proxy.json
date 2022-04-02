@@ -1,8 +1,0 @@
-{
-"SpaProxyServer": {
-"ServerUrl": "https://localhost:44479",
-"LaunchCommand": "npm start",
-"WorkingDirectory": "D:\\pull\\DotNet6WebApi\\DotNet6WebApi\\Frontend\\",
-"MaxTimeoutInSeconds": "120"
-}
-}

@@ -9,7 +9,7 @@ function OrderTableItem(props) {
   var item = props.item;
   var orderDate = new Date(item.orderDate + "Z");
   //   console.log(orderDate.toLocaleString())
-  //   console.log(item);
+  //console.log(item);
 
   const [orderDetailsList, setOrderDetailsList] = useState([]);
 
@@ -269,7 +269,7 @@ function OrderTableItem(props) {
           <p>Email : {item.email}</p>
         </td>
         <td className="text-white">
-          {item.discountCode == null && (
+
             <NumberFormat
               value={item.totalPrice}
               className="text-center text-danger text-decoration-underline  "
@@ -278,33 +278,7 @@ function OrderTableItem(props) {
               suffix={"đ"}
               renderText={(value, props) => <span {...props}>{value}</span>}
             />
-          )}
 
-          {item.discountCode != null &&
-            item.discountCode.discountAmount != null && (
-              <NumberFormat
-                value={item.totalPrice - item.discountCode.discountAmount}
-                className="text-center text-danger text-decoration-underline  "
-                displayType={"text"}
-                thousandSeparator={true}
-                suffix={"đ"}
-                renderText={(value, props) => <span {...props}>{value}</span>}
-              />
-            )}
-          {item.discountCode != null &&
-            item.discountCode.discountPercent != null && (
-              <NumberFormat
-                value={
-                  item.totalPrice -
-                  (item.totalPrice * item.discountCode.discountPercent) / 100
-                }
-                className="text-center text-danger text-decoration-underline  "
-                displayType={"text"}
-                thousandSeparator={true}
-                suffix={"đ"}
-                renderText={(value, props) => <span {...props}>{value}</span>}
-              />
-            )}
         </td>
         <td className="text-white">
           {/* <div   className="progress-container progress-sm">
@@ -405,7 +379,7 @@ function OrderTableItem(props) {
                       <p>Giá trị giảm : {item.discountCode.discountAmount}đ</p>
                       <p>
                         Tổng giá đơn hàng sau khi giảm :{" "}
-                        {item.totalPrice - item.discountCode.discountAmount}đ
+                        {(item.totalPrice - item.discountCode.discountAmount)>0?(item.totalPrice - item.discountCode.discountAmount):0}đ
                       </p>
                     </Fragment>
                   )}

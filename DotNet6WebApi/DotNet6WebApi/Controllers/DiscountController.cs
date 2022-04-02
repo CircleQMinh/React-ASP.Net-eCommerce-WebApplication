@@ -22,7 +22,7 @@ namespace DotNet6WebApi.Controllers
             mapper = _mapper;
         }
         [HttpGet]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetDiscountCode(string status,string type , int pageNumber, int pageSize)
         {
             try
@@ -88,7 +88,7 @@ namespace DotNet6WebApi.Controllers
                 }
                 var newEntity = mapper.Map<DiscountCode>(dto);
                 await unitOfWork.DiscountCodes.Insert(newEntity);
-               
+                await unitOfWork.Save();
                 return Ok(new { discountCode = newEntity, success = true });
             }
             catch (Exception ex)
