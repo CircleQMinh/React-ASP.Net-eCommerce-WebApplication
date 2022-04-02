@@ -179,12 +179,18 @@ namespace DotNet6WebApi.Controllers
             {
                 //lưu OK
                 var newOrder = mapper.Map<Order>(order);
-                newOrder.DiscountCodeID = null;
+                if (order.DiscountCodeID != null)
+                {
+                    var discountCode = await unitOfWork.DiscountCodes.Get(q => q.Id == order.DiscountCodeID);
+                    discountCode.Order = newOrder;
+                    discountCode.Status = 1;
+                    unitOfWork.DiscountCodes.Update(discountCode);
+                }
                 await unitOfWork.Orders.Insert(newOrder);
                 await unitOfWork.Save();
-                var discountCode = await unitOfWork.DiscountCodes.Get(q=>q.Id == order.DiscountCodeID);
-                discountCode.Order = newOrder;
-                unitOfWork.DiscountCodes.Update(discountCode);
+
+
+        
 
                 await unitOfWork.Save();
                 // lấy thông tin để gửi email

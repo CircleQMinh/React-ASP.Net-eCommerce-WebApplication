@@ -17,7 +17,7 @@ namespace DotNet6WebApi.DTO
         public int PublisherId { get; set; }
         public PublisherDTO Publisher { get; set; }
         public int? PromotionInfoID { get; set; }
-        public PromotionInfoDTO PromotionInfo { get; set; }
+        public PromotionInfoDTO? PromotionInfo { get; set; }
         public virtual IList<UserIdDTO> WishlistUsers { get; set; }
     }
     public class AdminBookDTO : BookDTO

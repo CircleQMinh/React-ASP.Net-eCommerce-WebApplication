@@ -563,7 +563,7 @@ function Checkout(props) {
                       <p className="lead text-center fw-bold">
                         Tổng giá đơn hàng sau giảm giá : 
                         <NumberFormat
-                          value={totalPrice-discountCode.discountAmount}
+                          value={totalPrice>discountCode.discountAmount?totalPrice-discountCode.discountAmount:0}
                           className="text-center ms-1  "
                           displayType={"text"}
                           thousandSeparator={true}

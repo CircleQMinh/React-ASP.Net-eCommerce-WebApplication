@@ -213,7 +213,7 @@ function FindOrderItem(props) {
           <p>Email : {item.email}</p>
         </td>
         <td className="text-white">
-        {item.discountCode == null && (
+
             <NumberFormat
               value={item.totalPrice}
               className="text-center text-danger text-decoration-underline  "
@@ -222,33 +222,7 @@ function FindOrderItem(props) {
               suffix={"đ"}
               renderText={(value, props) => <span {...props}>{value}</span>}
             />
-          )}
 
-          {item.discountCode != null &&
-            item.discountCode.discountAmount != null && (
-              <NumberFormat
-                value={item.totalPrice - item.discountCode.discountAmount}
-                className="text-center text-danger text-decoration-underline  "
-                displayType={"text"}
-                thousandSeparator={true}
-                suffix={"đ"}
-                renderText={(value, props) => <span {...props}>{value}</span>}
-              />
-            )}
-          {item.discountCode != null &&
-            item.discountCode.discountPercent != null && (
-              <NumberFormat
-                value={
-                  item.totalPrice -
-                  (item.totalPrice * item.discountCode.discountPercent) / 100
-                }
-                className="text-center text-danger text-decoration-underline  "
-                displayType={"text"}
-                thousandSeparator={true}
-                suffix={"đ"}
-                renderText={(value, props) => <span {...props}>{value}</span>}
-              />
-            )}
         </td>
         <td className="text-white">
           {item.paymentMethod == "cash" && (
@@ -317,9 +291,39 @@ function FindOrderItem(props) {
             <div className="table-responsive ">
               <p>Tổng SP : {item.totalItem}</p>
               <p>Tổng giá : {item.totalPrice}</p>
-
+              {item.discountCode != null && (
+                <Fragment>
+                  <p>Mã giảm giá : {item.discountCode.code}</p>
+                  {item.discountCode.discountAmount != null && (
+                    <Fragment>
+                      <p>Giá trị giảm : {item.discountCode.discountAmount}đ</p>
+                      <p>
+                        Tổng giá đơn hàng sau khi giảm :{" "}
+                        {(item.totalPrice - item.discountCode.discountAmount)>0?(item.totalPrice - item.discountCode.discountAmount):0}đ
+                      </p>
+                    </Fragment>
+                  )}
+                  {item.discountCode.discountPercent != null && (
+                    <Fragment>
+                      <p>
+                        Giá trị giảm : {item.discountCode.discountPercent} %
+                      </p>
+                      <p>
+                        Tổng giá đơn hàng sau khi giảm :{" "}
+                        {item.totalPrice -
+                          (item.totalPrice *
+                            item.discountCode.discountPercent) /
+                            100}
+                        đ
+                      </p>
+                    </Fragment>
+                  )}
+                </Fragment>
+              )}
               <p>Shipper : Chưa có</p>
               <p>Ngày giao : Chưa </p>
+
+
               <table className="table">
                 <thead>
                   <tr>

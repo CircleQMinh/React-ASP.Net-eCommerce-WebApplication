@@ -46,7 +46,7 @@ function ShipperHistory() {
   var shipperId = JSON.parse(localStorage.getItem("user")).id;
 
   const [orderby, setOrderby] = useState("Id");
-  const [sort, setSort] = useState("Asc");
+  const [sort, setSort] = useState("Desc");
   const [pageNumber, setpageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [totalPage, setTotalPage] = useState(1);

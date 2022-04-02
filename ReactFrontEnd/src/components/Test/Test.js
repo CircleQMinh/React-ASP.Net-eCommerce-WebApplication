@@ -1,4 +1,5 @@
 import { React, Fragment, useState } from "react";
+import AdminService from "../../api/AdminService";
 import { upLoadImageToCloudinary } from "../../helper/Cloudinary";
 
 function Test() {
@@ -25,36 +26,12 @@ function Test() {
   }
 
   function DoSMT() {
-    upLoadImageToCloudinary(selectedImgUrl)
-      .then((res) => {
-        console.log(res)
-        console.log(res.data);
-        console.log(res.data.url);
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {});
+
   }
 
   return (
     <Fragment>
       <button onClick={DoSMT}>TEst</button>
-
-      <div className="input-group">
-        <input
-          type="file"
-          className="form-control"
-          placeholder="Ảnh"
-          onChange={onImageChange}
-        ></input>
-      </div>
-
-      <img
-        className="admin_img_modal"
-        alt="Ảnh sản phẩm"
-        src={selectedImgUrl ? selectedImgUrl : defaultImgUrl}
-      ></img>
     </Fragment>
   );
 }
