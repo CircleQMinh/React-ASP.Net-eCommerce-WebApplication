@@ -28,8 +28,8 @@ namespace DotNet6WebApi.Controllers
             try
             {
                 //Get Config Info
-                string vnp_Returnurl = "http://localhost:3000/thankyou";//URL nhan ket qua tra ve 
-                //string vnp_Returnurl = "http://minh18110320-001-site1.etempurl.com/#/thankyou";//URL nhan ket qua tra ve 
+                //string vnp_Returnurl = "http://localhost:3000/thankyou";//URL nhan ket qua tra ve 
+                string vnp_Returnurl = "https://bookstore18110320hcmute.netlify.app/thankyou";//URL nhan ket qua tra ve 
                 string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
                 string vnp_TmnCode = "K3IS060E"; //Ma website
                 string vnp_HashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";//Chuoi bi mat

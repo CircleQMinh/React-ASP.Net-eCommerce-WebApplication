@@ -27,7 +27,7 @@ function GenreTableItem(props) {
   const handleShowDeleteModal = () => {
     setShowDeleteModal(true);
   };
-
+  const isExportPDF = props.isExportPDF;
   function onSave_EditModal(data) {
     var newGenre = {
       name: data.name,
@@ -102,12 +102,12 @@ function GenreTableItem(props) {
 
   return (
     <Fragment>
-      <tr className="animate__animated animate__fadeIn">
-        <td className="text-center text-white">{item.id}</td>
-        <td className="text-white">{item.name}</td>
-        <td className="text-white">{item.description}</td>
-        <td className="text-white">{item.books.length}</td>
-        <td className="text-white">
+      <tr className="animate__animated ">
+        <td className="text-center text-black">{item.id}</td>
+        <td className="text-black">{item.name}</td>
+        <td className="text-black">{item.description}</td>
+        <td className="text-black">{item.books.length}</td>
+        {!isExportPDF && (        <td className="text-black">
           <div className="btn-group">
             <button type="button" className="btn btn-warning">
               <i className="fas fa-info-circle"></i>
@@ -128,7 +128,8 @@ function GenreTableItem(props) {
               <i className="far fa-trash-alt"></i>
             </button>
           </div>
-        </td>
+        </td>)}
+
       </tr>
 
       {/* edit modal */}

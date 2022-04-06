@@ -25,7 +25,7 @@ function SearchModal(props) {
       <Modal.Header closeButton>
         <Modal.Title>Kết quả tìm kiếm </Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ backgroundColor: "#1E1E28" }}>
+      <Modal.Body style={{ backgroundColor: "#FFFFFF" }}>
         {props.isSearching && (
           <div className="d-flex justify-content-center">
             <div className="spinner-border text-info" role="status">

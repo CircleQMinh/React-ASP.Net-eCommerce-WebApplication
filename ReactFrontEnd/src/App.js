@@ -39,6 +39,7 @@ import AdminDiscount from "./components/Admin/AdminDiscount";
 import AdminGenre from "./components/Admin/AdminGenre";
 
 import FavoritePage from "./pages/Favorite";
+import ExportPDF from "./components/ExportPDF/ExportPDF";
 
 function App() {
   return (
@@ -82,6 +83,8 @@ function App() {
           <Route path="/news" element={<NewsPage/>}></Route>
           <Route path="/favorite/:page" element={<FavoritePage/>}></Route>
           <Route path="/search" element={<SearchPage/>}></Route>
+
+          <Route path="/exportPDF" element={<ExportPDF/>}></Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>

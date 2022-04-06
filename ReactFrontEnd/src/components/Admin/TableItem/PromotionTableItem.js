@@ -379,9 +379,9 @@ function PromotionTableItem(props) {
 
   return (
     <Fragment>
-      <tr className="animate__animated animate__fadeIn">
-        <td className="text-center text-white">{item.id}</td>
-        <td className="text-white">
+      <tr className="animate__animated ">
+        <td className="text-center text-black">{item.id}</td>
+        <td className="text-black">
           <div className="d-flex flex-column-reverse align-items-center">
             <img
               className="img_promo_admin img-fluid me-2 "
@@ -391,14 +391,14 @@ function PromotionTableItem(props) {
             <p>{item.name}</p>
           </div>
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {formatDate(new Date(item.startDate + "Z"), "dd-MM-yyyy HH:mm:ss")}
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {formatDate(new Date(item.endDate + "Z"), "dd-MM-yyyy HH:mm:ss")}
         </td>
-        <td className="text-white">{item.promotionInfos.length}</td>
-        <td className="text-white">
+        <td className="text-black">{item.promotionInfos.length}</td>
+        <td className="text-black">
           <div className="btn-group">
             <button
               type="button"
