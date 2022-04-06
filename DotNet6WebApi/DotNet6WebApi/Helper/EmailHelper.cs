@@ -13,7 +13,7 @@ namespace DotNet6WebApi.Helper
     public class EmailHelper
     {
         public string site = "http://localhost:3000/";
-        public string siteOnline = "http://minh18110320-001-site1.etempurl.com/#/";
+        public string siteOnline = "https://bookstore18110320hcmute.netlify.app/";
         public string SendEmailConfirm(string userEmail, string token, string username)
         {
             MailMessage mailMessage = new MailMessage();
@@ -34,8 +34,8 @@ namespace DotNet6WebApi.Helper
                 "style='width: 45px;height: 45px'> <h1 >Circle" + "'s" + " Shop</h1> </td> </tr> <tr> <td style='text-align: center;padding: 20px;'> " +
                 "<p>Thân gửi " + username + ", <p> <p>Cảm ơn bạn đã đăng ký tài khoản, hãy nhấn vào link ở dưới để hoàn thành quá trình đăng ký tài khoản! </p> <br />" +
                 " <a href='" + linkOnline + "' style='background-color: red;padding: 10px;'> Click vào đây để xác nhận tài khoản! </a>" +
-                " </td> </tr> <tr> <td style='background-color:#d6ffa6'> <h2>Liên hệ với cửa hàng</h2> <p>Cửa hàng mua thực phẩm online TP.HCM." +
-                " Chuyên bán các loại rau sạch, củ quả, trái cây, thực phẩm tươi sống</p> <p>Địa chỉ : 23/25D đường số 1, phường Bình Thuận, Q.7, " +
+                " </td> </tr> <tr> <td style='background-color:#d6ffa6'> <h2>Liên hệ với cửa hàng</h2> <p>Cửa hàng mua sách online TP.HCM." +
+                " Chuyên bán các loại sách, truyện tranh và tiểu thuyết.</p> <p>Địa chỉ : 23/25D đường số 1, phường Bình Thuận, Q.7, " +
                 "TP.HCM</p> <p>Email : 18110320@student.hcmute.edu.vn</p> <p>Hot line : 0788283308</p> " +
                 "<p>Debug (local-link) : <a href='" + link + "' style='background-color: red;padding: 10px;'> Link debug local! </a></p> </td> </tr> </table></body></html>";
 
@@ -80,8 +80,8 @@ namespace DotNet6WebApi.Helper
                 "style='width: 45px;height: 45px'> <h1 >Circle" + "'s" + " Shop</h1> </td> </tr> <tr> <td style='text-align: center;padding: 20px;'> " +
                 "<p>Thân gửi " + username + ", <p> <p>Bạn đã gửi yêu cầu reset mật khẩu, hãy click vào link bên dưới để reset mật khẩu bạn!</p> <br />" +
                 " <a href='" + linkOnline + "' style='background-color: red;padding: 10px;'> Click vào đây để xác nhận đổi mật khẩu! </a>" +
-                " </td> </tr> <tr> <td style='background-color:#d6ffa6'> <h2>Liên hệ với cửa hàng</h2> <p>Cửa hàng mua thực phẩm online TP.HCM." +
-                " Chuyên bán các loại rau sạch, củ quả, trái cây, thực phẩm tươi sống</p> <p>Địa chỉ : 23/25D đường số 1, phường Bình Thuận, Q.7, " +
+                " </td> </tr> <tr> <td style='background-color:#d6ffa6'> <h2>Liên hệ với cửa hàng</h2> <p>Cửa hàng mua sách online TP.HCM." +
+                " Chuyên bán các loại sách, truyện tranh và tiểu thuyết.</p> <p>Địa chỉ : 23/25D đường số 1, phường Bình Thuận, Q.7, " +
                 "TP.HCM</p> <p>Email : 18110320@student.hcmute.edu.vn</p> <p>Hot line : 0788283308</p> " +
                 "<p>Debug (local-link) : <a href='" + link + "' style='background-color: red;padding: 10px;'> Link debug local! </a></p> </td> </tr> </table></body></html>";
 
@@ -199,57 +199,57 @@ namespace DotNet6WebApi.Helper
             }
         }
 
-        //public string SendEmailWithDiscountCode(string userName, string userEmail, DiscountCode dc)
-        //{
-        //    MailMessage mailMessage = new MailMessage();
-        //    mailMessage.From = new MailAddress("timelive.circleqm@gmail.com");
-        //    mailMessage.To.Add(new MailAddress(userEmail));
+        public string SendEmailWithDiscountCode(string userName, string userEmail, DiscountCode dc)
+        {
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("timelive.circleqm@gmail.com");
+            mailMessage.To.Add(new MailAddress(userEmail));
 
-        //    mailMessage.Subject = "Mã giảm giá của bạn!";
-        //    mailMessage.IsBodyHtml = true;
+            mailMessage.Subject = "Mã giảm giá của bạn!";
+            mailMessage.IsBodyHtml = true;
 
-        //    string giam = "";
-        //    if (dc.DiscountAmount != "null")
-        //    {
-        //        giam = dc.DiscountAmount + " VND";
-        //    }
-        //    else
-        //    {
-        //        giam = dc.DiscountPercent + "%";
-        //    }
+            string giam = "";
+            if (dc.DiscountAmount != "null")
+            {
+                giam = dc.DiscountAmount + " VND";
+            }
+            else
+            {
+                giam = dc.DiscountPercent + "%";
+            }
 
-        //    string msg = "<!DOCTYPE html><html><head><title></title><meta charset='utf-8'><style>table,td,th{border:1px solid #000}</style></head><body style='font-family:monospace'>" +
-        //        "<br><table width='100%'><tr><td style='background-color:#97b6e4;text-align:center'><img src='https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png' " +
-        //        "style='width:45px;height:45px'><h1>Circle" + "'s" + " Shop</h1></td></tr><tr><td style='text-align:center;padding:20px'><p>" +
-        //        "Thân gửi " + userName + "</p>" +
-        //        "<p>Shop xin gửi bạn mã giảm giá : " + dc.Code + "</p>" +
-        //        "<p>Sử dụng mã giảm giá giúp giảm : " + giam + " cho mọi đơn hàng của shop!</p>" +
-        //        "<p>Có hạn sử dụng từ " + dc.StartDate + " đến " + dc.EndDate + "</p></td></tr><tr><td " +
-        //        "style='background-color:#d6ffa6'><h2>Liên hệ với cửa hàng</h2><p>" +
-        //        "Cửa hàng mua thực phẩm online TP.HCM. Chuyên bán các loại rau sạch, củ quả, trái cây, thực phẩm tươi sống</p>" +
-        //        "<p>Địa chỉ : 23/25D đường số 1, phường Bình Thuận, Q.7, TP.HCM</p>" +
-        //        "<p>Email : 18110320@student.hcmute.edu.vn</p>" +
-        //        "<p>Hot line : 0788283308</p></td></tr></table></body></html>";
+            string msg = "<!DOCTYPE html><html><head><title></title><meta charset='utf-8'><style>table,td,th{border:1px solid #000}</style></head><body style='font-family:monospace'>" +
+                "<br><table width='100%'><tr><td style='background-color:#97b6e4;text-align:center'><img src='https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png' " +
+                "style='width:45px;height:45px'><h1>Circle" + "'s" + " Shop</h1></td></tr><tr><td style='text-align:center;padding:20px'><p>" +
+                "Thân gửi " + userName + "</p>" +
+                "<p>Shop xin gửi bạn mã giảm giá : " + dc.Code + "</p>" +
+                "<p>Sử dụng mã giảm giá giúp giảm : " + giam + " cho mọi đơn hàng của shop!</p>" +
+                "<p>Có hạn sử dụng từ " + dc.StartDate + " đến " + dc.EndDate + "</p></td></tr><tr><td " +
+                "style='background-color:#d6ffa6'><h2>Liên hệ với cửa hàng</h2><p>" +
+                "Cửa hàng mua sáchonline TP.HCM. Chuyên bán các loại sách, truyện tranh và tiểu thuyết.</p>" +
+                "<p>Địa chỉ : 23/25D đường số 1, phường Bình Thuận, Q.7, TP.HCM</p>" +
+                "<p>Email : 18110320@student.hcmute.edu.vn</p>" +
+                "<p>Hot line : 0788283308</p></td></tr></table></body></html>";
 
-        //    mailMessage.Body = msg;
-        //    var client = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587))
-        //    {
-        //        Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "5YemExFc!6QpT+aT"),
-        //        EnableSsl = true,
-        //        UseDefaultCredentials = false, // ?? :D ??
-        //        DeliveryMethod = SmtpDeliveryMethod.Network
-        //    };
+            mailMessage.Body = msg;
+            var client = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587))
+            {
+                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "5YemExFc!6QpT+aT"),
+                EnableSsl = true,
+                UseDefaultCredentials = false, // ?? :D ??
+                DeliveryMethod = SmtpDeliveryMethod.Network
+            };
 
-        //    try
-        //    {
-        //        client.Send(mailMessage);
-        //        client.Dispose();
-        //        return msg;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return ex.ToString();
-        //    }
-        //}
+            try
+            {
+                client.Send(mailMessage);
+                client.Dispose();
+                return msg;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
     }
 }

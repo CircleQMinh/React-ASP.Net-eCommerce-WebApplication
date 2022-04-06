@@ -10,7 +10,7 @@ import EditCoinsModal from "../Modal/EditCoinsModal";
 function UserTableItem(props) {
   var item = props.item;
   //console.log(item);
-
+  const isExportPDF = props.isExportPDF;
   let {
     register: registerEditModal,
     handleSubmit: handleSubmitEditModal,
@@ -187,60 +187,63 @@ function UserTableItem(props) {
 
   return (
     <Fragment>
-      <tr className="animate__animated animate__fadeIn">
-        <td className="text-center text-white">
+      <tr className="animate__animated ">
+        <td className="text-center text-black">
           <div className="photo d-flex justify-content-start align-items-center">
-            <img
+            {!isExportPDF && (            <img
               className="admin_img_table me-2"
               src={item.imgUrl}
               alt="photoimg"
-            ></img>
+            ></img>)}
+
             <p>
               {item.userName} ({item.roles[0]})
             </p>
           </div>
         </td>
-        <td className="text-white">{item.email}</td>
-        <td className="text-white">{item.phoneNumber}</td>
-        <td className="text-white">
+        <td className="text-black">{item.email}</td>
+        <td className="text-black">{item.phoneNumber}</td>
+        <td className="text-black">
           {item.emailConfirmed && <i className="fa-solid fa-check"></i>}
           {!item.emailConfirmed && <i className="fa-solid fa-xmark"></i>}
         </td>
-        <td className="text-white">{item.coins}</td>
-        <td className="text-white">
-          <div className="btn-group">
-            <button
-              type="button"
-              className="btn btn-warning"
-              onClick={handleShowOrderHistoryModal}
-            >
-              <i className="fas fa-info-circle"></i>
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={handleShowEditCoinsModal}
-            >
-              <i className="fa-solid fa-coins"></i>
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleShowEditModal}
-            >
-              <i className="far fa-edit"></i>
-            </button>
-            {!item.roles.some((x) => x == "Administrator") && (
-              <button
-                type="button"
-                className="btn btn-danger"
-                onClick={handleShowDeleteModal}
-              >
-                <i className="far fa-trash-alt"></i>
-              </button>
-            )}
-          </div>
-        </td>
+        <td className="text-black">{item.coins}</td>
+        {!isExportPDF&&(        <td className="text-black">
+       
+       <div className="btn-group">
+         <button
+           type="button"
+           className="btn btn-warning"
+           onClick={handleShowOrderHistoryModal}
+         >
+           <i className="fas fa-info-circle"></i>
+         </button>
+         <button
+           type="button"
+           className="btn btn-secondary"
+           onClick={handleShowEditCoinsModal}
+         >
+           <i className="fa-solid fa-coins"></i>
+         </button>
+         <button
+           type="button"
+           className="btn btn-primary"
+           onClick={handleShowEditModal}F
+         >
+           <i className="far fa-edit"></i>
+         </button>
+         {!item.roles.some((x) => x == "Administrator") && (
+           <button
+             type="button"
+             className="btn btn-danger"
+             onClick={handleShowDeleteModal}
+           >
+             <i className="far fa-trash-alt"></i>
+           </button>
+         )}
+       </div>
+     </td>)}
+
       </tr>
 
       <OrderHistoryModal

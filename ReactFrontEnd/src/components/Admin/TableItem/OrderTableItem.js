@@ -10,7 +10,7 @@ function OrderTableItem(props) {
   var orderDate = new Date(item.orderDate + "Z");
   //   console.log(orderDate.toLocaleString())
   //console.log(item);
-
+  const isExportPDF = props.isExportPDF;
   const [orderDetailsList, setOrderDetailsList] = useState([]);
 
   const [showInfoModal, setShowInfoModal] = useState(false);
@@ -252,8 +252,8 @@ function OrderTableItem(props) {
   });
   return (
     <Fragment>
-      <tr className="animate__animated animate__fadeIn">
-        <td className="text-center text-white">
+      <tr className="animate__animated ">
+        <td className="text-center text-black">
           {/* <div   className="photo">
         <img
             className="admin_img_table"
@@ -263,24 +263,22 @@ function OrderTableItem(props) {
       </div> */}
           {item.id}
         </td>
-        <td className="text-white">
+        <td className="text-black">
           <p>Tên liên lạc : {item.contactName}</p>
           <p>Số điện thoại : {item.phone}</p>
           <p>Email : {item.email}</p>
         </td>
-        <td className="text-white">
-
-            <NumberFormat
-              value={item.totalPrice}
-              className="text-center text-danger text-decoration-underline  "
-              displayType={"text"}
-              thousandSeparator={true}
-              suffix={"đ"}
-              renderText={(value, props) => <span {...props}>{value}</span>}
-            />
-
+        <td className="text-black">
+          <NumberFormat
+            value={item.totalPrice}
+            className="text-center text-danger text-decoration-underline  "
+            displayType={"text"}
+            thousandSeparator={true}
+            suffix={"đ"}
+            renderText={(value, props) => <span {...props}>{value}</span>}
+          />
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {/* <div   className="progress-container progress-sm">
       <div   className="progress">
         <span   className="progress-value">25%</span>
@@ -310,34 +308,36 @@ function OrderTableItem(props) {
           )}
           {item.status == 4 && <span className="badge bg-secondary">Hủy</span>}
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {formatDate(orderDate, "dd-MM-yyyy HH:mm:ss")}
         </td>
-        <td className="text-white">
-          <div className="btn-group">
-            <button
-              type="button"
-              className="btn btn-warning"
-              onClick={handleShowInfoModal}
-            >
-              <i className="fas fa-info-circle"></i>
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleShowEditOrderModal}
-            >
-              <i className="far fa-edit"></i>
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={handleShowDeleteOrderModal}
-            >
-              <i className="far fa-trash-alt"></i>
-            </button>
-          </div>
-        </td>
+        {!isExportPDF && (
+          <td className="text-black">
+            <div className="btn-group">
+              <button
+                type="button"
+                className="btn btn-warning"
+                onClick={handleShowInfoModal}
+              >
+                <i className="fas fa-info-circle"></i>
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleShowEditOrderModal}
+              >
+                <i className="far fa-edit"></i>
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleShowDeleteOrderModal}
+              >
+                <i className="far fa-trash-alt"></i>
+              </button>
+            </div>
+          </td>
+        )}
       </tr>
       {/* order details modal */}
       <Modal show={showInfoModal} onHide={handleCloseInfoModal} size="lg">
@@ -379,7 +379,10 @@ function OrderTableItem(props) {
                       <p>Giá trị giảm : {item.discountCode.discountAmount}đ</p>
                       <p>
                         Tổng giá đơn hàng sau khi giảm :{" "}
-                        {(item.totalPrice - item.discountCode.discountAmount)>0?(item.totalPrice - item.discountCode.discountAmount):0}đ
+                        {item.totalPrice - item.discountCode.discountAmount > 0
+                          ? item.totalPrice - item.discountCode.discountAmount
+                          : 0}
+                        đ
                       </p>
                     </Fragment>
                   )}

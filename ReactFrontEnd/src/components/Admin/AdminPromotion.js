@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { auth_action } from "../../redux/auth_slice.js";
 import AdminLoading from "./AdminLoading";
+import {bg_admin} from "./../../contant"
 function AdminPromotion() {
   const [authorizing, setAuthorizing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -239,8 +240,7 @@ function AdminPromotion() {
       {!authorizing && (
         <Fragment>
           <AdminHeader></AdminHeader>
-
-          <div className="w-100 h-100" style={{ backgroundColor: "#1E1E28" }}>
+          <div className="w-100 h-100" style={{ backgroundColor: bg_admin}}>
             <div className="container  py-3 ">
               <div className="card p-3 mb-3">
                 <p className="lead text-center mb-0 fw-bold fs-3 text-monospace">
@@ -251,10 +251,10 @@ function AdminPromotion() {
               </div>
 
               <div className="row">
-                <hr className="text-white"></hr>
+                <hr className="text-black"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">
                   <div className="mb-3 row">
-                    <label className="text-white">Trạng thái: </label>
+                    <label className="text-black">Trạng thái: </label>
                     <select
                       className="form-select"
                       defaultValue={"all"}
@@ -266,7 +266,7 @@ function AdminPromotion() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Sắp xếp theo: </label>
+                    <label className="text-black">Sắp xếp theo: </label>
                     <select
                       className="form-select"
                       defaultValue={"Id"}
@@ -278,7 +278,7 @@ function AdminPromotion() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Asc/Desc: </label>
+                    <label className="text-black">Asc/Desc: </label>
                     <select
                       className="form-select"
                       defaultValue={"Asc"}
@@ -289,7 +289,7 @@ function AdminPromotion() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Hiển thị: </label>
+                    <label className="text-black">Hiển thị: </label>
                     <select
                       className="form-select"
                       defaultValue={"5"}
@@ -300,12 +300,13 @@ function AdminPromotion() {
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="50">50</option>
+                      <option value="9999">Toàn bộ</option>
                     </select>
                   </div>
                 </div>
-                <hr className="text-white"></hr>
+                <hr className="text-black"></hr>
                 <div className="container">
-                  <div className="card bg-admin text-white">
+                  <div className="card bg-admin text-black">
                     <div className="card-header">
                       <div className="d-flex justify-content-between flex-wrap">
                         <div className="col-sm-12 ">
@@ -329,14 +330,11 @@ function AdminPromotion() {
                             >
                               <i className="fas fa-sync"></i>
                             </button>
-                            <button type="button" className="btn btn-success">
-                              <i className="fas fa-download"></i>
-                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="card-body text-white">
+                    <div className="card-body text-black">
                       <div className="table-responsive ">
                         <table className="table">
                           <thead className="text-primary">
@@ -365,7 +363,7 @@ function AdminPromotion() {
                         </table>
                         {!isLoading && listPromo.length == 0 && (
                           <div className="d-flex justify-content-center">
-                            {/* <p className="text-center text-white">
+                            {/* <p className="text-center text-black">
                             Không có dữ liệu
                           </p> */}
                             <img

@@ -15,11 +15,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { auth_action } from "../../redux/auth_slice.js";
 import AdminLoading from "./AdminLoading";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import {bg_admin} from "./../../contant"
 function AdminProduct() {
   const [authorizing, setAuthorizing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
-  var navigate = useNavigate()
+  var navigate = useNavigate();
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
@@ -27,27 +30,26 @@ function AdminProduct() {
 
   useEffect(() => {
     AuthService.GetAuthorizeAdmin()
-    .then((res) => {
-      //console.log(res.data);
-      setAuthorizing(false);
-    })
-    .catch((e) => {
-      toast.success("Xác thực không thành công! Xin hãy đăng nhập trước", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      setTimeout(()=>{
-        dispatch(auth_action.logOut());
-        navigate("/login")
-      },2500)
-    })
-    .finally(() => {});
-  },[reRender])
-
+      .then((res) => {
+        //console.log(res.data);
+        setAuthorizing(false);
+      })
+      .catch((e) => {
+        toast.success("Xác thực không thành công! Xin hãy đăng nhập trước", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setTimeout(() => {
+          dispatch(auth_action.logOut());
+          navigate("/login");
+        }, 2500);
+      })
+      .finally(() => {});
+  }, [reRender]);
 
   const [listGenre, setListGenre] = useState([]);
   const [listAuthor, setListAuthor] = useState([]);
@@ -61,12 +63,11 @@ function AdminProduct() {
   const [pageSize, setPageSize] = useState(5);
   const [totalPage, setTotalPage] = useState(1);
 
-
   const [selectedImgUrl, setselectedImgUrl] = useState(null);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedPublisher, setSelectedPublisher] = useState();
-  
+
   const [uploadImg, setUploadImg] = useState(false);
 
   const defaultImgUrl =
@@ -211,7 +212,7 @@ function AdminProduct() {
       upLoadImageToCloudinary(selectedImgUrl)
         .then((res) => {
           setselectedImgUrl(res.data.url);
-          AddProduct(data,res.data.url);
+          AddProduct(data, res.data.url);
         })
         .catch((e) => {
           console.log(e);
@@ -223,7 +224,7 @@ function AdminProduct() {
     }
   }
 
-  function AddProduct(data,url){
+  function AddProduct(data, url) {
     var book = {
       title: data.title,
       description: data.description,
@@ -359,19 +360,17 @@ function AdminProduct() {
     setReRender(!reRender);
   }
 
-
   const [searchType, setSearchType] = useState("Product");
   const [searchBy, setSearchBy] = useState("Name");
   const [keyword, setKeyword] = useState("");
-  const [searchResult, setSearchResult] = useState([])
-  const [currentResultPage, setCurrentResultPage] = useState(1)
-  const [totalResultPage, setTotalResultPage] = useState(1)
+  const [searchResult, setSearchResult] = useState([]);
+  const [currentResultPage, setCurrentResultPage] = useState(1);
+  const [totalResultPage, setTotalResultPage] = useState(1);
   function onSearchTypeChange(event) {
     setSearchType(event.target.value);
   }
   function onSearchByChange(event) {
     setSearchBy(event.target.value);
-
   }
   function onKeywordChange(event) {
     setKeyword(event.target.value);
@@ -384,22 +383,28 @@ function AdminProduct() {
     setShowSearchModal(false);
   };
   const handleShowSearchModal = () => {
-    if(searchBy=="Price"&&isNaN(keyword)){
-      alert("Từ khóa tìm kiếm không hợp lệ!")
+    if (searchBy == "Price" && isNaN(keyword)) {
+      alert("Từ khóa tìm kiếm không hợp lệ!");
       return;
     }
 
     setShowSearchModal(true);
     setIsSearching(true);
-    GetSearchResult(1,4)
+    GetSearchResult(1, 4);
   };
-  function GetSearchResult(pageNumber,pageSize){
-    setCurrentResultPage(pageNumber)
-    AdminService.GetSearchResult(searchType, searchBy, keyword, pageNumber, pageSize)
+  function GetSearchResult(pageNumber, pageSize) {
+    setCurrentResultPage(pageNumber);
+    AdminService.GetSearchResult(
+      searchType,
+      searchBy,
+      keyword,
+      pageNumber,
+      pageSize
+    )
       .then((res) => {
         //console.log(res.data);
-        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)))
-        setSearchResult(res.data.result)
+        setTotalResultPage(Math.ceil(Number(res.data.total / pageSize)));
+        setSearchResult(res.data.result);
       })
       .catch((e) => {
         console.log(e);
@@ -414,16 +419,66 @@ function AdminProduct() {
     }
   }
 
+  const [isExportPDF, setIsExportPDF] = useState(false);
 
+  function ExportPDF() {
+    setIsExportPDF(true);
+    setTimeout(() => {
+      const input = document.getElementById("data_table");
+      var positionInfo = input.getBoundingClientRect();
+      const pdf = new jsPDF("l","mm","a4",);
+
+      var canvas = document.createElement('canvas');
+      canvas.width = positionInfo.width*4;
+      canvas.height = positionInfo.width*4;
+      canvas.style.width = positionInfo.width + 'px';
+      canvas.style.height = positionInfo.height + 'px';
+      var context = canvas.getContext('2d');
+      context.scale(4,4);
+      const title = document.getElementById("title_pdf");
+      html2canvas(title).then((canvas) => {
+        var imgWidth = 295; 
+        var pageHeight = 210;  
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var heightLeft = imgHeight;
+  
+        var position = 0;
+        const imgData = canvas.toDataURL("image/png",4);
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      });
+      html2canvas(input).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png",4);
+        var imgWidth = 295; 
+        var pageHeight = 210;  
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var heightLeft = imgHeight;
+  
+        var position = 0;
+  
+        pdf.addImage(imgData, 'PNG', 0, 20, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+  
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        pdf.save("download.pdf");
+      });
+      setIsExportPDF(false);
+    }, 2000);
+  }
 
   return (
     <Fragment>
       {!authorizing && (
         <Fragment>
           <AdminHeader></AdminHeader>
-          <div className="w-100 h-100" style={{ backgroundColor: "#1E1E28" }}>
+          <div className="w-100 h-100" style={{ backgroundColor: bg_admin}}>
             <div className="container  py-3 ">
-              <div className="card p-3">
+              <div className="card p-3 " id="title_pdf">
                 <p className="lead text-center mb-0 fw-bold fs-3 text-monospace">
                   {" "}
                   <i className="fas fa-file-invoice-dollar me-2"></i>Quản lý sản
@@ -446,16 +501,24 @@ function AdminProduct() {
                           onKeyDown={handleKeyDown}
                           onChange={onKeywordChange}
                         ></input>
-                        <button type="submit" className="searchButton" onClick={handleShowSearchModal}>
+                        <button
+                          type="submit"
+                          className="searchButton"
+                          onClick={handleShowSearchModal}
+                        >
                           <i className="fa fa-search"></i>
                         </button>
                       </div>
                     </div>
                     <div className="form-group">
-                      <label className="text-white fw-bold fs-5">
+                      <label className="text-black fw-bold fs-5">
                         Tìm kiếm bằng :{" "}
                       </label>
-                      <select className="form-select" defaultValue={"Name"}      onChange={onSearchByChange}>
+                      <select
+                        className="form-select"
+                        defaultValue={"Name"}
+                        onChange={onSearchByChange}
+                      >
                         <option value="Id">Id</option>
                         <option value="Price">Giá</option>
                         <option value="Name">Tên</option>
@@ -465,10 +528,10 @@ function AdminProduct() {
                 </div>
               </div>
               <div className="row">
-                <hr className="text-white"></hr>
+                <hr className="text-black"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">
                   <div className="mb-3 row">
-                    <label className="text-white">Trạng thái: </label>
+                    <label className="text-black">Trạng thái: </label>
                     <select
                       className="form-select"
                       defaultValue={"all"}
@@ -485,7 +548,7 @@ function AdminProduct() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Sắp xếp theo: </label>
+                    <label className="text-black">Sắp xếp theo: </label>
                     <select
                       className="form-select"
                       defaultValue={"Id"}
@@ -497,7 +560,7 @@ function AdminProduct() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Asc/Desc: </label>
+                    <label className="text-black">Asc/Desc: </label>
                     <select
                       className="form-select"
                       defaultValue={"Asc"}
@@ -508,7 +571,7 @@ function AdminProduct() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Hiển thị: </label>
+                    <label className="text-black">Hiển thị: </label>
                     <select
                       className="form-select"
                       defaultValue={"5"}
@@ -519,12 +582,13 @@ function AdminProduct() {
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="50">50</option>
+                      <option value="9999">Toàn bộ</option>
                     </select>
                   </div>
                 </div>
-                <hr className="text-white"></hr>
+                <hr className="text-black"></hr>
                 <div className="container">
-                  <div className="card bg-admin text-white">
+                  <div className="card bg-admin text-black">
                     <div className="card-header">
                       <div className="d-flex justify-content-between flex-wrap">
                         <div className="col-sm-12 ">
@@ -546,25 +610,27 @@ function AdminProduct() {
                             >
                               <i className="fas fa-sync"></i>
                             </button>
-                            <button type="button" className="btn btn-success">
-                              <i className="fas fa-download"></i>
+                            <button type="button" className="btn btn-success" onClick={ExportPDF}>
+                              <i className="fas fa-download me-2"></i>Tải PDF
                             </button>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="card-body text-white">
+                    <div className="card-body text-black" id="data_table">
                       <div className="table-responsive ">
                         <table className="table">
                           <thead className="text-primary">
                             <tr>
                               <th className="text-center">#</th>
-                              <th>Sản phẩm</th>
-                              <th>Giá</th>
-                              <th>Nhà xuất bản</th>
-                              <th>Tác giả</th>
-                              <th>Thể loại</th>
-                              <th className="text-right">Actions</th>
+                              <th className="text-center">Sản phẩm</th>
+                              <th className="text-center">Giá</th>
+                              <th className="text-center">Nhà xuất bản/Tác giả</th>
+                              <th className="text-center">Ngày thêm/Cập nhật</th>
+                              <th className="text-center">Thể loại</th>
+                              {!isExportPDF && (
+                                <th className="text-right">Actions</th>
+                              )}
                             </tr>
                           </thead>
                           {!isLoading && listProduct.length > 0 && (
@@ -572,6 +638,7 @@ function AdminProduct() {
                               {listProduct.map((item, i) => {
                                 return (
                                   <ProductTableItem
+                                    isExportPDF={isExportPDF}
                                     item={item}
                                     key={i}
                                     reRender={ReRender}
@@ -648,9 +715,7 @@ function AdminProduct() {
           <Footer></Footer>
         </Fragment>
       )}
-      {authorizing && (
-        <AdminLoading></AdminLoading>
-      )}
+      {authorizing && <AdminLoading></AdminLoading>}
       {/* add product modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal} size="lg">
         <Modal.Header closeButton>
@@ -962,15 +1027,15 @@ function AdminProduct() {
         showSearchModal={showSearchModal}
         handleCloseSearchModal={handleCloseSearchModal}
         isSearching={isSearching}
-        searchResult = {searchResult}
-        searchType = {searchType}
-        GetSearchResult = {GetSearchResult}
-        currentResultPage = {currentResultPage}
-        totalResultPage = {totalResultPage}
+        searchResult={searchResult}
+        searchType={searchType}
+        GetSearchResult={GetSearchResult}
+        currentResultPage={currentResultPage}
+        totalResultPage={totalResultPage}
         listGenre={listGenre}
         listAuthor={listAuthor}
         listPublisher={listPublisher}
-        reRender = {ReRender}
+        reRender={ReRender}
       ></SearchModal>
     </Fragment>
   );
