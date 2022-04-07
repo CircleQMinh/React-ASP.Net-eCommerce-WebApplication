@@ -22,7 +22,7 @@ namespace DotNet6WebApi.Controllers
             mapper = _mapper;
         }
         [HttpGet]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetDiscountCode(string status,string type , int pageNumber, int pageSize)
         {
             try
@@ -88,7 +88,7 @@ namespace DotNet6WebApi.Controllers
                 }
                 var newEntity = mapper.Map<DiscountCode>(dto);
                 await unitOfWork.DiscountCodes.Insert(newEntity);
-               
+                await unitOfWork.Save();
                 return Ok(new { discountCode = newEntity, success = true });
             }
             catch (Exception ex)
@@ -98,7 +98,7 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpPost("generateDiscountCode")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GenerateDiscountCode([FromBody] GenerateDiscountCodeDTO dto)
         {
             if (!ModelState.IsValid)
@@ -287,6 +287,13 @@ namespace DotNet6WebApi.Controllers
 
                 await unitOfWork.DiscountCodes.Insert(dc);
                 await unitOfWork.Save();
+
+                user.Coins = user.Coins-requireCoins;
+                unitOfWork.Users.Update(user);
+                await unitOfWork.Save();
+
+                EmailHelper emailHelper = new EmailHelper();
+                emailHelper.SendEmailWithDiscountCode(user.UserName,user.Email,dc);
 
                 return Ok(new {  discountCode=dc,success = true });
             }

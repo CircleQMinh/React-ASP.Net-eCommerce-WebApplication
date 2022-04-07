@@ -7,8 +7,8 @@ import AdminService from "../../../api/AdminService";
 import { useForm } from "react-hook-form";
 function DiscountTableItem(props) {
   var item = props.item;
-  //console.log(item);
-
+ // console.log(item);
+  const isExportPDF = props.isExportPDF;
   let {
     register: registerEditModal,
     handleSubmit: handleSubmitEditModal,
@@ -80,7 +80,7 @@ function DiscountTableItem(props) {
     };
     //console.log(newDC)
     setIsEditing(true);
-    AdminService.PutDiscountCode(newDC,item.id )
+    AdminService.PutDiscountCode(newDC, item.id)
       .then((res) => {
         if (res.data.success) {
           toast.success("Chỉnh sửa thành công!", {
@@ -117,31 +117,31 @@ function DiscountTableItem(props) {
     AdminService.DeleteDiscountCode(item.id)
       .then((res) => {
         if (res.data.success) {
-            toast.success("Xóa thành công!", {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-            });
-          } else {
-            toast.error(res.date.error, {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-            });
-          }
+          toast.success("Xóa thành công!", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          toast.error(res.date.error, {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
       })
       .finally(() => {
-        setIsDeleting(false)
-        setShowDeleteModal(false)
+        setIsDeleting(false);
+        setShowDeleteModal(false);
         props.reRender();
       });
   }
@@ -167,19 +167,19 @@ function DiscountTableItem(props) {
   dd = today.getDate() + 1;
   maxDay = yyyy + "-" + mm + "-" + dd;
 
+  var startDate = formatDate(new Date(item.startDate + "Z"), "yyyy-MM-dd");
+  var endDate = formatDate(new Date(item.endDate + "Z"), "yyyy-MM-dd");
 
-  var startDate = formatDate(new Date(item.startDate+"Z"),"yyyy-MM-dd")
-  var endDate = formatDate(new Date(item.endDate+"Z"),"yyyy-MM-dd")
+  var dc_type = item.discountAmount != null ? "amount" : "percent";
 
-  var dc_type = item.discountAmount!=null?"amount":"percent"
-
-  var value = item.discountAmount!=null?item.discountAmount:item.discountPercent
+  var value =
+    item.discountAmount != null ? item.discountAmount : item.discountPercent;
 
   return (
     <Fragment>
-      <tr className="animate__animated animate__fadeIn">
-        <td className="text-white">{item.code}</td>
-        <td className="text-white">
+      <tr className="animate__animated ">
+        <td className="text-black">{item.code}</td>
+        <td className="text-black">
           {item.discountAmount ? (
             <NumberFormat
               value={item.discountAmount}
@@ -196,32 +196,37 @@ function DiscountTableItem(props) {
             </span>
           )}
         </td>
-        <td className="text-white">
+        <td className="text-black">
+          {item.status==0?"Chưa sử dụng":"Đã sử dụng"}
+        </td>
+        <td className="text-black">
           {" "}
           {formatDate(new Date(item.startDate + "Z"), "dd-MM-yyyy")}
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {" "}
           {formatDate(new Date(item.endDate + "Z"), "dd-MM-yyyy")}
         </td>
-        <td className="text-white">
-          <div className="btn-group">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleShowEditModal}
-            >
-              <i className="far fa-edit"></i>
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={handleShowDeleteModal}
-            >
-              <i className="far fa-trash-alt"></i>
-            </button>
-          </div>
-        </td>
+        {!isExportPDF && (
+          <td className="text-black">
+            <div className="btn-group">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleShowEditModal}
+              >
+                <i className="far fa-edit"></i>
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleShowDeleteModal}
+              >
+                <i className="far fa-trash-alt"></i>
+              </button>
+            </div>
+          </td>
+        )}
       </tr>
 
       {/* edit modal */}
@@ -230,7 +235,7 @@ function DiscountTableItem(props) {
           <Modal.Title>Chỉnh sửa thông tin </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <form>
+          <form>
             <div className="form-group">
               <label>Mã giảm giá : </label>
               <div className="input-group">

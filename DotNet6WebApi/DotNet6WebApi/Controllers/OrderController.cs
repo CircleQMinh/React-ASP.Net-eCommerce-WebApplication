@@ -28,8 +28,8 @@ namespace DotNet6WebApi.Controllers
             try
             {
                 //Get Config Info
-                string vnp_Returnurl = "http://localhost:3000/thankyou";//URL nhan ket qua tra ve 
-                //string vnp_Returnurl = "http://minh18110320-001-site1.etempurl.com/#/thankyou";//URL nhan ket qua tra ve 
+                //string vnp_Returnurl = "http://localhost:3000/thankyou";//URL nhan ket qua tra ve 
+                string vnp_Returnurl = "https://bookstore18110320hcmute.netlify.app/thankyou";//URL nhan ket qua tra ve 
                 string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
                 string vnp_TmnCode = "K3IS060E"; //Ma website
                 string vnp_HashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";//Chuoi bi mat
@@ -179,12 +179,18 @@ namespace DotNet6WebApi.Controllers
             {
                 //lưu OK
                 var newOrder = mapper.Map<Order>(order);
-                newOrder.DiscountCodeID = null;
+                if (order.DiscountCodeID != null)
+                {
+                    var discountCode = await unitOfWork.DiscountCodes.Get(q => q.Id == order.DiscountCodeID);
+                    discountCode.Order = newOrder;
+                    discountCode.Status = 1;
+                    unitOfWork.DiscountCodes.Update(discountCode);
+                }
                 await unitOfWork.Orders.Insert(newOrder);
                 await unitOfWork.Save();
-                var discountCode = await unitOfWork.DiscountCodes.Get(q=>q.Id == order.DiscountCodeID);
-                discountCode.Order = newOrder;
-                unitOfWork.DiscountCodes.Update(discountCode);
+
+
+        
 
                 await unitOfWork.Save();
                 // lấy thông tin để gửi email

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAArsQZpNEVykCuH+8XKRorPQAAAAACAAAAAAAQZgAAAAEAACAAAABPj6WVl/DCEf/75IXEC6Xg5KC6cXT2JWS9FMIe+Y4/+AAAAAAOgAAAAAIAACAAAADhlRC56dZmOTRkLbo8dDThb5CLmcSWdsS72TQ41DxTq4AAAABEo4FjA+hjb3d3ifUTQFAaWypndHnF/YhT+deoDQleMMA9AvgN+duWgtt6mb8Jl0+AkuWyS7TE6rVm7eEYf6Y4jK5JUVm+zrzEP+YpNTuLRXTBvI5HsHuUx3atPP4JIq5K1O/Tm0W1VmtMJ2HXp85AgmEJmblYZMOpBuLyIQKL40AAAAAh+5vFUiwo9ArSqE//FLqNg8CM/LovyeqVLdfQYRk6Njsp9xqrJ3E2IOSHegAcEPwOKrHyMyqP0TIMjS6o5Dop</EncryptedPassword>
+    <History>True|2022-04-05T04:15:18.6413236Z;True|2022-04-05T11:11:18.1783397+07:00;True|2022-03-31T17:04:35.8560895+07:00;True|2022-03-31T16:53:20.1321737+07:00;True|2022-03-30T17:50:46.1994911+07:00;True|2022-03-30T17:39:56.2314979+07:00;True|2022-03-30T17:07:37.1262654+07:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="sqlConnection">
+      <Value>Data Source=tcp:dotnet6webapidbserver.database.windows.net,1433%3bInitial Catalog=DotNet6WebAPIDatabase%3bUser Id=quocminh%40dotnet6webapidbserver%3bPassword=p%40ssworD3</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

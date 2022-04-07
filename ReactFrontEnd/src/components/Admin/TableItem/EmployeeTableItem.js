@@ -10,7 +10,7 @@ import ShipperHistoryModal from "../Modal/ShipperHistoryModal";
 function EmployeeTableItem(props) {
   var item = props.item;
   //console.log(item);
-
+  const isExportPDF = props.isExportPDF;
   let {
     register: registerEditModal,
     handleSubmit: handleSubmitEditModal,
@@ -178,29 +178,32 @@ function EmployeeTableItem(props) {
 
   return (
     <Fragment>
-      <tr className="animate__animated animate__fadeIn">
-        <td className="text-center text-white">
+      <tr className="animate__animated">
+        <td className="text-center text-black">
           <div className="photo d-flex justify-content-start align-items-center">
-            <img
-              className="admin_img_table me-2"
-              src={item.imgUrl}
-              alt="photoimg"
-            ></img>
+            {!isExportPDF && (
+              <img
+                className="admin_img_table me-2"
+                src={item.imgUrl}
+                alt="photoimg"
+              ></img>
+            )}
+
             {item.shipperId == null && <p>{item.name} (Nhân viên)</p>}
             {item.shipperId != null && <p>{item.name} (Shipper)</p>}
           </div>
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {" "}
           {formatDate(new Date(item.doB + "Z"), "dd-MM-yyyy")}
         </td>
-        <td className="text-white">{item.sex}</td>
-        <td className="text-white">
+        <td className="text-black">{item.sex}</td>
+        <td className="text-black">
           <p>Email : {item.email}</p>
           <p>Địa chỉ : {item.address}</p>
           <p>Số CMND : {item.cmnd}</p>
         </td>
-        <td className="text-white">
+        <td className="text-black">
           <NumberFormat
             value={item.salary}
             className="text-center text-danger text-decoration-underline  "
@@ -210,38 +213,40 @@ function EmployeeTableItem(props) {
             renderText={(value, props) => <span {...props}>{value}</span>}
           />
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {" "}
           {formatDate(new Date(item.startDate + "Z"), "dd-MM-yyyy")}
         </td>
-        <td className="text-white">
-          <div className="btn-group">
-            {item.shipperId != null && (
+        {!isExportPDF && (
+          <td className="text-black">
+            <div className="btn-group">
+              {item.shipperId != null && (
+                <button
+                  type="button"
+                  className="btn btn-warning"
+                  onClick={handleShowShipperHistoryModal}
+                >
+                  <i className="fas fa-info-circle"></i>
+                </button>
+              )}
+
               <button
                 type="button"
-                className="btn btn-warning"
-                onClick={handleShowShipperHistoryModal}
+                className="btn btn-primary"
+                onClick={handleShowEditModal}
               >
-                <i className="fas fa-info-circle"></i>
+                <i className="far fa-edit"></i>
               </button>
-            )}
-
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleShowEditModal}
-            >
-              <i className="far fa-edit"></i>
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={handleShowDeleteModal}
-            >
-              <i className="far fa-trash-alt"></i>
-            </button>
-          </div>
-        </td>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleShowDeleteModal}
+              >
+                <i className="far fa-trash-alt"></i>
+              </button>
+            </div>
+          </td>
+        )}
       </tr>
 
       {/* edit modal */}

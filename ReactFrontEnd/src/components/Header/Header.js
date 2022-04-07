@@ -81,6 +81,14 @@ function Header(props) {
     window.location.reload(false)
   };
 
+  function redirectSearchKeyWord(e){
+    var value = document.getElementById("header_searchbar").value
+    //console.log(value)
+    window.scrollTo(0, 0);
+    navigate(`/search?name=${value}`)
+    window.location.reload(false)
+  }
+
   return (
     <Fragment>
       <CartIcon></CartIcon>
@@ -105,13 +113,14 @@ function Header(props) {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="">
             <div className="d-flex justify-content-center">
-              <Form className={`d-flex top-nav-searchbar `}>
+              <Form className={`d-flex top-nav-searchbar `} onSubmit={redirectSearchKeyWord}>
                 <input
                   className={"form-control me-2"}
                   type="search"
                   placeholder="Tìm sản phẩm mà bạn quan tâm ..."
                   aria-label="Search"
                   name="search"
+                  id="header_searchbar"
                 />
                 <Button variant="primary" type="submit">
                   <i className="fas fa-search"></i>

@@ -85,6 +85,8 @@ builder.Services.AddScoped<IAuthManager, AuthManager>();
 //configure automapper 
 builder.Services.AddAutoMapper(typeof(AutoMapperSetting));
 
+
+
 //modify with newtonsoftjson
 builder.Services.AddControllers().AddNewtonsoftJson(
     op => op.SerializerSettings.ReferenceLoopHandling
@@ -120,8 +122,7 @@ builder.Services.AddSwaggerGen(
             new string[] {}
         }
     });
-    });
-
+});
 
 
 
@@ -142,9 +143,11 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseStaticFiles();
-app.UseDefaultFiles();
-
 app.MapControllers();
+
+
+
+
+
 
 app.Run();

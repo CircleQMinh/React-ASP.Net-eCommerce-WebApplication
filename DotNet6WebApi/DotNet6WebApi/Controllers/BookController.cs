@@ -55,18 +55,16 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> GetBooks(int pageNumber, int pageSize, string? keyword = null, string? priceRange = null, string? genreFilter = null)
+        public async Task<IActionResult> GetBooks(int pageNumber =1, int pageSize=8, string? keyword = null, string? priceRange = null, string? genreFilter = null)
         {
 
-            Expression<Func<Book, bool>> expression = q => true;
+            Expression<Func<Book, bool>> expression = q=>q.Id!=0;
 
             try
             {
-
-
                 if (keyword != null)
                 {
-                    Expression<Func<Book, bool>> expression_keyword = q => q.Title.Contains(keyword);
+                    Expression<Func<Book, bool>> expression_keyword = q => q.Title.ToLower().Contains(keyword.ToLower());
                     expression = expression.AndAlso(expression_keyword);
 
                 }

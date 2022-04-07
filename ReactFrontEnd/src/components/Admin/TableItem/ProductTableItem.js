@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { upLoadImageToCloudinary } from "../../../helper/Cloudinary";
 function ProductTableItem(props) {
   var item = props.item;
+  const isExportPDF = props.isExportPDF;
 
   const listGenre = props.listGenre;
   const listAuthor = props.listAuthor;
@@ -288,19 +289,22 @@ function ProductTableItem(props) {
   // console.log(item)
   return (
     <Fragment>
-      <tr className="animate__animated animate__fadeIn">
-        <td className="text-center text-white">{item.id}</td>
-        <td className="text-white">
+      <tr className="animate__animated ">
+        <td className="text-center text-black">{item.id}</td>
+        <td className="text-black">
           <div className="d-flex flex-column justify-content-start align-items-center">
-            <img
-              className="admin_img_table mb-3"
-              src={item.imgUrl}
-              alt="photoimg"
-            ></img>
+            {!isExportPDF && (
+              <img
+                className="admin_img_table mb-3"
+                src={item.imgUrl}
+                alt="photoimg"
+              ></img>
+            )}
+
             <p>{item.title}</p>
           </div>
         </td>
-        <td className="text-white ">
+        <td className="text-black ">
           <div className="d-flex flex-column justify-content-between align-items-center">
             {item.promotionInfo == null && (
               <NumberFormat
@@ -373,7 +377,7 @@ function ProductTableItem(props) {
               )}
           </div>
         </td>
-        <td className="text-white">
+        <td className="text-black">
           <p className="text-center">
             <i className="fa-solid fa-print me-2"></i> {item.publisher.name}{" "}
           </p>{" "}
@@ -388,7 +392,7 @@ function ProductTableItem(props) {
           })}
         </td>
 
-        <td className="text-white">
+        <td className="text-black">
           <p className="text-center">
             <i className="fa-solid fa-calendar-plus me-2"></i>{" "}
             {formatDate(new Date(item.createDate), "dd-MM-yyyy HH:mm:ss")}{" "}
@@ -398,7 +402,7 @@ function ProductTableItem(props) {
             {formatDate(new Date(item.updateDate), "dd-MM-yyyy HH:mm:ss")}{" "}
           </p>
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {item.genres.map((genre) => {
             return (
               <p className="text-center" key={genre.id}>
@@ -408,24 +412,26 @@ function ProductTableItem(props) {
             );
           })}
         </td>
-        <td className="text-white">
-          <div className="btn-group">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleShowEditModal}
-            >
-              <i className="far fa-edit"></i>
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={handleShowDeleteProductModal}
-            >
-              <i className="far fa-trash-alt"></i>
-            </button>
-          </div>
-        </td>
+        {!isExportPDF && (
+          <td className="text-black">
+            <div className="btn-group">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleShowEditModal}
+              >
+                <i className="far fa-edit"></i>
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleShowDeleteProductModal}
+              >
+                <i className="far fa-trash-alt"></i>
+              </button>
+            </div>
+          </td>
+        )}
       </tr>
 
       {/* Edit product modal */}
@@ -751,8 +757,8 @@ function ProductTableItem(props) {
         <Modal.Body>
           <p className="text-tron text-monospace">Xóa sản phẩm này?</p>
           <p className="text-center">
-            <i className="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào liên
-            quan đến sản phẩm sẽ bị xóa!
+            <i className="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào
+            liên quan đến sản phẩm sẽ bị xóa!
           </p>
         </Modal.Body>
         {isDeleting && (

@@ -10,8 +10,9 @@ import { useNavigate } from "react-router-dom";
 import SearchModal from "../Admin/Modal/SearchModal";
 import Pagination from "../Pagination/Pagination";
 
-
-
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import {bg_admin} from "./../../contant"
 import AdminLoading from "./AdminLoading";
 import GenreTableItem from "./TableItem/GenreTableItem";
 import Footer from "../Footer/Footer";
@@ -19,7 +20,7 @@ function AdminGenre() {
   const [authorizing, setAuthorizing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
-
+  const [isExportPDF, setIsExportPDF] = useState(false);
   var navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth_slice.isLoggedIn);
@@ -166,14 +167,64 @@ function AdminGenre() {
     }
   }
 
+  function ExportPDF() {
+    setIsExportPDF(true);
+    setTimeout(() => {
+      const input = document.getElementById("data_table");
+      var positionInfo = input.getBoundingClientRect();
+      const pdf = new jsPDF("l","mm","a4",);
+
+      var canvas = document.createElement('canvas');
+      canvas.width = positionInfo.width*4;
+      canvas.height = positionInfo.width*4;
+      canvas.style.width = positionInfo.width + 'px';
+      canvas.style.height = positionInfo.height + 'px';
+      var context = canvas.getContext('2d');
+      context.scale(4,4);
+      const title = document.getElementById("title_pdf");
+      html2canvas(title).then((canvas) => {
+        var imgWidth = 295; 
+        var pageHeight = 210;  
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var heightLeft = imgHeight;
+  
+        var position = 0;
+        const imgData = canvas.toDataURL("image/png",4);
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      });
+      html2canvas(input).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png",4);
+        var imgWidth = 295; 
+        var pageHeight = 210;  
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var heightLeft = imgHeight;
+  
+        var position = 0;
+  
+        pdf.addImage(imgData, 'PNG', 0, 20, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+  
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        pdf.save("download.pdf");
+      });
+      setIsExportPDF(false);
+    }, 2000);
+  }
+
   return (
     <Fragment>
       {!authorizing && (
         <Fragment>
           <AdminHeader></AdminHeader>
-          <div className="w-100 h-100" style={{ backgroundColor: "#1E1E28" }}>
+          <div className="w-100 h-100" style={{ backgroundColor: bg_admin}}>
             <div className="container  py-3 ">
-              <div className="card p-3">
+            <div className="card p-3 " id="title_pdf">
                 <p className="lead text-center mb-0 fw-bold fs-3 text-monospace">
                   {" "}
                   <i className="fas fa-file-invoice-dollar me-2"></i>Quản lý thể
@@ -206,7 +257,7 @@ function AdminGenre() {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label className="text-white fw-bold fs-5">
+                      <label className="text-black fw-bold fs-5">
                         Tìm kiếm bằng :{" "}
                       </label>
                       <select
@@ -223,10 +274,10 @@ function AdminGenre() {
                 </div>
               </div>
               <div className="row">
-                <hr className="text-white"></hr>
+                <hr className="text-black"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">
                   <div className="mb-3 row">
-                    <label className="text-white">Sắp xếp theo: </label>
+                    <label className="text-black">Sắp xếp theo: </label>
                     <select
                       className="form-select"
                       defaultValue={"Id"}
@@ -238,7 +289,7 @@ function AdminGenre() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Asc/Desc: </label>
+                    <label className="text-black">Asc/Desc: </label>
                     <select
                       className="form-select"
                       defaultValue={"Asc"}
@@ -249,7 +300,7 @@ function AdminGenre() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Hiển thị: </label>
+                    <label className="text-black">Hiển thị: </label>
                     <select
                       className="form-select"
                       defaultValue={"5"}
@@ -260,12 +311,13 @@ function AdminGenre() {
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="50">50</option>
+                      <option value="9999">Toàn bộ</option>
                     </select>
                   </div>
                 </div>
-                <hr className="text-white"></hr>
+                <hr className="text-black"></hr>
                 <div className="container">
-                  <div className="card bg-admin text-white">
+                  <div className="card bg-admin text-black">
                     <div className="card-header">
                       <div className="d-flex justify-content-between flex-wrap">
                         <div className="col-sm-12 ">
@@ -289,14 +341,14 @@ function AdminGenre() {
                             >
                               <i className="fas fa-sync"></i>
                             </button>
-                            <button type="button" className="btn btn-success">
-                              <i className="fas fa-download"></i>
+                            <button type="button" className="btn btn-success" onClick={ExportPDF}>
+                              <i className="fas fa-download me-2"></i>Tải PDF
                             </button>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="card-body text-white">
+                    <div className="card-body text-black" id="data_table">
                       <div className="table-responsive ">
                         <table className="table">
                           <thead className="text-primary">
@@ -305,7 +357,9 @@ function AdminGenre() {
                               <th>Tên</th>
                               <th>Mô tả</th>
                               <th>Số sách</th>
-                              <th className="text-right">Actions</th>
+                              {!isExportPDF && (
+                                <th className="text-right">Actions</th>
+                              )}
                             </tr>
                           </thead>
                           {!isLoading && listGenre.length > 0 && (
@@ -313,6 +367,7 @@ function AdminGenre() {
                               {listGenre.map((item, i) => {
                                 return (
                                   <GenreTableItem
+                                    isExportPDF={isExportPDF}
                                     item={item}
                                     key={i}
                                     reRender={ReRender}
