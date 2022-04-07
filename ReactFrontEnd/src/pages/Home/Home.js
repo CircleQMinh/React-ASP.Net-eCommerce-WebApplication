@@ -10,6 +10,7 @@ import FirstAPI from "../../api/FirstAPI";
 import ProductService from "../../api/ProductService";
 import { limitGetProduct } from "../../utils/constant";
 import { LoadingScreen } from "../../components/Loading";
+import { Evaluate } from "./components/Evaluate";
 
 import "./Home.css";
 
@@ -68,7 +69,6 @@ function Home(props) {
             <i className="far fa-star"></i> Nổi bật
           </h3>
         </div>
-        {console.log("popularProducts", popularProducts, lateProducts,"randomProducts", randomProducts)}
         {popularProducts?.length > 0 
           ?  
           <SlickSlider items={popularProducts}/>
@@ -89,6 +89,8 @@ function Home(props) {
       <Container fluid>
         <ProductList></ProductList>
       </Container>
+
+      <Evaluate/>
 
       <Container className="mt-5">
         <hr></hr>
