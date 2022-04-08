@@ -204,15 +204,15 @@ function FindOrderItem(props) {
   return (
     <Fragment>
       <tr>
-        <td className="text-center text-white">
+        <td className="text-center text-black">
           {item.id}
         </td>
-        <td className="text-white">
+        <td className="text-black">
           <p>Tên liên lạc : {item.contactName}</p>
           <p>Số điện thoại : {item.phone}</p>
           <p>Email : {item.email}</p>
         </td>
-        <td className="text-white">
+        <td className="text-black">
 
             <NumberFormat
               value={item.totalPrice}
@@ -224,7 +224,7 @@ function FindOrderItem(props) {
             />
 
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {item.paymentMethod == "cash" && (
             <p className="text-center">Tiền mặt</p>
           )}
@@ -247,10 +247,10 @@ function FindOrderItem(props) {
           )}
           {item.status == 4 && <span className="badge bg-secondary">Hủy</span>}
         </td>
-        <td className="text-white">
+        <td className="text-black">
           {formatDate(orderDate, "dd-MM-yyyy HH:mm:ss")}
         </td>
-        <td className="text-white">
+        <td className="text-black">
           <div className="btn-group">
             <button
               type="button"

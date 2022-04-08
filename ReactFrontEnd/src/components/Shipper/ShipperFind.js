@@ -117,10 +117,10 @@ function ShipperFind() {
               </div>
 
               <div className="row">
-                <hr className="text-white"></hr>
+                <hr className="text-black"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">
                   <div className="mb-3 row">
-                    <label className="text-white">Sắp xếp theo: </label>
+                    <label className="text-black">Sắp xếp theo: </label>
                     <select
                       className="form-select"
                       defaultValue={"Id"}
@@ -133,7 +133,7 @@ function ShipperFind() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Asc/Desc: </label>
+                    <label className="text-black">Asc/Desc: </label>
                     <select
                       className="form-select"
                       defaultValue={"Asc"}
@@ -144,7 +144,7 @@ function ShipperFind() {
                     </select>
                   </div>
                   <div className="mb-3 row">
-                    <label className="text-white">Hiển thị: </label>
+                    <label className="text-black">Hiển thị: </label>
                     <select
                       className="form-select"
                       defaultValue={"5"}
@@ -158,9 +158,9 @@ function ShipperFind() {
                     </select>
                   </div>
                 </div>
-                <hr className="text-white"></hr>
+                <hr className="text-black"></hr>
                 <div className="container">
-                  <div className="card bg-admin text-white">
+                  <div className="card bg-admin text-black">
                     <div className="card-header">
                       <div className="d-flex justify-content-between flex-wrap">
                         <div className="col-sm-12 ">
@@ -182,7 +182,7 @@ function ShipperFind() {
                         </div>
                       </div>
                     </div>
-                    <div className="card-body text-white">
+                    <div className="card-body text-black">
                       <div className="table-responsive ">
                         <table className="table">
                           <thead className="text-primary">
@@ -212,7 +212,7 @@ function ShipperFind() {
                         </table>
                         {!isLoading && listOrder.length == 0 && (
                           <div className="d-flex justify-content-center">
-                            {/* <p className="text-center text-white">
+                            {/* <p className="text-center text-black">
                             Không có dữ liệu
                           </p> */}
                             <img

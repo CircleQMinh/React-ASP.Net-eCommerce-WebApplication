@@ -20,13 +20,13 @@ function OrderHistoryModal(props) {
       <Modal.Header closeButton>
         <Modal.Title>Lịch sử đơn hàng</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ backgroundColor: "#1E1E28" }}>
+      <Modal.Body >
         {props.isGettingOrderHistory && (
           <div className="d-flex justify-content-center">
             <div className="spinner-border text-info" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
-            <p className="text monospace ms-2 text-white">
+            <p className="text monospace ms-2 text-black">
               Đang xử lý xin chờ tí...
             </p>
           </div>
@@ -63,7 +63,7 @@ function OrderHistoryModal(props) {
         )}
 
         {!props.isGettingOrderHistory && data.length == 0 && (
-          <p className="text-center text-white">
+          <p className="text-center text-black">
             Không tìm thấy thông tin tìm kiếm!
           </p>
         )}

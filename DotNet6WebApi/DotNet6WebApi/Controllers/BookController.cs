@@ -655,5 +655,29 @@ namespace DotNet6WebApi.Controllers
             }
         }
 
+        [HttpGet("author")]
+        public async Task<IActionResult> GetBookByAuthor(string name,int pageNumber,int pageSize)
+        {
+            Expression<Func<Book, bool>> expression = q => q.Authors.Any(author => author.Name == name);
+            var books = await unitOfWork.Books.GetAll(expression,
+                null,
+                new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" },
+                new PaginationFilter(pageNumber,pageSize));
+            var result = mapper.Map<IList<BookDTO>>(books);
+            var count = await unitOfWork.Books.GetCount(expression);
+            return Ok(new { result = result, success = true,totalProduct=count });
+        }
+        [HttpGet("genre")]
+        public async Task<IActionResult> GetBookByGenre(int id, int pageNumber, int pageSize)
+        {
+            Expression<Func<Book, bool>> expression = q => q.Genres.Any(g => g.Id == id);
+            var books = await unitOfWork.Books.GetAll(expression,
+                null,
+                new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" },
+                new PaginationFilter(pageNumber, pageSize));
+            var count = await unitOfWork.Books.GetCount(expression);
+            var result = mapper.Map<IList<BookDTO>>(books);
+            return Ok(new { result = result, success = true, totalProduct = count });
+        }
     }
 }

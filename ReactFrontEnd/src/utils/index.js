@@ -59,3 +59,13 @@ export function getReviewTime(strDate) {
   }
   return date.toLocaleTimeString();
 }
+
+export function getFormatStringFromList(list){
+  var result = ""
+  list.forEach(item => {
+    result=result+=item.name
+    result+=", "
+  });
+  result.slice(0,result.length-3)
+  return result
+}
