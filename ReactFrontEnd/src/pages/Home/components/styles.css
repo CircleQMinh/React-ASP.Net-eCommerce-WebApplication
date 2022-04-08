@@ -1,0 +1,87 @@
+.displayFlex {
+    display: flex !important;
+}
+
+.evaluateContainer {
+    margin-top: 40px;
+    padding:  80px 30px 80px 30px;
+    background-color: var(--primary-background);
+    /* background-color: var(--primary-color); */
+}
+
+.imageListContainer {
+    margin-top: 40px;
+}
+
+.imageEvaluate,
+.imageEvaluateFocus {
+    width: 150px;
+    height: 150px;
+    border: 2px solid rgba(0,0,0,0.1);
+    margin: 0px 2px;
+    overflow: hidden;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.imageEvaluateFocus {
+    opacity: 1;
+}
+
+.imageEvaluate {
+    opacity: 0.5;
+}
+
+.imageEvaluate:hover,
+.imageEvaluateFocus:hover {
+    border: 2px solid var(--primary-color);
+}
+
+.commentText {
+    font-family: 'Roboto Slab', serif;
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+}
+
+@media (max-width: 767.98px ) { 
+    .imageEvaluateFocus,
+    .imageEvaluate {
+        width: 90px;
+        height: 90px;
+    }
+
+    .evaluateContainer {
+        padding:  40px 30px 40px 30px; 
+    }
+
+    .commentText {
+        font-size: 18px;
+    }
+
+    .imageListContainer {
+        margin-top: 20px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) { 
+    .imageEvaluateFocus,
+    .imageEvaluate {
+        width: 130px;
+        height: 130px;
+    }
+
+    .evaluateContainer {
+        padding:  60px 30px 60px 30px; 
+    }
+
+    .commentText {
+        font-size: 20px;
+    }
+
+    .imageListContainer {
+        margin-top: 30px;
+    }
+}
