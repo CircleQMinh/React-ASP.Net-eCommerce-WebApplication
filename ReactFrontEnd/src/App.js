@@ -39,7 +39,8 @@ import AdminDiscount from "./components/Admin/AdminDiscount";
 import AdminGenre from "./components/Admin/AdminGenre";
 
 import FavoritePage from "./pages/Favorite";
-import ExportPDF from "./components/ExportPDF/ExportPDF";
+import ExportCSV from "./components/ExportCSV/ExportCSV";
+
 
 function App() {
   return (
@@ -84,7 +85,7 @@ function App() {
           <Route path="/favorite/:page" element={<FavoritePage/>}></Route>
           <Route path="/search" element={<SearchPage/>}></Route>
 
-          <Route path="/exportPDF" element={<ExportPDF/>}></Route>
+          <Route path="/exportCSV" element={<ExportCSV/>}> </Route>
         </Routes>
         <ToastContainer></ToastContainer>
       </BrowserRouter>

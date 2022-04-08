@@ -50,8 +50,8 @@ function ShipperHistoryModal(props) {
         <Modal.Header closeButton>
           <Modal.Title>Lịch sử giao hàng </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ backgroundColor: "#1E1E28" }}>
-          <div className="card-body text-white ">
+        <Modal.Body style={{ backgroundColor: "#FFFFFF" }}>
+          <div className="card-body text-black ">
             <div className="table-responsive ">
               <table className="table">
                 <thead className="text-primary">
@@ -81,7 +81,7 @@ function ShipperHistoryModal(props) {
               </table>
               {!isLoading && orderList.length == 0 && (
                 <div className="d-flex justify-content-center">
-                  {/* <p className="text-center text-white">
+                  {/* <p className="text-center text-black">
                             Không có dữ liệu
                           </p> */}
                   <img

@@ -16,10 +16,13 @@ import AdminLoading from "./AdminLoading";
 import { bg_admin } from "./../../contant";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import {orderStatus,paymentMethod} from "../../../src/contant" 
+
 function AdminOrder() {
   const [authorizing, setAuthorizing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [reRender, setReRender] = useState(true);
+
   var navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -231,6 +234,49 @@ function AdminOrder() {
     }, 2000);
   }
 
+  const camelCase = (str) => {
+    return str.substring(0, 1).toUpperCase() + str.substring(1);
+  };
+  const filterColumns = (data) => {
+    // Get column names
+    const columns = Object.keys(data[0]);
+    let headers = [];
+    columns.forEach((col, idx) => {
+      headers.push({ label: camelCase(col), key: col });
+    });
+
+    return headers;
+  };
+  function ExportCSV(){
+    var data=[]
+    listOrder.forEach(item => {
+      var temp = {
+        id:item.id,
+        userID:item.userID,
+        contactName:item.contactName,
+        phone:item.phone,
+        email:item.email,
+        totalPrice:item.totalPrice,
+        totalItem:item.totalItem,
+        paymentMethod:paymentMethod[item.paymentMethod],
+        status:orderStatus[item.status],
+        orderDate:formatDate(
+          new Date(item.orderDate + "Z"),
+          "dd-MM-yyyy HH:mm:ss"
+        ),
+        shippedDate:item.shippedDate=="0001-01-01T00:00:00"?formatDate(
+          new Date(item.shippedDate + "Z"),
+          "dd-MM-yyyy HH:mm:ss"
+        ):""
+      }
+      data.push(temp)
+    });
+
+    localStorage.setItem("exportCSVData",JSON.stringify(data))
+    localStorage.setItem("exportCSVHeader",JSON.stringify(filterColumns(data)))
+    window.open("/exportCSV", "_blank") //to open new page
+  }
+
   return (
     <Fragment>
       {!authorizing && (
@@ -373,6 +419,14 @@ function AdminOrder() {
                             >
                               <i className="fas fa-download me-2"></i>
                               Tải PDF
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-success"
+                              onClick={ExportCSV}
+                            >
+                              <i className="fas fa-download me-2"></i>
+                              Tải Excel
                             </button>
                           </div>
                         </div>
