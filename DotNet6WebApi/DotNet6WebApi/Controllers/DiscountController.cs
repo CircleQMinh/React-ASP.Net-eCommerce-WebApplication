@@ -293,9 +293,9 @@ namespace DotNet6WebApi.Controllers
                 await unitOfWork.Save();
 
                 EmailHelper emailHelper = new EmailHelper();
-                emailHelper.SendEmailWithDiscountCode(user.UserName,user.Email,dc);
+                var sent = emailHelper.SendEmailWithDiscountCode(user.UserName,user.Email,dc);
 
-                return Ok(new {  discountCode=dc,success = true });
+                return Ok(new {  discountCode=dc,success = true,sent=sent });
             }
             catch (Exception ex)
             {

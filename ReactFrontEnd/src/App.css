@@ -338,7 +338,11 @@ Extra extra large	xxl	        ≥1400px */
   height: 100px;
   margin-top: 10px;
 }
-
+.input_user,
+.input_pass:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+}
 .text-white{
   color: black!important;
 }

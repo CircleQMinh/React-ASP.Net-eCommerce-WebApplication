@@ -16,8 +16,7 @@ function Footer(props) {
           <div className="col-sm-12 col-md-6">
             <h6>Về chúng tôi</h6>
             <p className="text-justify">
-              Cửa hàng mua thực phẩm online TP.HCM. Chuyên bán các loại rau
-              sạch, củ quả, trái cây, thực phẩm tươi sống
+              Cửa hàng mua sách online TP.HCM. Chuyên bán các loại sách, truyện tranh và tiểu thuyết.
             </p>
           </div>
 

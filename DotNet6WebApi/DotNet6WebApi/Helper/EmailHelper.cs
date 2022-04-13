@@ -42,9 +42,10 @@ namespace DotNet6WebApi.Helper
 
             var client = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587))
             {
-                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "5YemExFc!6QpT+aT"),
-                EnableSsl = true,
                 UseDefaultCredentials = false, // ?? :D ??
+                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "tpcfzddwrryfbnnz"),
+                EnableSsl = true,
+           
                 DeliveryMethod = SmtpDeliveryMethod.Network
             };
 
@@ -89,9 +90,10 @@ namespace DotNet6WebApi.Helper
 
             var client = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587))
             {
-                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "5YemExFc!6QpT+aT"),
-                EnableSsl = true,
                 UseDefaultCredentials = false, // ?? :D ??
+                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "tpcfzddwrryfbnnz"),
+                EnableSsl = true,
+       
                 DeliveryMethod = SmtpDeliveryMethod.Network
             };
 
@@ -181,9 +183,10 @@ namespace DotNet6WebApi.Helper
             mailMessage.Body = msg;
             var client = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587))
             {
-                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "5YemExFc!6QpT+aT"),
-                EnableSsl = true,
                 UseDefaultCredentials = false, // ?? :D ??
+                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "tpcfzddwrryfbnnz"),
+                EnableSsl = true,
+             
                 DeliveryMethod = SmtpDeliveryMethod.Network
             };
 
@@ -234,9 +237,10 @@ namespace DotNet6WebApi.Helper
             mailMessage.Body = msg;
             var client = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587))
             {
-                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "5YemExFc!6QpT+aT"),
-                EnableSsl = true,
                 UseDefaultCredentials = false, // ?? :D ??
+                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "tpcfzddwrryfbnnz"),
+                EnableSsl = true,
+      
                 DeliveryMethod = SmtpDeliveryMethod.Network
             };
 

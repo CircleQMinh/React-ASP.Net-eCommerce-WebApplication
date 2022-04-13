@@ -49,14 +49,14 @@ function Header(props) {
 
   const loadGenre = () => {
     ProductService.getGenre()
-    .then((response) => {
-      setListGenre(response.data.result);
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-    .finally(() => {});
-  }
+      .then((response) => {
+        setListGenre(response.data.result);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {});
+  };
 
   //run first
   useEffect(() => {
@@ -76,17 +76,17 @@ function Header(props) {
 
   const redirectSearch = (value) => {
     window.scrollTo(0, 0);
-    const genre = JSON.stringify([value])
-    navigate(`/search?genre=${genre}`)
-    window.location.reload(false)
+    const genre = JSON.stringify([value]);
+    navigate(`/search?genre=${genre}`);
+    window.location.reload(false);
   };
 
-  function redirectSearchKeyWord(e){
-    var value = document.getElementById("header_searchbar").value
+  function redirectSearchKeyWord(e) {
+    var value = document.getElementById("header_searchbar").value;
     //console.log(value)
     window.scrollTo(0, 0);
-    navigate(`/search?name=${value}`)
-    window.location.reload(false)
+    navigate(`/search?name=${value}`);
+    window.location.reload(false);
   }
 
   return (
@@ -113,7 +113,10 @@ function Header(props) {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="">
             <div className="d-flex justify-content-center">
-              <Form className={`d-flex top-nav-searchbar `} onSubmit={redirectSearchKeyWord}>
+              <Form
+                className={`d-flex top-nav-searchbar `}
+                onSubmit={redirectSearchKeyWord}
+              >
                 <input
                   className={"form-control me-2"}
                   type="search"
@@ -147,11 +150,15 @@ function Header(props) {
                 }
                 id="basic-nav-dropdown"
               >
-                {listGenre.length > 0 && listGenre.map((item, index)=>
-                  <NavDropdown.Item key={`NavGenre-${index}`} onClick={()=>redirectSearch(item)}>
-                    {item.name}
-                  </NavDropdown.Item>
-                )}
+                {listGenre.length > 0 &&
+                  listGenre.map((item, index) => (
+                    <NavDropdown.Item
+                      key={`NavGenre-${index}`}
+                      onClick={() => redirectSearch(item)}
+                    >
+                      {item.name}
+                    </NavDropdown.Item>
+                  ))}
               </NavDropdown>
               <NavItem as="li">
                 <Nav.Link as={NavLink} to={"/news"}>
@@ -206,6 +213,10 @@ function Header(props) {
                     <NavDropdown.Item as={NavLink} to={`/favorite/1`}>
                       <i className="fa-solid fa-heart me-2"></i>
                       <p className="d-inline show_for_991">Yêu thích</p>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} to={`/redeem`}>
+                      <i className="fa-solid fa-tags me-2"></i>
+                      <p className="d-inline show_for_991">Mã giảm giá</p>
                     </NavDropdown.Item>
                     {user.roles.includes("Administrator") && (
                       <NavDropdown.Item as={NavLink} to={`/admin/dashboard`}>
