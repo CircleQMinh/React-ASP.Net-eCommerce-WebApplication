@@ -15,6 +15,12 @@ class DiscountService {
     );
     return response;
   }
+  async RedeemDiscountCode(dc) {
+    const response = await axios.post(
+      `${apiUrl}/discount/redeemDiscountCode`,dc,config
+    );
+    return response;
+  }
 
 
 }

@@ -40,6 +40,7 @@ import AdminGenre from "./components/Admin/AdminGenre";
 
 import FavoritePage from "./pages/Favorite";
 import ExportCSV from "./components/ExportCSV/ExportCSV";
+import Redeem from "./components/Redeem/Redeem";
 
 
 function App() {
@@ -84,6 +85,7 @@ function App() {
           <Route path="/news" element={<NewsPage/>}></Route>
           <Route path="/favorite/:page" element={<FavoritePage/>}></Route>
           <Route path="/search" element={<SearchPage/>}></Route>
+          <Route path="/redeem" element={<Redeem/>}></Route>
 
           <Route path="/exportCSV" element={<ExportCSV/>}> </Route>
         </Routes>
