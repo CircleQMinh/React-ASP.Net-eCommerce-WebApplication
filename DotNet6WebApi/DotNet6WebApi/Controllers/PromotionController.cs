@@ -23,12 +23,13 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> GetAllPromotion(string status,string orderby,string sort,int pageNumber,int pageSize)
+        public async Task<IActionResult> GetAllPromotion(string status,string orderby,string sort,int pageNumber,int pageSize,bool visibleOnly=false)
         {
             try
             {
-                Expression<Func<Promotion, bool>> expression = status == "all" ? q => true : q => q.Status == int.Parse(status);
+                Expression<Func<Promotion, bool>> expression = status == "all" ? q=>q.Id!=0 : q => q.Status == int.Parse(status);
+                Expression<Func<Promotion, bool>> expression_visible = !visibleOnly ? q => q.Id != 0 : q => q.Visible == 1;
+                expression=expression.AndAlso(expression_visible);
                 Func<IQueryable<Promotion>, IOrderedQueryable<Promotion>> orderBy = null;
                 switch (orderby)
                 {
@@ -140,7 +141,6 @@ namespace DotNet6WebApi.Controllers
             }
         }
         [HttpGet("{id}/promotionInfos")]
-        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetPromotionInfosByPromotionId(int id)
         {
             try

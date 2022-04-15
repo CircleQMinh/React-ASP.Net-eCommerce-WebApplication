@@ -625,6 +625,7 @@ function ProfileOrder() {
               )}
               {selectedOrder.shipper != null &&
                 selectedOrder.shippedDate != "0001-01-01T00:00:00" && (
+                  <Fragment>
                   <p>
                     Ngày giao :{" "}
                     {formatDate(
@@ -632,6 +633,8 @@ function ProfileOrder() {
                       "dd-MM-yyyy HH:mm:ss"
                     )}{" "}
                   </p>
+                  <p>Bạn nhận được {selectedOrder.totalPrice/1000} shop xu từ đơn hàng này.</p>
+                  </Fragment>
                 )}
               {selectedOrder.discountCode != null && (
                 <Fragment>

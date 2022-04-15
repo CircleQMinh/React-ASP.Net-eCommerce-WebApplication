@@ -265,7 +265,8 @@ function PromotionTableItem(props) {
         })
         .finally(() => {
           setIsAddingPromoInfo(false);
-          props.reRender();
+          setShowAddPromInfoModal(false);
+          setShowInfoModal(false);
         });
     }
   }
@@ -329,7 +330,8 @@ function PromotionTableItem(props) {
         })
         .finally(() => {
           setIsEditingPromoInfo(false);
-          props.reRender();
+          setShowEditPromInfoModal(false);
+          setShowInfoModal(false);
         });
     }
   }
@@ -373,7 +375,7 @@ function PromotionTableItem(props) {
       })
       .finally(() => {
         setIsDeletingPromoInfo(false);
-        props.reRender();
+        setShowInfoModal(false)
       });
   }
 

@@ -216,6 +216,7 @@ function Profile() {
                           <button
                             className="btn btn-outline-primary"
                             type="button"
+                            onClick={()=>{navigate("/redeem")}}
                           >
                             <i className="fas fa-file-invoice-dollar me-2"></i>
                             Mã giảm giá
@@ -223,6 +224,7 @@ function Profile() {
                           <button
                             className="btn btn-outline-primary"
                             type="button"
+                            onClick={()=>{navigate("/favorite/1")}}
                           >
                             <i className="far fa-heart me-2"></i>Yêu thích
                           </button>

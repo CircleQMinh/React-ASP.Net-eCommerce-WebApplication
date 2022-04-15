@@ -60,9 +60,9 @@ class AdminService {
 
   //promotion
 
-  async GetPromotionForAdmin(status, orderBy, sort, pageNumber, pageSize) {
+  async GetPromotionForAdmin(status, orderBy, sort, pageNumber, pageSize,visible) {
     const response = await axios.get(
-      `${apiUrl}/promotion?status=${status}&orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      `${apiUrl}/promotion?status=${status}&orderby=${orderBy}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}${visible==true?"&visibleOnly=true":""}`,
       config
     );
     return response;
@@ -265,6 +265,14 @@ class AdminService {
     const response = await axios.delete(
       `${apiUrl}/genre/${id}`,
       GetConfig()
+    );
+    return response;
+  }
+
+  async GetNewOrderNotify(number) {
+    const response = await axios.get(
+      `${apiUrl}/Order/NewOrderNoticationForAdmin?count=${number}`,
+      config
     );
     return response;
   }
