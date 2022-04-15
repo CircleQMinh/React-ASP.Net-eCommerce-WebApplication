@@ -157,6 +157,10 @@ namespace DotNet6WebApi.Controllers
                 order.Note = dto.Note;
                 unitOfWork.Orders.Update(order);
                 await unitOfWork.Save();
+                var user = await unitOfWork.Users.Get(q=>q.Id==order.UserID);
+                user.Coins += (int)order.TotalPrice / 1000;
+                unitOfWork.Users.Update(user);
+                await unitOfWork.Save();
                 return Ok(new { success = true, order });
             }
             catch (Exception ex)

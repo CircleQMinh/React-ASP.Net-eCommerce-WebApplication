@@ -15,10 +15,11 @@ import AuthService from "../../api/AuthService";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CartIcon from "../Cart/CartIcon";
+import AdminService from "../../api/AdminService";
 
 function AdminHeader(props) {
-
-  var navigate = useNavigate()
+  var navigate = useNavigate();
+  const [showNotify, setshowNotify] = useState(false);
 
   //dropdown
   const [show, setShow] = useState(false);
@@ -51,10 +52,24 @@ function AdminHeader(props) {
 
   dispatch(auth_action.getAuthInfoFromLocalStorage());
 
-
   // for (const [key, value] of Object.entries(user)) {
   //   console.log(`${key}: ${value}`);
   // }
+  useEffect(() => {
+    var number = Number.parseInt(localStorage.getItem("orderCount"));
+    const interval = setInterval(() => {
+      AdminService.GetNewOrderNotify(number)
+        .then((res) => {
+          if (res.data.success) {
+            setshowNotify(true);
+          }
+        })
+        .catch((e) => {})
+        .finally(() => {});
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Fragment>
@@ -67,7 +82,7 @@ function AdminHeader(props) {
       >
         <Navbar.Brand as={NavLink} to={"/admin/dashboard"} className="ms-3">
           <p className={"show_for_991"} style={{ display: "inline" }}>
-            <i className="fas fa-home me-2" ></i> Dashboard
+            <i className="fas fa-home me-2"></i> Dashboard
           </p>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -88,7 +103,7 @@ function AdminHeader(props) {
             </NavItem>
             <NavItem as="li">
               <Nav.Link as={NavLink} to={"/admin/genre"}>
-              <i className="fa-solid fa-chart-bar"></i>
+                <i className="fa-solid fa-chart-bar"></i>
                 <p className="d-inline show_for_991"> Thể loại</p>
               </Nav.Link>
             </NavItem>
@@ -143,12 +158,12 @@ function AdminHeader(props) {
                   id="profile_drop"
                   style={{ marginRight: 30 + "px" }}
                 >
-                  <NavDropdown.Item as={NavLink}  to={`/profile/${user.id}`}>
+                  <NavDropdown.Item as={NavLink} to={`/profile/${user.id}`}>
                     <i className="fas fa-user me-2"></i>
                     <p className="d-inline show_for_991">Tài khoản</p>
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={NavLink}  to={`/home`}>
-                  <i className="fas fa-home me-2" ></i>
+                  <NavDropdown.Item as={NavLink} to={`/home`}>
+                    <i className="fas fa-home me-2"></i>
                     <p className="d-inline show_for_991">Cửa hàng</p>
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
@@ -162,6 +177,45 @@ function AdminHeader(props) {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
+      {showNotify && (
+        <div class="position-fixed bottom-0 end-0 p-3 admin-notify">
+          <div id="liveToast" class="toast fade show">
+            <div class="toast-header">
+              <svg
+                class="bd-placeholder-img rounded me-2"
+                width="20"
+                height="20"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                preserveAspectRatio="xMidYMid slice"
+                focusable="false"
+              >
+                <rect width="100%" height="100%" fill="#007aff"></rect>
+              </svg>
+
+              <strong class="me-auto">Thông báo </strong>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="toast"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="toast-body">
+              <p>Có đơn hàng mới cần duyệt!</p>
+              <button
+                onClick={() => {
+                  setshowNotify(false);
+                  navigate("/admin/order");
+                }}
+                class="btn btn-sm btn-primary ms-2"
+              >
+                Xem
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Fragment>
   );
 }

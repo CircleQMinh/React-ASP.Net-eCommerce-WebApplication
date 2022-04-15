@@ -312,9 +312,15 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet("NewOrderNoticationForAdmin")]
-        public async Task<IActionResult> GetNewOrderNoticationForAdmin()
+        public async Task<IActionResult> GetNewOrderNoticationForAdmin(int count)
         {
-            return Accepted(new {success=true});
+            bool result = false;
+            var total = await unitOfWork.Orders.GetCount(q=>q.Status==(int)OrderStatus.NotChecked);
+            if (total>count)
+            {
+                result = true;
+            }
+            return Accepted(new {success=result});
         }
 
 

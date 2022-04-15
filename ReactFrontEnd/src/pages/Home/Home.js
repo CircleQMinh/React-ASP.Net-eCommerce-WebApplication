@@ -13,6 +13,7 @@ import { LoadingScreen } from "../../components/Loading";
 import { Evaluate } from "./components/Evaluate";
 
 import "./Home.css";
+import PromotionAdvertise from "./components/PromotionAdvertise";
 
 function Home(props) {
   const [isLoading, setIsLoading] = useState(true)
@@ -90,6 +91,7 @@ function Home(props) {
         <ProductList></ProductList>
       </Container>
 
+        <PromotionAdvertise></PromotionAdvertise>
       <Evaluate/>
 
       <Container className="mt-5">

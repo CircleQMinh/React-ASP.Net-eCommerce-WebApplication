@@ -136,6 +136,7 @@ function Dashboard(props) {
           uncheckOrderCount: data.uncheckOrderCount,
           userCount: data.userCount,
         };
+        localStorage.setItem("orderCount",data.uncheckOrderCount)
         setDashboardInfo(info);
       })
       .catch((e) => {

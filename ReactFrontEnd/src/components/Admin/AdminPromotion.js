@@ -203,7 +203,7 @@ function AdminPromotion() {
       orderby,
       sort,
       pageNumber,
-      pageSize
+      pageSize,false
     )
       .then((response) => {
         //console.log(response.data);
