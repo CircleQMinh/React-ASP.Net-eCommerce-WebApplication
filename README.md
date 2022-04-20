@@ -20,5 +20,5 @@ Truy cập thư mục ReactFrontEnd và cài đặt cài đặt cái package và
 npm install<br>
 Sau khi install xong tiến hành chạy ứng dụng bằng cách nhập lệnh vào console:<br>
 npm start<br>
-Cuối cùng truy cập http://localhost:3000/ để xem được kết quả như sau:<br>
+Cuối cùng truy cập http://localhost:3000/ để xem được kết quả<br>
 
