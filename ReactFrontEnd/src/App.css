@@ -252,7 +252,7 @@ Extra extra large	xxl	        ≥1400px */
   height: 60px;
   /* bottom: 10px; */
   /* left: 10px; */
-  background-color: #69c41a;
+  background-color: var(--primary-color);
   color: #fff;
   border-radius: 50px;
   text-align: center;

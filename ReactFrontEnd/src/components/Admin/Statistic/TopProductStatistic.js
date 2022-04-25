@@ -34,16 +34,17 @@ function TopProductStatistic() {
 
   return (
     <Fragment>
-      <div className="row my-2" id="topProductChart">
-        <div className="lead text-white border border-3 p-3 lh-1">
+      <div className="row my-2" id="topProductChart" style={{backgroundColor: "#FFF", marginLeft: "0px", marginRight: "0px"}}>
+        <div className="lead border border-3 p-3 lh-1 fw-bold">
           <i className="fa-solid fa-chart-line me-2"></i> Thống kê sản phẩm bán
           chạy nhất
-          <i
-            className="fa-solid fa-arrows-rotate float-end"
-            onClick={() => {
-              ReloadTopProduct(numberOfProduct);
-            }}
-          ></i>
+          <button
+              className="btn btn-sm btn-primary float-end border border-2"
+              onClick={ReloadTopProduct(numberOfProduct)}
+            >
+              <i className="fa-solid fa-arrows-rotate me-2"> </i>Tải dữ liệu
+            </button>
+            <hr></hr>
           <div className="container" style={{ height: 500 + "px" }}>
             <TopProductChart productData={topProduct}></TopProductChart>
           </div>

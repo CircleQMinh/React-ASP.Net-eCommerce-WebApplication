@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import ProductList from "../../components/ProductList/ProductList";
@@ -16,6 +17,7 @@ import "./Home.css";
 import PromotionAdvertise from "./components/PromotionAdvertise";
 
 function Home(props) {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   const [randomProducts, setRandomProduct] = useState([]);
   const [lateProducts, setLateProducts] = useState([]);
@@ -44,6 +46,16 @@ function Home(props) {
       .finally(() => { });
   }
 
+  const title = <Container className="mt-5">
+      <hr></hr>
+      <p className="text-monospace">
+        FIND YOUR PLACE AT B&N'S ONLINE BOOKSTORE Over 5 million books ready
+        to ship & 3.6 million eBooks to download right now. Curbside pickup
+        available in most stores!
+      </p>
+      <hr></hr>
+    </Container>
+
   useEffect(()=>{
     getDataProduct()
   },[])
@@ -53,62 +65,29 @@ function Home(props) {
     <Fragment>
       <Header></Header>
       <AdvertiseSlide></AdvertiseSlide>
-
-      <Container className="mt-5">
+      <div className="container mt-5">
         <hr></hr>
-        <p className="text-monospace">
-          FIND YOUR PLACE AT B&N'S ONLINE BOOKSTORE Over 5 million books ready
-          to ship & 3.6 million eBooks to download right now. Curbside pickup
-          available in most stores!
-        </p>
-        <hr></hr>
-      </Container>
-
-      <div className="container">
         <div className="d-flex justify-content-center">
           <h3 className="text-monospace text-tron">
             <i className="far fa-star"></i> Nổi bật
           </h3>
         </div>
+        <hr></hr>
         {popularProducts?.length > 0 
           ?  
           <SlickSlider items={popularProducts}/>
           : 
           <LoadingScreen/>
         }
-       
       </div>
-      <Container className="mt-5">
+      <div className="container mt-5">
         <hr></hr>
-        <p className="text-monospace">
-          FIND YOUR PLACE AT B&N'S ONLINE BOOKSTORE Over 5 million books ready
-          to ship & 3.6 million eBooks to download right now. Curbside pickup
-          available in most stores!
-        </p>
-        <hr></hr>
-      </Container>
-      <Container fluid>
-        <ProductList></ProductList>
-      </Container>
-
-        <PromotionAdvertise></PromotionAdvertise>
-      <Evaluate/>
-
-      <Container className="mt-5">
-        <hr></hr>
-        <p className="text-monospace">
-          FIND YOUR PLACE AT B&N'S ONLINE BOOKSTORE Over 5 million books ready
-          to ship & 3.6 million eBooks to download right now. Curbside pickup
-          available in most stores!
-        </p>
-        <hr></hr>
-      </Container>
-      <div className="container">
         <div className="d-flex justify-content-center">
           <h3 className="text-monospace text-tron">
             <i className="far fa-star"></i> Gợi ý cho bạn
           </h3>
         </div>
+        <hr></hr>
         {randomProducts?.length > 0 
           ?
           <SlickSlider items={randomProducts}></SlickSlider>
@@ -116,21 +95,14 @@ function Home(props) {
           <LoadingScreen/>
         }
       </div>
-      <Container className="mt-5">
+      <div className="container mt-5">
         <hr></hr>
-        <p className="text-monospace">
-          FIND YOUR PLACE AT B&N'S ONLINE BOOKSTORE Over 5 million books ready
-          to ship & 3.6 million eBooks to download right now. Curbside pickup
-          available in most stores!
-        </p>
-        <hr></hr>
-      </Container>
-      <div className="container">
         <div className="d-flex justify-content-center">
           <h3 className="text-monospace text-tron">
             <i className="far fa-star"></i> Mới nhất
           </h3>
         </div>
+        <hr></hr>
         {lateProducts?.length > 0 
           ?
           <SlickSlider items={lateProducts}></SlickSlider>
@@ -138,6 +110,8 @@ function Home(props) {
           <LoadingScreen/>
         }
       </div>
+      <PromotionAdvertise></PromotionAdvertise>
+      <Evaluate/>
 
       <div className="container">
         <hr></hr>
@@ -154,29 +128,37 @@ function Home(props) {
             <div>
               <b>Selection</b>
               <p>
-                We have more than 13 million titles to choose from, from the
+                {/* We have more than 13 million titles to choose from, from the
                 earliest <Link to="/b/childrens-books/">board books</Link> to
                 the all-time classNameics of{" "}
-                <Link to="/b/literature-and-fiction/">literature</Link>.
+                <Link to="/b/literature-and-fiction/">literature</Link>. */}
+                Chúng tôi có hơn 13 triệu đầu sách để bạn lựa chọn, 
+                từ những cuốn sách ban đầu đến những tác phẩm văn học kinh điển mọi thời đại.
               </p>
               <b>Purchasing Power</b>
               <p>
-                Used books are often treasures that are out-of-print or rare.
-                With Wish Lists you can choose to be notified the instant we
-                find a copy, see how often we find rare titles, and see who else
-                is interested.
+                Sách cũ thường là những kho báu không còn in hoặc hiếm. 
+                Với Danh sách mong muốn, bạn có thể chọn nhận thông báo ngay 
+                khi chúng tôi tìm thấy bản sao, xem tần suất chúng tôi tìm 
+                thấy những tựa sách hiếm và xem ai khác quan tâm.
               </p>
               <b>FREE Shipping &amp; More</b>
               <p>
-                When you've found the books you want we'll ship qualifying
-                orders to your door for <strong>FREE</strong> in 100% recyclable
-                packaging. If there is no demand for a book, we will donate it
-                to charity, or we'll recycle it.
+                Khi bạn tìm thấy những cuốn sách mình muốn, chúng tôi sẽ giao 
+                các đơn đặt hàng đủ điều kiện đến tận nhà MIỄN PHÍ trong 
+                bao bì có thể tái chế 100%. Nếu không có nhu cầu mua sách, 
+                chúng tôi sẽ quyên góp cho tổ chức từ thiện hoặc chúng tôi sẽ tái chế nó.
               </p>
               <p>
-                <Link to="/aboutus.aspx" className="btn btn-primary ">
-                  More About Us
-                </Link>
+                <button 
+                  onClick={() => { 
+                    window.scrollTo(0,0);
+                    navigate(`/contact`)
+                  }} 
+                  className="btn btn-primary"
+                >
+                  Thông tin thêm về chúng tôi
+                </button>
               </p>
             </div>
           </div>

@@ -25,10 +25,10 @@ function OrderChart(props) {
         theme={VictoryTheme.material}
         domainPadding={40}
         width={800}
-        padding={{ left: 80, right: 50, bottom: 10 }}
+        padding={{ left: 80, right: 50, bottom: 30 }}
         containerComponent={
           <VictoryVoronoiContainer
-            labels={({ datum }) => `${datum.total} đơn`}
+            labels={({ datum }) => `${datum.total} đơn - ${ datum.date}`}
           />
         }
       >
