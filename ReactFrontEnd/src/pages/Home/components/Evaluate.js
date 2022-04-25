@@ -5,23 +5,22 @@ import "./styles.css";
 const evaluates = [
     {
         image: "http://wp.acmeedesign.com/bookstore/wp-content/uploads/2016/02/team-4-150x150.jpg",
-        evaluate:
-            "I can say without doubt that your team are a true pleasure to work with. They are easy to communicate with which make process smooth. Highly recommended.",
+        evaluate: "Địa chỉ đáng tin cậy. Đầy đủ hàng, giao hàng nhanh và thuận tiện",
     },
     {
         image: "http://wp.acmeedesign.com/bookstore/wp-content/uploads/2016/02/team-5-150x150.jpg",
         evaluate:
-            "You’re the best! You did an amazing and perfect job … We have received many positive feedbacks on our new site since the launch. Great thanks again.",
+            "Tôi biết và mua hàng được hơn 1 năm, chị có thể dễ dàng xem giá các sách, mỗi ngày đều có sản phẩm mới, đa dạng.",
     },
     {
         image: "http://wp.acmeedesign.com/bookstore/wp-content/uploads/2016/02/team-1-150x150.jpg",
         evaluate:
-            "Your staff has been nothing less than professional and respectful. They are super patient and really listened to what I wanted. I would give you the top stars!",
+            "Giao hàng nhanh chóng, nhân viên tư vấn nhiệt tình.",
     },
     {
         image: "http://wp.acmeedesign.com/bookstore/wp-content/uploads/2016/02/team-3-150x150.jpg",
         evaluate:
-            "I can say without doubt that your team are a true pleasure to work with. They are easy to communicate with which make process smooth. Highly recommended.",
+            "Hàng hóa đa dạng dễ dàng tra cứu giá và đặt sách",
     },
 ];
 
@@ -54,27 +53,23 @@ export const Evaluate = () => {
         </div>
     );
     return (
-        <div className="displayFlex justify-content-center align-items-center flex-column evaluateContainer">
-            {/* {evaluates.map((item, index) => {
-                if (index === oldValue) {
-                    return (
-                        <div className={`commentText animate__animated ${animation === "RIGHT" ? "animate__slideOutLeft" : "animate__slideOutRight"} `}>
-                            {item.evaluate}
-                        </div>
-                    );
-                }
-            })} */}
-            {evaluates.map((item, index) => {
-                if (index === value) {
-                    return (
-                        <div className={`commentText animate__animated ${animation === "RIGHT" ? "animate__slideInRight" : "animate__slideInLeft"}`}>
-                            {item.evaluate}
-                        </div>
-                    );
-                }
-            })}
+        <>
+            <hr></hr>
+            <h3 className="text-monospace text-tron text-center"><i class="fa-solid fa-comments"></i> Khách hàng nói gì về Circle's Shop </h3>
+            <hr></hr>
+            <div className="displayFlex justify-content-center align-items-center flex-column evaluateContainer">
+                {evaluates.map((item, index) => {
+                    if (index === value) {
+                        return (
+                            <div className={`commentText animate__animated ${animation === "RIGHT" ? "animate__slideInRight" : "animate__slideInLeft"}`}>
+                                {item.evaluate}
+                            </div>
+                        );
+                    }
+                })}
 
-            {EvaluateImage}
-        </div>
+                {EvaluateImage}
+            </div>
+        </>
     );
 };

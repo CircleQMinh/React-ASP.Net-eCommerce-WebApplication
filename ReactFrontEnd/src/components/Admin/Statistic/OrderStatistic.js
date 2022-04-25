@@ -77,17 +77,17 @@ function OrderStatistic() {
   }, []);
 
   return (
-    <div className="row my-2" id="saleChart">
-      <div className="lead text-white border border-3 p-3 lh-1">
+    <div className="row my-2" id="saleChart" style={{backgroundColor: "#FFF", marginLeft: "0px", marginRight: "0px"}}>
+      <div className="lead border border-3 p-3 lh-1 fw-bold">
         <i className="fa-solid fa-chart-line me-2"></i> Thống kê đơn hàng
         <button
-          className="btn btn-sm float-end text-white border border-2"
+          className="btn btn-sm btn-primary float-end border border-2"
           onClick={OnChartReload}
         >
           <i className="fa-solid fa-arrows-rotate me-2"> </i>Tải dữ liệu
         </button>
         <hr></hr>
-        <p className="text-monospace">Từ :</p>
+        <p className="text-monospace fw-bold">Từ :</p>
         <div className="mb-3">
           <input
             type="date"
@@ -96,7 +96,7 @@ function OrderStatistic() {
             onChange={onChartDateFromChange}
           ></input>
         </div>
-        <p className="text-monospace">Đến :</p>
+        <p className="text-monospace fw-bold">Đến :</p>
         <div className="mb-3">
           <input
             type="date"

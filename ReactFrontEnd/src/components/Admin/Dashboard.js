@@ -6,6 +6,7 @@ import { auth_action } from "../../redux/auth_slice.js";
 import AuthService from "../../api/AuthService";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import {bg_admin} from "./../../contant";
 import AdminService from "../../api/AdminService";
 import { toast } from "react-toastify";
 import SearchModal from "./Modal/SearchModal";
@@ -152,7 +153,7 @@ function Dashboard(props) {
       {!authorizing && (
         <Fragment>
           <AdminHeader></AdminHeader>
-          <div className="w-100 h-100" style={{ backgroundColor: "#1E1E28" }}>
+          <div className="w-100 h-100" style={{ backgroundColor: bg_admin}}>
             <div className="container  py-3 ">
               <div className="row">
                 <div className="col">
