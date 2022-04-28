@@ -54,7 +54,7 @@ function Footer(props) {
             <p className="copyright-text">
               Copyright &copy; 2021 All Rights Reserved by
               <a href="https://github.com/CircleQMinh"> Quốc Minh</a>.
-              (10/12/2021)
+              (28/04/2022)
             </p>
           </div>
 
