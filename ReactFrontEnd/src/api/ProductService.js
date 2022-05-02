@@ -52,6 +52,10 @@ class ProductService {
     const response = await axios.get(`${apiUrl}/Author`);
     return response;
   }
+  async getAuthorBook(name,pageNumber,pageSize) {
+    const response = await axios.get(`${apiUrl}/Book/author?name=${name}&pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    return response;
+  }
   async getPublisher() {
     const response = await axios.get(`${apiUrl}/Publisher`);
     return response;

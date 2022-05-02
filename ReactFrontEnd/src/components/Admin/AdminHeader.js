@@ -18,6 +18,7 @@ import CartIcon from "../Cart/CartIcon";
 import AdminService from "../../api/AdminService";
 
 function AdminHeader(props) {
+  document.getElementById("fb-root").style.display = 'none';
   var navigate = useNavigate();
   const [showNotify, setshowNotify] = useState(false);
 

@@ -566,7 +566,7 @@ function AdminProduct() {
                 <hr className="text-black"></hr>
                 <div className="d-flex flex-wrap justify-content-around ">
                   <div className="mb-3 row">
-                    <label className="text-black">Trạng thái: </label>
+                    <label className="text-black">Thê loại: </label>
                     <select
                       className="form-select"
                       defaultValue={"all"}

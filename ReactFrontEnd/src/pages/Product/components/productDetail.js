@@ -13,47 +13,56 @@ import ProductService from "../../../api/ProductService";
 export const ProductDetail = (props) => {
   const { product, onClickAddToCart, onClickComment } = props;
   const [isFavorite, setIsFavorite] = useState(false);
-  const user = JSON.parse(localStorage.getItem(`user`))
+  const user = JSON.parse(localStorage.getItem(`user`));
 
   const favoriteBook = async () => {
-    const token = localStorage.getItem(`token`)
-    if(token && user) {
-      if(isFavorite) {
+    const token = localStorage.getItem(`token`);
+    if (token && user) {
+      if (isFavorite) {
         await ProductService.removeFromWishList(user?.id, product?.id, token)
-          .then((response) => { 
-            if(response?.data?.success) {
-              setIsFavorite(false)
-              toast.success(`Bỏ yêu thích sản phẩm ${product?.title} thành công`)
+          .then((response) => {
+            if (response?.data?.success) {
+              setIsFavorite(false);
+              toast.success(
+                `Bỏ yêu thích sản phẩm ${product?.title} thành công`
+              );
             } else {
-              toast.error(`Có lỗi xảy ra`)
+              toast.error(`Có lỗi xảy ra`);
             }
           })
-          .catch((error) => { console.log(error); })
+          .catch((error) => {
+            console.log(error);
+          });
       } else {
         await ProductService.addToWishList(user?.id, product?.id, token)
-        .then((response) => { 
-          if(response?.data?.success) {
-            setIsFavorite(true)
-            toast.success(`Yêu thích sản phẩm ${product?.title} thành công`)
-          } else {
-            toast.error(`Có lỗi xảy ra`)
-          }
-        })
-        .catch((error) => { console.log(error); })
+          .then((response) => {
+            if (response?.data?.success) {
+              setIsFavorite(true);
+              toast.success(`Yêu thích sản phẩm ${product?.title} thành công`);
+            } else {
+              toast.error(`Có lỗi xảy ra`);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-
     } else {
-      toast.warning("Bạn cần phải đăng nhập để thực hiện thao tác này")
+      toast.warning("Bạn cần phải đăng nhập để thực hiện thao tác này");
     }
-  }
+  };
 
-  useEffect(()=>{
-    if(product && user && product?.wishlistUsers?.length > 0) {
-      const favorite =  product?.wishlistUsers.find(item => item.id === user.id)
-      if(favorite) { setIsFavorite(true) }
+  useEffect(() => {
+    if (product && user && product?.wishlistUsers?.length > 0) {
+      const favorite = product?.wishlistUsers.find(
+        (item) => item.id === user.id
+      );
+      if (favorite) {
+        setIsFavorite(true);
+      }
     }
-  },[])
-  
+  }, []);
+
   return (
     <div className="container mt-2">
       <div className="row" key={Math.random()}>
@@ -149,8 +158,9 @@ export const ProductDetail = (props) => {
                     style={{
                       color: getRandomColor(),
                     }}
+            
                     className="category"
-                    href={`/search?genre=${genre.id}`}
+                    href={generateGenreLink(genre)}
                   >
                     &#9734;{genre.name}
                   </a>
@@ -158,13 +168,27 @@ export const ProductDetail = (props) => {
               );
             })}
           </div>
-          <button className="btn btn-round btn-info mt-2 me-2" onClick={onClickAddToCart}>
+          <button
+            className="btn btn-round btn-info mt-2 me-2"
+            onClick={onClickAddToCart}
+          >
             <i className="fa fa-shopping-cart"></i> Thêm vào giỏ
           </button>
-          <button className="btn btn-round btn-info me-2 mt-2" onClick={favoriteBook}>
-            <i className={` fa-solid ${isFavorite ? "favorite fa-heart" : "fa-heart-crack"}`}></i> Thêm yêu thích
+          <button
+            className="btn btn-round btn-info me-2 mt-2"
+            onClick={favoriteBook}
+          >
+            <i
+              className={` fa-solid ${
+                isFavorite ? "favorite fa-circle-xmark" : "fa-heart"
+              }`}
+            ></i>{" "}
+            {isFavorite ? "Bỏ yêu thích" : "Thêm yêu thích"}
           </button>
-          <button className="btn btn-round btn-info me-2 mt-2" onClick={onClickComment}>
+          <button
+            className="btn btn-round btn-info me-2 mt-2"
+            onClick={onClickComment}
+          >
             <i className="fa-solid fa-comment"></i> Đánh giá
           </button>
         </div>
@@ -178,3 +202,9 @@ export const ProductDetail = (props) => {
     </div>
   );
 };
+
+function generateGenreLink(genre){
+  // /search?&genre=[{%22name%22:%22Thi%E1%BA%BFu%20Nhi%22,%22id%22:%22checkbox_genre_15%22}]&page=1&pageSize=8&priceRange=0,99999999
+
+  return `/search?&genre=[{%22name%22:"${genre.name}",%22id%22:%22checkbox_genre_${genre.id}%22}]&page=1&pageSize=8&priceRange=0,99999999`
+}

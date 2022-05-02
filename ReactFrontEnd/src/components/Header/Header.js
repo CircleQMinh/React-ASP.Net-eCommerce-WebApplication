@@ -17,6 +17,7 @@ import CartIcon from "../Cart/CartIcon";
 import ProductService from "../../api/ProductService";
 
 function Header(props) {
+  document.getElementById("fb-root").style.display = '';
   const [listGenre, setListGenre] = useState([]);
   //dropdown
   const [show, setShow] = useState(false);

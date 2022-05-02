@@ -42,6 +42,7 @@ import FavoritePage from "./pages/Favorite";
 import ExportCSV from "./components/ExportCSV/ExportCSV";
 import Redeem from "./components/Redeem/Redeem";
 import PromoInfo from "./components/PromoInfo/PromoInfo";
+import AuthorBook from "./components/Author/Author";
 
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
           <Route path="/test" element={<Test></Test>} ></Route>
 
           <Route path="/book/:id" element={<ProductInfo />}></Route>
+          <Route path="/author" element={<AuthorBook></AuthorBook>} ></Route>
           <Route path="/checkout" element={<Checkout></Checkout>} ></Route>
           <Route path="/thankyou" element={<Thankyou></Thankyou>} ></Route>
 

@@ -27,7 +27,8 @@ export const SearchPage = (props) => {
   let priceRangeQuery = RANGE_PRICE_SEARCH;
   const pageSizeQuery = parseInt(query.get("pageSize") || PAGE_SIZE_SEARCH);
   try {
-    priceRangeQuery = query.get("priceRange").split(",").map(Number) || RANGE_PRICE_SEARCH;
+    priceRangeQuery =
+      query.get("priceRange").split(",").map(Number) || RANGE_PRICE_SEARCH;
   } catch {}
   try {
     genreQuery = JSON.parse(query.get("genre")) || [];
@@ -38,7 +39,9 @@ export const SearchPage = (props) => {
   const [pageSize, setPageSize] = useState(pageSizeQuery || PAGE_SIZE_SEARCH);
   const [keyword, setKeyword] = useState(nameQuery || ""); //
   const [filterGenreList, setFilterGenreList] = useState(genreQuery || []);
-  const [priceRangeFilter, setPriceRangeFilter] = useState(priceRangeQuery || RANGE_PRICE_SEARCH);
+  const [priceRangeFilter, setPriceRangeFilter] = useState(
+    priceRangeQuery || RANGE_PRICE_SEARCH
+  );
 
   //Form
   let {
@@ -51,11 +54,11 @@ export const SearchPage = (props) => {
   } = useForm({
     defaultValues: {
       minPrice: "",
-      maxPrice: ""
+      maxPrice: "",
     },
   });
-  const minPrice = watch("minPrice")
-  const maxPrice = watch("maxPrice")
+  const minPrice = watch("minPrice");
+  const maxPrice = watch("maxPrice");
 
   const [listProduct, setListProduct] = useState([]);
   const [listGenre, setListGenre] = useState([]);
@@ -87,6 +90,7 @@ export const SearchPage = (props) => {
         document.getElementById(element.id).checked = false;
       });
     }
+
     redirectSearch(keyword, tempGenre, 1, pageSize, priceRangeFilter);
   }
 
@@ -106,16 +110,22 @@ export const SearchPage = (props) => {
   }
 
   function onMinPriceChange(event) {
-    setValue("minPrice", event.target.value, { shouldDirty: true, shouldValidate: true })
+    setValue("minPrice", event.target.value, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   }
 
   function onMaxPriceChange(event) {
-    setValue("maxPrice", event.target.value, { shouldDirty: true, shouldValidate: true })
+    setValue("maxPrice", event.target.value, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   }
 
   function applyPriceRange(data) {
-    const value = [parseInt(data.minPrice), parseInt(data.maxPrice)]
-    setPriceRangeFilter(value)
+    const value = [parseInt(data.minPrice), parseInt(data.maxPrice)];
+    setPriceRangeFilter(value);
     setPageNumber(1);
     redirectSearch(keyword, filterGenreList, 1, pageSize, value);
     reset(data);
@@ -151,12 +161,26 @@ export const SearchPage = (props) => {
     getListProduct(page, pageSize, name, priceRange, genre);
   };
 
-  const getListProduct = (pageQuery, pageSizeQuery, nameQuery, priceRangeQuery, genreQuery) => {
+  const getListProduct = (
+    pageQuery,
+    pageSizeQuery,
+    nameQuery,
+    priceRangeQuery,
+    genreQuery
+  ) => {
     setIsLoading(true);
-    ProductService.getProduct(pageQuery, pageSizeQuery, nameQuery, priceRangeQuery.join(","), getFilterGenreString(genreQuery))
+    ProductService.getProduct(
+      pageQuery,
+      pageSizeQuery,
+      nameQuery,
+      priceRangeQuery.join(","),
+      getFilterGenreString(genreQuery)
+    )
       .then((response) => {
         setListProduct(response.data.result);
-        setTotalPage(Math.ceil(Number(response.data.totalProduct / pageSizeQuery)));
+        setTotalPage(
+          Math.ceil(Number(response.data.totalProduct / pageSizeQuery))
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -167,7 +191,13 @@ export const SearchPage = (props) => {
   };
 
   useEffect(() => {
-    getListProduct(pageQuery, pageSizeQuery, nameQuery, priceRangeQuery, genreQuery);
+    getListProduct(
+      pageQuery,
+      pageSizeQuery,
+      nameQuery,
+      priceRangeQuery,
+      genreQuery
+    );
     ProductService.getGenre()
       .then((response) => {
         setListGenre(response.data.result);
@@ -181,11 +211,25 @@ export const SearchPage = (props) => {
   return (
     <>
       <Header></Header>
+      <div class="container mt-2">
+        <hr></hr>
+        <h2 class="text-center text-monospace lead">
+          <span class="text-center">
+            <i class="fa-solid fa-star me-2"></i> Cửa hàng sách Circle'shop
+          </span>
+        </h2>
+        <hr></hr>
+      </div>
       <Container fluid className="pt-2 pb-5">
         <Container fluid>
           <div className="row">
             <div className="col">
-              <SearchField onSearchKeyWordChange={onSearchKeyWordChange} resetFilter={resetFilter} handleSearch={handleSearch} keyword={keyword} />
+              <SearchField
+                onSearchKeyWordChange={onSearchKeyWordChange}
+                resetFilter={resetFilter}
+                handleSearch={handleSearch}
+                keyword={keyword}
+              />
               <hr />
             </div>
           </div>

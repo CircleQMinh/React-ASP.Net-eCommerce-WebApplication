@@ -49,6 +49,7 @@ function ProductInfo(props) {
         reviewsSlice.splice(indexReview, 1);
         // reviewsSlice[indexReview] = review
         toast.success("chỉnh sửa đánh giá thành công");
+        window.location.reload()
       }
       reviewsSlice.unshift(review);
       setReview(reviewsSlice);
@@ -57,6 +58,7 @@ function ProductInfo(props) {
     }
     if (!isUpdate) {
       toast.success("Đánh giá thành công");
+      window.location.reload()
     }
   };
 
