@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import CartIcon from "../Cart/CartIcon";
 
 function ShipperHeader(props) {
+  document.getElementById("fb-root").style.display = 'none';
   //dropdown
   const [show, setShow] = useState(false);
   const showDropdown = (e) => {

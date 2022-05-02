@@ -60,6 +60,12 @@ export const FilterProduct = (props) => {
     return true;
   };
 
+  console.log(filterGenreList);
+  listGenre.map((genre) => {
+    console.log(genre)
+    console.log(!!filterGenreList.find((item) => item.id == genre.id));
+  });
+
   return (
     <>
       <div className="col-3 border-end border-secondary" id="filter_search">
@@ -87,7 +93,9 @@ export const FilterProduct = (props) => {
                     type="checkbox"
                     onChange={onGenreFilterChange}
                     value={genre.name}
-                    checked={!!filterGenreList.find((item) => item.id === genre.id)}
+                    checked={
+                      !!filterGenreList.find((item) => item.name == genre.name)
+                    }
                   />
                   <label className="form-check-label">{genre.name}</label>
                 </div>
@@ -121,7 +129,11 @@ export const FilterProduct = (props) => {
               <span className="input-group-text" id="basic-addon1">
                 Từ
               </span>
-              <div style={{ width: "calc(100% - 42px)" }} className="textFieldRangePrice" {...register("minPrice")}>
+              <div
+                style={{ width: "calc(100% - 42px)" }}
+                className="textFieldRangePrice"
+                {...register("minPrice")}
+              >
                 <TextField
                   value={minPrice}
                   onChange={onMinPriceChange}
@@ -141,7 +153,11 @@ export const FilterProduct = (props) => {
               <span className="input-group-text" id="basic-addon1">
                 Đến
               </span>
-              <div style={{ width: "calc(100% - 53px)" }} className="textFieldRangePrice" {...register("maxPrice")}>
+              <div
+                style={{ width: "calc(100% - 53px)" }}
+                className="textFieldRangePrice"
+                {...register("maxPrice")}
+              >
                 <TextField
                   value={maxPrice}
                   onChange={onMaxPriceChange}
@@ -158,7 +174,11 @@ export const FilterProduct = (props) => {
               </div>
             </div>
             <div className="input-group mb-3">
-              <button onClick={handleSubmit(applyPriceRange)} disabled={checkErrorBtn()} className="btn btn-primary">
+              <button
+                onClick={handleSubmit(applyPriceRange)}
+                disabled={checkErrorBtn()}
+                className="btn btn-primary"
+              >
                 Áp dụng
               </button>
             </div>

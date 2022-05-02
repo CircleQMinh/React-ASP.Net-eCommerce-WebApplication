@@ -23,13 +23,9 @@ export function formatCurrencyVN(number) {
 }
 
 export function stringAuthorsName(product) {
-  var string_authors = "";
-  product.authors.forEach((author) => {
-    string_authors += author.name;
-    string_authors += " - ";
-  });
-  string_authors = string_authors.slice(0, string_authors.length - 3);
-  return string_authors;
+  return <p className="d-inline">{product.authors.map((au)=>{
+    return <a className="me-2" href={"/author?name="+au.name}>{au.name}</a>
+  })}</p>;
 }
 
 export function getRandomColor() {
