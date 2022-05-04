@@ -32,6 +32,7 @@ function ProfileOrder() {
       .finally(() => {});
   }
 
+  const [rerender, setRerender] = useState(true)
   const [status, setStatus] = useState("all");
   const [orderby, setOrderby] = useState("date");
   const [sort, setSort] = useState("Desc");
@@ -97,6 +98,9 @@ function ProfileOrder() {
 
   useEffect(() => {
     setIsLoading(true);
+    fetchData()
+  }, [status, orderby, sort, pageNumber, pageSize]);
+  function fetchData(){
     OrderService.GetUserOrderHistory(
       userId,
       pageNumber,
@@ -116,7 +120,7 @@ function ProfileOrder() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [status, orderby, sort, pageNumber, pageSize]);
+  }
 
   const user = JSON.parse(localStorage.getItem("user"));
   var orderDetailsContent = orderDetailsList.map((od) => {
@@ -323,7 +327,7 @@ function ProfileOrder() {
                   <div className="col col-lg-9">
                     <div className="card mb-3">
                       <div className="card-body">
-                        <p className="lead">Danh sách các đơn hàng</p>
+                        <p className="lead">Danh sách các đơn hàng<i className="fa-solid fa-rotate ms-2" onClick={fetchData}></i></p>
                         <div className="d-flex flex-wrap justify-content-around ">
                           <div className="mb-3 row">
                             <label>Trạng thái: </label>
