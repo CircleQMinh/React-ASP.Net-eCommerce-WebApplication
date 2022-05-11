@@ -3,6 +3,7 @@ import AdminService from "../../api/AdminService";
 import { upLoadImageToCloudinary } from "../../helper/Cloudinary";
 import html2canvas  from "html2canvas";
 import jsPDF from "jspdf";
+import Aboutus from "../../pages/Home/components/Aboutus";
 
 function Test() {
   const [selectedImgUrl, setselectedImgUrl] = useState(null);
@@ -45,22 +46,7 @@ function Test() {
 
   return (
     <Fragment>
-      <button onClick={DoSMT}>TEst</button>
-
-      <div
-        id="divToPrint"
-        className="mt4"
-        style={{
-          backgroundColor: "#f5f5f5",
-          width: "210mm",
-          minHeight: "297mm",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        <div>Note: Here the dimensions of div are same as A4</div>
-        <div>You Can add any component here</div>
-      </div>
+      <Aboutus></Aboutus>
     </Fragment>
   );
 }

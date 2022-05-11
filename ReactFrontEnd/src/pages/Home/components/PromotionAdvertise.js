@@ -36,8 +36,9 @@ function PromotionAdvertise() {
             <div className="col-lg-12">
               <div className="">
                 <h3 className="text-monospace text-tron text-center">
-                  <i className="fas fa-bullhorn"></i> Chương trình khuyến mãi
+                  <i className="fas fa-bullhorn  animate__animated animate__jello animate__infinite"></i> Chương trình khuyến mãi
                   đang diễn ra!
+                  <i className="fas fa-bullhorn animate__animated animate__jello animate__infinite ms-2"></i> 
                 </h3>
               </div>
             </div>
