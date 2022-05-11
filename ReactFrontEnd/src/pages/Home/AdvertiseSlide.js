@@ -12,12 +12,13 @@ function AdvertiseSlide(props) {
     initialSlide: 0,
     autoplay: true,
     autoplaySpeed: 2000,
-    arrows:false,
+    arrows: false,
     cssEase: "linear",
   };
   return (
     <Fragment>
-        <Container className="p-0" fluid id="ad_slide">
+
+      <Container className="p-0" fluid id="ad_slide">
         <Slider {...settings}>
           <div>
             <img
@@ -27,19 +28,18 @@ function AdvertiseSlide(props) {
           </div>
           <div>
             <img
-         
               src="https://cdn.waterstones.com/images/00216862-1920x533.jpeg"
               alt="Ảnh quảng cáo"
             />
           </div>
           <div>
             <img
-         
               src="https://cdn.waterstones.com/images/00216858-1920x533.jpeg"
               alt="Ảnh quảng cáo"
             />
           </div>
-        </Slider></Container>
+        </Slider>
+      </Container>
     </Fragment>
   );
 }

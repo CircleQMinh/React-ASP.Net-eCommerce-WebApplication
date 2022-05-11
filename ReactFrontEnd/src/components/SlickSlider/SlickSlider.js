@@ -95,7 +95,7 @@ function SlickSlider(props) {
 
   return (
     <Fragment>
-      <Container className="p-3" style={{ position: "relative" }}
+      <Container className="p-5  " style={{ position: "relative" }}
           onMouseLeave={()=>setSliderHover(false)}
           onMouseEnter={()=>setSliderHover(true)}
       >
@@ -113,7 +113,7 @@ function SlickSlider(props) {
           <Slider {...settings} ref={slider}>
             {items.map((item, index)=>{
               return (
-                <div key={`itemSlider-${index}-${item.id}`}>
+                <div key={`itemSlider-${index}-${item.id}` }className="animate__animated " >
                   <ProductInfo book={item}/>
                 </div>
               )
