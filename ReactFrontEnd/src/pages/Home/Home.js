@@ -63,7 +63,7 @@ function Home(props) {
   };
 
   const title = (
-    <Container className="mt-5">
+    <Container className="mt-4">
       <hr></hr>
       <p className="text-monospace">
         FIND YOUR PLACE AT B&N'S ONLINE BOOKSTORE Over 5 million books ready to
@@ -81,50 +81,50 @@ function Home(props) {
   return (
     <Fragment>
       <Header></Header>
-      <div className="home-wrapper">
+      <div className="home-wrapper background_cover_1">
         <AdvertiseSlide></AdvertiseSlide>
-        <div className="container mt-5">
-          <hr></hr>
-          <div className="d-flex justify-content-center">
-            <h3 className="text-monospace text-tron">
+        <div className="container mt-4">
+          <hr className="hr_main_page"></hr>
+          <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
+            <h3 className="font-monospace text-darkblue">
               <i className="far fa-star animate__animated animate__heartBeat animate__infinite"></i>{" "}
-              Nổi bật
+              Các sản phẩm nổi bật
               <i className="far fa-star animate__animated animate__heartBeat animate__infinite ms-2"></i>
             </h3>
           </div>
-          <hr></hr>
+          <hr className="hr_main_page"></hr>
           {popularProducts?.length > 0 ? (
             <SlickSlider items={popularProducts} />
           ) : (
             <LoadingScreen />
           )}
         </div>
-        <div className="container mt-5">
-          <hr></hr>
-          <div className="d-flex justify-content-center">
-            <h3 className="text-monospace text-tron">
+        <div className="container mt-4">
+          <hr className="hr_main_page"></hr>
+          <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
+            <h3 className="font-monospace text-darkblue">
               <i className="far fa-star animate__animated animate__rotateIn animate__infinite"></i>{" "}
               Gợi ý cho bạn
               <i className="far fa-star animate__animated animate__rotateIn animate__infinite ms-2"></i>
             </h3>
           </div>
-          <hr></hr>
+          <hr className="hr_main_page"></hr>
           {randomProducts?.length > 0 ? (
             <SlickSlider items={randomProducts}></SlickSlider>
           ) : (
             <LoadingScreen />
           )}
         </div>
-        <div className="container mt-5">
-          <hr></hr>
-          <div className="d-flex justify-content-center">
-            <h3 className="text-monospace text-tron">
-              <i className="far fa-star animate__animated animate__bounce animate__infinite"></i>{" "}
+        <div className="container mt-4">
+          <hr className="hr_main_page"></hr>
+          <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
+            <h3 className="font-monospace text-darkblue">
+              <i className="far fa-star animate__animated animate__heartBeat animate__infinite"></i>{" "}
               Mới nhất
-              <i className="far fa-star animate__animated animate__bounce animate__infinite ms-2"></i>
+              <i className="far fa-star animate__animated animate__heartBeat animate__infinite ms-2"></i>
             </h3>
           </div>
-          <hr></hr>
+          <hr className="hr_main_page"></hr>
           {lateProducts?.length > 0 ? (
             <SlickSlider items={lateProducts}></SlickSlider>
           ) : (
@@ -135,16 +135,18 @@ function Home(props) {
         <Evaluate />
 
         <div className="container">
-          <hr></hr>
-          <div className="d-flex justify-content-center">
-            <h3 className="text-monospace text-tron">
-              <i className="far fa-star"></i> Về chúng tôi
+          <hr className="hr_main_page"></hr>
+          <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
+            <h3 className="font-monospace text-darkblue">
+              <i className="far fa-star animate__animated animate__heartBeat animate__infinite"></i>{" "}
+              Về chúng tôi
+              <i className="far fa-star animate__animated animate__heartBeat animate__infinite ms-2"></i>
             </h3>
           </div>
-          <hr></hr>
+          <hr className="hr_main_page"></hr>
         </div>
 
-        <div className={styles.bodyContact}>
+        <div className={`${styles.bodyContact} bg-aliceblue`}>
           <div className={styles.infoWrapper}>
             <div className={`${styles.content} mb-5 px-2`}>
               <span style={{ fontWeight: "bold" }}>Circle's Shop</span> Cửa hàng
@@ -259,7 +261,6 @@ function Home(props) {
           </div>
         </div>
       </div>
-      <Footer></Footer>
     </Fragment>
   );
 }

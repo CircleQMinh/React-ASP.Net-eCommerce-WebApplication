@@ -75,218 +75,233 @@ function Redeem() {
   return (
     <Fragment>
       <Header></Header>
-      <Breadcrumb list={[{ path: "/", name: "Home" }]} title="Mã giảm giá" />
-
-      <div className="container w-75">
-        <div className="row">
-          <div className="col">
-            <p className="lead">
-              Tích lũy shop xu <i className="fas fa-coins me-2"></i>
-              và sử dụng để mua hàng hoặc đổi mã giảm giá.
-            </p>
-            <p>Các mã giảm giá có thể đổi</p>
-          </div>
+      <div className="background_cover_1">
+        <div className="container-fluid p-0 m-0 bg-aliceblue opacity-90">
+          <nav aria-label="breadcrumb" className="breadcrumb_nav">
+            <ol className="breadcrumb mt-2 ms-2">
+              <li className="breadcrumb-item">
+                <NavLink to="/">Home</NavLink>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                <p>Đổi mã giảm giá</p>
+              </li>
+            </ol>
+          </nav>
         </div>
-        <div className="row">
-          <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
-            <div className="input-group mb-3">
-              <span className="input-group-text" id="basic-addon1">
-                <i className="fa-solid fa-tags"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                disabled
-                value={"Mã giảm giá 10k"}
-              />
-            </div>
-
-            <div className="d-flex justify-content-center">
-              <p>
-                Shop Xu : 100 <i className="fas fa-coins"></i>
-              </p>
-            </div>
-            <div className="d-grid gap-2">
-              <button
-                className="btn btn-danger btn-block"
-                onClick={() => {
-                  handleShowModal("Amount10K");
-                }}
-              >
-                Đổi
-              </button>
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
-            <div className="input-group mb-3">
-              <span className="input-group-text" id="basic-addon1">
-                <i className="fa-solid fa-tags"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                disabled
-                value={"Mã giảm giá 20k"}
-              />
-            </div>
-
-            <div className="d-flex justify-content-center">
-              <p>
-                Shop Xu : 200 <i className="fas fa-coins"></i>
-              </p>
-            </div>
-            <div className="d-grid gap-2">
-              <button
-                className="btn btn-danger btn-block"
-                onClick={() => {
-                  handleShowModal("Amount20K");
-                }}
-              >
-                Đổi
-              </button>
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
-            <div className="input-group mb-3">
-              <span className="input-group-text" id="basic-addon1">
-                <i className="fa-solid fa-tags"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                disabled
-                value={"Mã giảm giá 50k"}
-              />
-            </div>
-
-            <div className="d-flex justify-content-center">
-              <p>
-                Shop Xu : 500 <i className="fas fa-coins"></i>
-              </p>
-            </div>
-            <div className="d-grid gap-2">
-              <button
-                className="btn btn-danger btn-block"
-                onClick={() => {
-                  handleShowModal("Amount50K");
-                }}
-              >
-                Đổi
-              </button>
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
-            <div className="input-group mb-3">
-              <span className="input-group-text" id="basic-addon1">
-                <i className="fa-solid fa-tags"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                disabled
-                value={"Mã giảm giá 10%"}
-              />
-            </div>
-
-            <div className="d-flex justify-content-center">
-              <p>
-                Shop Xu : 300 <i className="fas fa-coins"></i>
-              </p>
-            </div>
-            <div className="d-grid gap-2">
-              <button
-                className="btn btn-danger btn-block"
-                onClick={() => {
-                  handleShowModal("Percent10");
-                }}
-              >
-                Đổi
-              </button>
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
-            <div className="input-group mb-3">
-              <span className="input-group-text" id="basic-addon1">
-                <i className="fa-solid fa-tags"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                disabled
-                value={"Mã giảm giá 20%"}
-              />
-            </div>
-
-            <div className="d-flex justify-content-center">
-              <p>
-                Shop Xu : 400 <i className="fas fa-coins"></i>
-              </p>
-            </div>
-            <div className="d-grid gap-2">
-              <button
-                className="btn btn-danger btn-block"
-                onClick={() => {
-                  handleShowModal("Percent20");
-                }}
-              >
-                Đổi
-              </button>
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
-            <div className="input-group mb-3">
-              <span className="input-group-text" id="basic-addon1">
-                <i className="fa-solid fa-tags"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                disabled
-                value={"Mã giảm giá 50%"}
-              />
-            </div>
-
-            <div className="d-flex justify-content-center">
-              <p>
-                Shop Xu : 500 <i className="fas fa-coins"></i>
-              </p>
-            </div>
-            <div className="d-grid gap-2">
-              <button
-                className="btn btn-danger btn-block"
-                onClick={() => {
-                  handleShowModal("Percent50");
-                }}
-              >
-                Đổi
-              </button>
-            </div>
-          </div>
-        </div>{" "}
-        {isRedeemed && (
+        <div className="container mt-2 w-75 bg-aliceblue opacity-90">
           <div className="row">
             <div className="col">
-              <p className="lead">Mã giảm giá vừa đổi </p>
-              <hr />
-              <p>Mã : {redeemedCode.code}</p>
-              <p>
-                Giảm :{" "}
-                {redeemedCode.discountPercent
-                  ? `${redeemedCode.discountPercent} %`
-                  : `${redeemedCode.discountAmount} VND`}{" "}
+              <p className="lead">
+                Tích lũy shop xu <i className="fas fa-coins me-2"></i>
+                và sử dụng để mua hàng hoặc đổi mã giảm giá.
               </p>
-              <p>
-                Hết hạn sử dụng :{" "}
-                {formatDate(new Date(redeemedCode.endDate + "Z"), "dd-MM-yyyy")}
-              </p>
-              <hr />
-              <p>
-                Shop đã gửi email với thông tin của mã giảm giá đến email của
-                bạn.
-              </p>
+              <p>Các mã giảm giá có thể đổi</p>
             </div>
           </div>
-        )}
+          <div className="row">
+            <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
+              <div className="input-group mb-3">
+                <span className="input-group-text" id="basic-addon1">
+                  <i className="fa-solid fa-tags"></i>
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled
+                  value={"Mã giảm giá 10k"}
+                />
+              </div>
+
+              <div className="d-flex justify-content-center">
+                <p>
+                  Shop Xu : 100 <i className="fas fa-coins"></i>
+                </p>
+              </div>
+              <div className="d-grid gap-2">
+                <button
+                  className="btn btn-danger btn-block"
+                  onClick={() => {
+                    handleShowModal("Amount10K");
+                  }}
+                >
+                  Đổi
+                </button>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
+              <div className="input-group mb-3">
+                <span className="input-group-text" id="basic-addon1">
+                  <i className="fa-solid fa-tags"></i>
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled
+                  value={"Mã giảm giá 20k"}
+                />
+              </div>
+
+              <div className="d-flex justify-content-center">
+                <p>
+                  Shop Xu : 200 <i className="fas fa-coins"></i>
+                </p>
+              </div>
+              <div className="d-grid gap-2">
+                <button
+                  className="btn btn-danger btn-block"
+                  onClick={() => {
+                    handleShowModal("Amount20K");
+                  }}
+                >
+                  Đổi
+                </button>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
+              <div className="input-group mb-3">
+                <span className="input-group-text" id="basic-addon1">
+                  <i className="fa-solid fa-tags"></i>
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled
+                  value={"Mã giảm giá 50k"}
+                />
+              </div>
+
+              <div className="d-flex justify-content-center">
+                <p>
+                  Shop Xu : 500 <i className="fas fa-coins"></i>
+                </p>
+              </div>
+              <div className="d-grid gap-2">
+                <button
+                  className="btn btn-danger btn-block"
+                  onClick={() => {
+                    handleShowModal("Amount50K");
+                  }}
+                >
+                  Đổi
+                </button>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
+              <div className="input-group mb-3">
+                <span className="input-group-text" id="basic-addon1">
+                  <i className="fa-solid fa-tags"></i>
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled
+                  value={"Mã giảm giá 10%"}
+                />
+              </div>
+
+              <div className="d-flex justify-content-center">
+                <p>
+                  Shop Xu : 300 <i className="fas fa-coins"></i>
+                </p>
+              </div>
+              <div className="d-grid gap-2">
+                <button
+                  className="btn btn-danger btn-block"
+                  onClick={() => {
+                    handleShowModal("Percent10");
+                  }}
+                >
+                  Đổi
+                </button>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
+              <div className="input-group mb-3">
+                <span className="input-group-text" id="basic-addon1">
+                  <i className="fa-solid fa-tags"></i>
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled
+                  value={"Mã giảm giá 20%"}
+                />
+              </div>
+
+              <div className="d-flex justify-content-center">
+                <p>
+                  Shop Xu : 400 <i className="fas fa-coins"></i>
+                </p>
+              </div>
+              <div className="d-grid gap-2">
+                <button
+                  className="btn btn-danger btn-block"
+                  onClick={() => {
+                    handleShowModal("Percent20");
+                  }}
+                >
+                  Đổi
+                </button>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 mb-4 border border-5 p-3">
+              <div className="input-group mb-3">
+                <span className="input-group-text" id="basic-addon1">
+                  <i className="fa-solid fa-tags"></i>
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled
+                  value={"Mã giảm giá 50%"}
+                />
+              </div>
+
+              <div className="d-flex justify-content-center">
+                <p>
+                  Shop Xu : 500 <i className="fas fa-coins"></i>
+                </p>
+              </div>
+              <div className="d-grid gap-2">
+                <button
+                  className="btn btn-danger btn-block"
+                  onClick={() => {
+                    handleShowModal("Percent50");
+                  }}
+                >
+                  Đổi
+                </button>
+              </div>
+            </div>
+          </div>{" "}
+          {isRedeemed && (
+            <div className="row">
+              <div className="col">
+                <p className="lead">Mã giảm giá vừa đổi </p>
+                <hr />
+                <p>Mã : {redeemedCode.code}</p>
+                <p>
+                  Giảm :{" "}
+                  {redeemedCode.discountPercent
+                    ? `${redeemedCode.discountPercent} %`
+                    : `${redeemedCode.discountAmount} VND`}{" "}
+                </p>
+                <p>
+                  Hết hạn sử dụng :{" "}
+                  {formatDate(
+                    new Date(redeemedCode.endDate + "Z"),
+                    "dd-MM-yyyy"
+                  )}
+                </p>
+                <hr />
+                <p>
+                  Shop đã gửi email với thông tin của mã giảm giá đến email của
+                  bạn.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <Modal show={showConfirmModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>

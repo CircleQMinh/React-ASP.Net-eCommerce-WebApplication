@@ -211,57 +211,61 @@ export const SearchPage = (props) => {
   return (
     <>
       <Header></Header>
-      <div class="container mt-2">
-        <hr></hr>
-        <h2 class="text-center text-monospace lead">
-          <span class="text-center">
-            <i class="fa-solid fa-star me-2"></i> Cửa hàng sách Circle'shop
-          </span>
-        </h2>
-        <hr></hr>
-      </div>
-      <Container fluid className="pt-2 pb-5">
+      <div className="background_cover_1">
+        <div class="container margin_search pb-1">
+          <hr className="hr_main_page"></hr>
+          <div className="d-flex justify-content-center bg-aliceblue opacity-85">
+            <h3 className="font-monospace text-darkblue">
+              <i className="far fa-star animate__animated animate__heartBeat animate__infinite"></i>{" "}
+              Cửa hàng sách Circle'shop
+              <i className="far fa-star animate__animated animate__heartBeat animate__infinite ms-2"></i>
+            </h3>
+          </div>
+          <hr className="hr_main_page"></hr>
+        </div>
         <Container fluid>
-          <div className="row">
-            <div className="col">
-              <SearchField
-                onSearchKeyWordChange={onSearchKeyWordChange}
-                resetFilter={resetFilter}
-                handleSearch={handleSearch}
-                keyword={keyword}
-              />
-              <hr />
-            </div>
-          </div>
-          <div className="container-fluid ">
+          <Container fluid className="search-bg p-2">
             <div className="row">
-              <FilterProduct
-                onGenreFilterChange={onGenreFilterChange}
-                listGenre={listGenre}
-                filterGenreList={filterGenreList}
-                onPriceRangeFilterChange={onPriceRangeFilterChange}
-                priceRangeFilter={priceRangeFilter}
-                onMinPriceChange={onMinPriceChange}
-                minPrice={minPrice}
-                onMaxPriceChange={onMaxPriceChange}
-                maxPrice={maxPrice}
-                applyPriceRange={applyPriceRange}
-                register={register}
-                isDirty={isDirty}
-                handleSubmit={handleSubmit}
-              />
-              <ListProductComponent
-                keyword={keyword}
-                listProduct={listProduct}
-                isLoading={isLoading}
-                totalPage={totalPage}
-                onPageNumberChange={onPageNumberChange}
-                pageNumber={pageNumber}
-              />
+              <div className="col">
+                <SearchField
+                  onSearchKeyWordChange={onSearchKeyWordChange}
+                  resetFilter={resetFilter}
+                  handleSearch={handleSearch}
+                  keyword={keyword}
+                />
+                <hr />
+              </div>
             </div>
-          </div>
+            <div className="container-fluid ">
+              <div className="row">
+                <FilterProduct
+                  onGenreFilterChange={onGenreFilterChange}
+                  listGenre={listGenre}
+                  filterGenreList={filterGenreList}
+                  onPriceRangeFilterChange={onPriceRangeFilterChange}
+                  priceRangeFilter={priceRangeFilter}
+                  onMinPriceChange={onMinPriceChange}
+                  minPrice={minPrice}
+                  onMaxPriceChange={onMaxPriceChange}
+                  maxPrice={maxPrice}
+                  applyPriceRange={applyPriceRange}
+                  register={register}
+                  isDirty={isDirty}
+                  handleSubmit={handleSubmit}
+                />
+                <ListProductComponent
+                  keyword={keyword}
+                  listProduct={listProduct}
+                  isLoading={isLoading}
+                  totalPage={totalPage}
+                  onPageNumberChange={onPageNumberChange}
+                  pageNumber={pageNumber}
+                />
+              </div>
+            </div>
+          </Container>
         </Container>
-      </Container>
+      </div>
       <Footer></Footer>
     </>
   );

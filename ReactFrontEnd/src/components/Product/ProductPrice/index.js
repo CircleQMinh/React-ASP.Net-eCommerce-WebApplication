@@ -10,14 +10,14 @@ export const ProductPrice = ({ book }) => {
             {/* Giảm theo vnd*/}
             {book.promotionInfo.promotionAmount && (
               <>
-                <div className={styles.ProductPrice}>
+                <div className={`${styles.ProductPrice} font-monospace`}>
                   {formatCurrencyVN(
                     book.price - book.promotionInfo.promotionAmount
                   )}
                   đ
                 </div>
                 <div>
-                  <span className="badge rounded-pill bg-danger ms-3">
+                  <span className="badge rounded-pill bg-danger ms-3 font-monospace">
                     {`- ${book.promotionInfo.promotionAmount} đ`}
                   </span>
                 </div>
@@ -25,7 +25,7 @@ export const ProductPrice = ({ book }) => {
             )}
             {book.promotionInfo.promotionPercent && (
               <>
-                <div className={styles.ProductPrice}>
+                <div className={`${styles.ProductPrice} font-monospace`}>
                   {formatCurrencyVN(
                     book.price -
                       (book.price * book.promotionInfo.promotionPercent) / 100
@@ -33,19 +33,19 @@ export const ProductPrice = ({ book }) => {
                   đ
                 </div>
                 <div>
-                  <span className="badge rounded-pill bg-success ms-3">
+                  <span className="badge rounded-pill bg-success ms-3 font-monospace">
                     -{book.promotionInfo.promotionPercent}%
                   </span>
                 </div>
               </>
             )}
           </div>
-          <div className={styles.ProductPriceOld}>
+          <div className={`${styles.ProductPriceOld} font-monospace`}>
             {formatCurrencyVN(book.price)}đ
           </div>
         </>
       ) : (
-        <div className={styles.ProductPriceSimple}>
+        <div className={`${styles.ProductPriceSimple} font-monospace`}>
           {formatCurrencyVN(book.price)}đ
         </div>
       )}

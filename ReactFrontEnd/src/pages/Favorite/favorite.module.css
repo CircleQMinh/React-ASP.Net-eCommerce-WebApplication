@@ -7,4 +7,5 @@
 .listFavoriteWrapper {
     max-width: 1030px;
     margin: 50px;
+    /* margin-top: 0!important; */
 }

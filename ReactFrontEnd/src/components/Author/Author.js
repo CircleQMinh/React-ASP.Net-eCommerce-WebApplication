@@ -49,7 +49,7 @@ function AuthorBook() {
         </h2>
         <hr></hr>
       </div>
-      <div className="row flex-row flex-wrap justify-content-center">
+      <div className="d-flex flex-row flex-wrap justify-content-center">
         {books.length > 0 &&
           !isLoading &&
           books.map((item) => (

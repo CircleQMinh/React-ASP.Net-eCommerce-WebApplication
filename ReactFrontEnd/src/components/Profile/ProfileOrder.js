@@ -244,9 +244,9 @@ function ProfileOrder() {
         <Fragment>
           <Header></Header>
           {!isLoading && (
-            <Fragment>
-              <div className="container-fluid mt-2">
-                <nav aria-label="breadcrumb" className="mt-2 breadcrumb_nav">
+            <div className="background_cover_1">
+              <div className="container-fluid p-0 m-0 bg-aliceblue opacity-90">
+                <nav aria-label="breadcrumb" className=" breadcrumb_nav">
                   <ol className="breadcrumb mt-2 ms-2">
                     <li className="breadcrumb-item">
                       <NavLink to="/">Home</NavLink>
@@ -263,12 +263,12 @@ function ProfileOrder() {
                   </ol>
                 </nav>
               </div>
-              <div className="container mt-2">
+              <div className="container mt-2 bg-aliceblue opacity-90">
                 <div className="row">
                   <div className="col col-lg-3 mb-3">
                     <div className="card">
                       <div className="card-body">
-                        <div className="d-flex flex-column align-items-center text-center">
+                        <div className="d-flex flex-column align-items-center text-center border_product">
                           <img
                             src={user.imgUrl}
                             alt="Admin"
@@ -308,7 +308,9 @@ function ProfileOrder() {
                           <button
                             className="btn btn-outline-primary"
                             type="button"
-                            onClick={()=>{navigate("/redeem")}}
+                            onClick={() => {
+                              navigate("/redeem");
+                            }}
                           >
                             <i className="fas fa-file-invoice-dollar me-2"></i>
                             Mã giảm giá
@@ -316,7 +318,9 @@ function ProfileOrder() {
                           <button
                             className="btn btn-outline-primary"
                             type="button"
-                            onClick={()=>{navigate("/favorite/1")}}
+                            onClick={() => {
+                              navigate("/favorite/1");
+                            }}
                           >
                             <i className="far fa-heart me-2"></i>Yêu thích
                           </button>
@@ -327,7 +331,13 @@ function ProfileOrder() {
                   <div className="col col-lg-9">
                     <div className="card mb-3">
                       <div className="card-body">
-                        <p className="lead">Danh sách các đơn hàng<i className="fa-solid fa-rotate ms-2" onClick={fetchData}></i></p>
+                        <p className="lead">
+                          Danh sách các đơn hàng
+                          <i
+                            className="fa-solid fa-rotate ms-2"
+                            onClick={fetchData}
+                          ></i>
+                        </p>
                         <div className="d-flex flex-wrap justify-content-around ">
                           <div className="mb-3 row">
                             <label>Trạng thái: </label>
@@ -577,7 +587,7 @@ function ProfileOrder() {
                   </div>
                 </div>
               </div>
-            </Fragment>
+            </div>
           )}
 
           {isLoading && (
@@ -632,14 +642,17 @@ function ProfileOrder() {
               {selectedOrder.shipper != null &&
                 selectedOrder.shippedDate != "0001-01-01T00:00:00" && (
                   <Fragment>
-                  <p>
-                    Ngày giao :{" "}
-                    {formatDate(
-                      new Date(selectedOrder.shippedDate + "Z"),
-                      "dd-MM-yyyy HH:mm:ss"
-                    )}{" "}
-                  </p>
-                  <p>Bạn nhận được {selectedOrder.totalPrice/1000} shop xu từ đơn hàng này.</p>
+                    <p>
+                      Ngày giao :{" "}
+                      {formatDate(
+                        new Date(selectedOrder.shippedDate + "Z"),
+                        "dd-MM-yyyy HH:mm:ss"
+                      )}{" "}
+                    </p>
+                    <p>
+                      Bạn nhận được {selectedOrder.totalPrice / 1000} shop xu từ
+                      đơn hàng này.
+                    </p>
                   </Fragment>
                 )}
               {selectedOrder.discountCode != null && (

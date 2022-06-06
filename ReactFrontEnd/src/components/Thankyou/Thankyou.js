@@ -62,30 +62,38 @@ function Thankyou() {
       {sendingOrder && (
         <Fragment>
           <LoadingScreen></LoadingScreen>
-          <p className="text-center lead text-monospace">Đang xử lý đơn hàng của bạn...</p>
+          <p className="text-center lead text-monospace">
+            Đang xử lý đơn hàng của bạn...
+          </p>
         </Fragment>
       )}
       {!sendingOrder && (
-        <div className="container mt-4">
-          <div className="thank-label">
-            <div className="jumbotron text-center">
-              <h1 className="display-3">Thank You!</h1>
-              <p className="lead">
-                <strong>Cám ơn bạn</strong> đã mua sắm với chúng tôi.
-              </p>
-              <p>
-                Email với thông tin của đơn hàng đã được gửi đến email của bạn.
-              </p>
-              <hr></hr>
-              <p>
-                Gặp khó khăn? <Link to={"/contact"}>Liên hệ ngay</Link>
-              </p>
+        <div
+          className="background_cover_1 d-flex flex-row"
+          style={{ height: 100 + "vh" }}
+        >
+          <div className="container  bg-aliceblue opacity-85 ">
+            <div className="thank-label">
+              <div className="jumbotron text-center">
+                <h1 className="display-3">Thank You!</h1>
+                <p className="lead">
+                  <strong>Cám ơn bạn</strong> đã mua sắm với chúng tôi.
+                </p>
+                <p>
+                  Email với thông tin của đơn hàng đã được gửi đến email của
+                  bạn.
+                </p>
+                <hr></hr>
+                <p>
+                  Gặp khó khăn? <Link to={"/contact"}>Liên hệ ngay</Link>
+                </p>
 
-              <p className="lead">
-                <NavLink to={"/home"} className="btn btn-primary btm-sm">
-                  Trở về trang chủ
-                </NavLink>
-              </p>
+                <p className="lead">
+                  <NavLink to={"/home"} className="btn btn-primary btm-sm">
+                    Trở về trang chủ
+                  </NavLink>
+                </p>
+              </div>
             </div>
           </div>
         </div>

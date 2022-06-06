@@ -58,7 +58,7 @@
     padding: 10px;
 }
 .border_right{
-    border-right: solid 1px rgb(222,226,230);
+    border-right: solid 2px #dc3545;
 }
 
 .favorite {

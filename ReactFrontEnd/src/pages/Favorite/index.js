@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, Fragment } from "react";
 
 import Footer from "../../components/Footer/Footer";
@@ -76,33 +76,58 @@ const FavoritePage = (props) => {
         />
       )}
       <Header />
-      <Breadcrumb list={[{ path: "/", name: "Home" }]} title="Yêu thích" />
-      <div className={styles.bodyFavorite}  id="scrollView">
-        {favorites.length === 0 ? (
-          <NotFound title="Không có sản phẩm nào yêu thích" />
-        ) : (
-          <>
-            <div
-              className={`row flex-row flex-wrap justify-content-center ${styles.listFavoriteWrapper}`}
-            >
-              {favorites.map((item, index) => {
-                return (
-                  <Fragment key={item.id}>
-                    <div
-                      className="col col-xs-6 col-md-4 col-lg-3 col-xl-3 "
-                      style={{ paddingBottom: 24 }}
-                    >
-                      <ProductInfo book={item} />
-                    </div>
-                  </Fragment>
-                );
-              })}
-              <div className="d-flex justify-content-center">
-                <PaginationPage count={Math.ceil(total / LIMIT_FAVORITE_PAGE)} onChangePage={onPageNumberChange} currentPage={currentPage}/>
+      <div className="background_cover_1">
+        <div className="container-fluid p-0 m-0 bg-aliceblue opacity-85">
+          <nav aria-label="breadcrumb" className="breadcrumb_nav">
+            <ol className="breadcrumb mt-2 ms-2">
+              <li className="breadcrumb-item">
+                <NavLink to="/">Home</NavLink>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                <p>Yêu thích</p>
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <p className="font-monospace fs-3 mb-0 text-center text-black bg-aliceblue opacity-85">
+          Danh sách sản phẩm yêu thích
+        </p>
+       
+        <div
+          className={`${styles.bodyFavorite} mb-0 bg-aliceblue opacity-85`}
+          id="scrollView"
+        >
+          
+          {favorites.length === 0 ? (
+            <NotFound title="Không có sản phẩm nào yêu thích" />
+          ) : (
+            <>
+              <div
+                className={`row flex-row flex-wrap justify-content-center ${styles.listFavoriteWrapper}`}
+              >
+                {favorites.map((item, index) => {
+                  return (
+                    <Fragment key={item.id}>
+                      <div
+                        className="col col-xs-6 col-md-4 col-lg-3 col-xl-3 "
+                        style={{ paddingBottom: 24 }}
+                      >
+                        <ProductInfo book={item} />
+                      </div>
+                    </Fragment>
+                  );
+                })}
+                <div className="d-flex justify-content-center">
+                  <PaginationPage
+                    count={Math.ceil(total / LIMIT_FAVORITE_PAGE)}
+                    onChangePage={onPageNumberChange}
+                    currentPage={currentPage}
+                  />
+                </div>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
       <Footer />
     </>

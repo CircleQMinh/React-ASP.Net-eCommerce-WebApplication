@@ -14,7 +14,7 @@ export const LIST_RANGE_PRICE = [
   { title: "Trên 120.000", value: [120000, 99999999] },
 ];
 
-export const LIMIT_FAVORITE_PAGE = 6;
+export const LIMIT_FAVORITE_PAGE = 8;
 
 export const color = {
   primary: "#0d6efd",
