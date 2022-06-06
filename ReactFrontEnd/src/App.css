@@ -685,3 +685,7 @@ Extra extra large	xxl	        ≥1400px */
 ::-webkit-scrollbar-thumb:hover {
   background: #0003b3;
 }
+
+.min_height_100vh{
+  min-height: 100vh;
+}

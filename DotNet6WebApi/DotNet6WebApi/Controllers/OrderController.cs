@@ -323,6 +323,32 @@ namespace DotNet6WebApi.Controllers
             return Accepted(new {success=result});
         }
 
+        [HttpGet("cancel/{id}")]
+        public async Task<IActionResult> CancelOrder(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { error = "Dữ liệu chưa hợp lệ", success = false });
+            }
+            try
+            {
+                var order = await unitOfWork.Orders.Get(q => q.Id == id);
+                if (order == null)
+                {
+                    return Ok(new { error = "Không tìm thấy đơn hàng", success = false });
+                }
+                order.Status = (int)OrderStatus.Canceled;
+                order.Note = "Khách hàng đã hủy đơn hàng này.";
 
+                unitOfWork.Orders.Update(order);
+                await unitOfWork.Save();
+
+                return Ok(new { order = order, success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
