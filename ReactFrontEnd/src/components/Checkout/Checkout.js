@@ -263,7 +263,7 @@ function Checkout(props) {
   return (
     <Fragment>
       <Header></Header>
-      <div className="background_cover_1">
+      <div className="background_cover_1 min_height_100vh">
         <div className="container-fluid p-0 m-0 bg-aliceblue opacity-90">
           <nav aria-label="breadcrumb" className="breadcrumb_nav">
             <ol className="breadcrumb mt-2 ms-2">

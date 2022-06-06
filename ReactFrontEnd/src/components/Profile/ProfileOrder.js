@@ -8,6 +8,7 @@ import OrderService from "../../api/OrderService";
 import NumberFormat from "react-number-format";
 import Pagination from "../Pagination/Pagination";
 import Modal from "react-bootstrap/Modal";
+import { toast } from "react-toastify";
 function ProfileOrder() {
   const [reRender, setReRender] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +33,7 @@ function ProfileOrder() {
       .finally(() => {});
   }
 
-  const [rerender, setRerender] = useState(true)
+  const [rerender, setRerender] = useState(true);
   const [status, setStatus] = useState("all");
   const [orderby, setOrderby] = useState("date");
   const [sort, setSort] = useState("Desc");
@@ -74,6 +75,80 @@ function ProfileOrder() {
       }
     }
   }
+  function fetchData() {
+    OrderService.GetUserOrderHistory(
+      userId,
+      pageNumber,
+      pageSize,
+      status,
+      orderby,
+      sort
+    )
+      .then((res) => {
+        //console.log(res.data);
+        setListOrder(res.data.result);
+        setTotalPage(Math.ceil(Number(res.data.totalOrder / pageSize)));
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
+  const [showAcceptOrderModal, setShowAcceptOrderModal] = useState(false);
+  const [isAccepting, setIsAccepting] = useState(false);
+  const [cancelId, setCancelId] = useState(0);
+  const handleCloseAcceptOrderModal = () => setShowAcceptOrderModal(false);
+  const handleShowAcceptOrderModal = (id) => {
+    setShowAcceptOrderModal(true);
+    setCancelId(id);
+  };
+
+  function onAccept_AcceptOrderModal() {
+    setIsAccepting(true);
+    //console.log(cancelId)
+    OrderService.CancelOrder(cancelId)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success("Hủy thành công!", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          toast.error("Có lỗi xảy ra! Xin hãy thử lại", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Có lỗi xảy ra! Xin hãy thử lại", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      })
+      .finally(() => {
+        setIsAccepting(false);
+        setShowAcceptOrderModal(false);
+        fetchData();
+      });
+  }
+
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [isLoadingOrderDetails, setIsLoadingOrderDetails] = useState(false);
   const [orderDetailsList, setOrderDetailsList] = useState([]);
@@ -98,29 +173,8 @@ function ProfileOrder() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchData()
+    fetchData();
   }, [status, orderby, sort, pageNumber, pageSize]);
-  function fetchData(){
-    OrderService.GetUserOrderHistory(
-      userId,
-      pageNumber,
-      pageSize,
-      status,
-      orderby,
-      sort
-    )
-      .then((res) => {
-        //console.log(res.data);
-        setListOrder(res.data.result);
-        setTotalPage(Math.ceil(Number(res.data.totalOrder / pageSize)));
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
 
   const user = JSON.parse(localStorage.getItem("user"));
   var orderDetailsContent = orderDetailsList.map((od) => {
@@ -518,8 +572,21 @@ function ProfileOrder() {
                                             handleShowInfoModal(order);
                                           }}
                                         >
-                                          <i className="fas fa-info-circle"></i>
+                                          <i className="fa-solid fa-circle-info"></i>
                                         </button>
+                                        {(order.status == 0 ||order.status==1) && (
+                                            <button
+                                              type="button"
+                                              className="btn btn-danger"
+                                              onClick={() => {
+                                                handleShowAcceptOrderModal(
+                                                  order.id
+                                                );
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-ban"></i>
+                                            </button>
+                                          )}
                                       </td>
                                     </tr>
                                   );
@@ -707,6 +774,48 @@ function ProfileOrder() {
             </div>
           )}
         </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={showAcceptOrderModal}
+        onHide={handleCloseAcceptOrderModal}
+        size="lg"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Hủy đơn hàng </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-tron text-monospace text-center">
+            Hủy đơn hàng này?
+          </p>
+          <p className="text-center">
+            <i className="fas fa-exclamation-triangle"></i> Đơn hàng sẽ bị hủy!
+          </p>
+        </Modal.Body>
+        {isAccepting && (
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border text-info" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="text monospace ms-2">Đang xủ lý xin chờ tí...</p>
+          </div>
+        )}
+        <Modal.Footer>
+          <button
+            className="btn btn-danger"
+            onClick={handleCloseAcceptOrderModal}
+          >
+            Close
+          </button>
+          <button
+            disabled={isAccepting}
+            className="btn btn-success"
+            onClick={onAccept_AcceptOrderModal}
+          >
+            OK
+          </button>
+        </Modal.Footer>
       </Modal>
     </Fragment>
   );

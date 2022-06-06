@@ -84,7 +84,7 @@ function FindOrderItem(props) {
       props.reRender();
     })
   }
-
+ 
   var orderDetailsContent = orderDetailsList.map((od) => {
     return (
       <tr key={od.book.id}>

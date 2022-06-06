@@ -37,6 +37,14 @@ class OrderService {
     );
     return response;
   }
+
+  async CancelOrder(id) {
+    const response = await axios.get(
+      `${apiUrl}/order/cancel/${id}`,
+      config
+    );
+    return response;
+  }
 }
 
 export default new OrderService();
