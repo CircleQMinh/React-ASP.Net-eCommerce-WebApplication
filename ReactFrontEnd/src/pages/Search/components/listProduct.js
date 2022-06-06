@@ -32,7 +32,7 @@ export const ListProductComponent = (props) => {
               listProduct.map((item) => (
                 <Fragment key={item.id}>
                   <div
-                    className="col col-xs-8 col-md-6 col-lg-4 col-xl-3 "
+                    className="col col-md-6 col-lg-4 col-xl-3 "
                     style={{ paddingBottom: 24 }}
                   >
                     <ProductInfo book={item} />

@@ -5,10 +5,6 @@ import "./Footer.css";
 
 
 function Footer(props) {
-
-
-
-  
   return (
     <footer className="site-footer ">
       <div className="container">
@@ -52,9 +48,9 @@ function Footer(props) {
         <div className="row">
           <div className="col-md-8 col-sm-6 col-xs-12">
             <p className="copyright-text">
-              Copyright &copy; 2021 All Rights Reserved by
+              Copyright &copy; 2022 All Rights Reserved by
               <a href="https://github.com/CircleQMinh"> Quốc Minh</a>.
-              (28/04/2022)
+              (06/06/2022)
             </p>
           </div>
 

@@ -25,6 +25,7 @@ function ProductInfo(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingRelated, setIsLoadingRelated] = useState(true);
   const [rating, setRating] = useState({});
+  const [avgRating, setAvgRating] = useState(0)
   const [openComment, setOpenComment] = useState(false);
 
   function onClickAddToCart(event) {
@@ -71,6 +72,18 @@ function ProductInfo(props) {
     setReview(reviewsSlice);
   };
 
+  function calculateAvgrating(reviews) {
+    try {
+      var avg = 0
+      reviews.forEach(r => {
+        avg+=r.star
+      });
+      setAvgRating(avg/reviews.length)
+    } catch (error) {
+      
+    }
+  }
+
   const getRating = () => {
     setIsLoading(true);
     ProductService.getProductById(params.id)
@@ -100,6 +113,8 @@ function ProductInfo(props) {
           }
         });
         setRating(cal);
+        calculateAvgrating(response.data.reviews);
+      
       })
       .catch((error) => {
         console.log(error);
@@ -108,6 +123,8 @@ function ProductInfo(props) {
         setIsLoading(false);
       });
   }
+
+
 
   useEffect(() => {
     getRating();
@@ -132,7 +149,10 @@ function ProductInfo(props) {
     <Fragment>
       <Header></Header>
       {!isLoading && (
-        <Fragment>
+        <div
+          className="background_cover_1"
+          style={{ marginBottom: -47 + "px" }}
+        >
           <Breadcrumb
             list={[
               { name: "Home", path: "/" },
@@ -145,15 +165,15 @@ function ProductInfo(props) {
             onClickAddToCart={onClickAddToCart}
             onClickComment={onClickComment}
           />
-          <div className="container mt-2">
-            <h2 className="text-center text-monospace lead">
-              <i className="fas fa-bars me-1"></i>
+          <div className="container bg-aliceblue opacity-90">
+            <h2 className="text-center text-black font-monospace lead">
+              <i className="fas fa-bars me-2"></i>
               <span style={{ fontSize: 20, fontWeight: 500 }}>
                 Sách tương tự
               </span>
-              <i className="fas fa-bars ms-1"></i>
+              <i className="fas fa-bars ms-2"></i>
             </h2>
-            <hr></hr>
+            <hr className="hr_main_page"></hr>
             {!isLoadingRelated && (
               <>
                 {related_Product.length > 0 ? (
@@ -164,15 +184,12 @@ function ProductInfo(props) {
               </>
             )}
 
-            <hr></hr>
-            <h2 className="text-center text-monospace lead">
+            <h2 className="text-center font-monospace lead mt-2">
               <i className="fas fa-star me-1"></i>
-              <span style={{ fontSize: 20, fontWeight: 500 }}>
-                Đánh giá & Nhận xét
-              </span>
+              <span style={{ fontSize: 20, fontWeight: 500 }}>Đánh giá ({avgRating.toFixed(2)}) </span>
               <i className="fas fa-star ms-1"></i>
             </h2>
-            <hr></hr>
+            <hr className="hr_main_page"></hr>
             {/* Đánh giá */}
 
             <div className="row d-flex justify-content-center">
@@ -298,6 +315,12 @@ function ProductInfo(props) {
                 </div>
               )}
             </div>
+            <h2 className="text-center font-monospace lead mt-2">
+              <i className="fa-solid fa-pen-nib me-2"></i>
+              <span style={{ fontSize: 20, fontWeight: 500 }}>Nhận xét ({reviews.length})</span>
+              <i className="fa-solid fa-pen-nib ms-2"></i>
+            </h2>
+            <hr className="hr_main_page"></hr>
             {/* Bình luận */}
             {reviews.length == 0 && (
               <>
@@ -316,24 +339,6 @@ function ProductInfo(props) {
             )}
             {reviews.length > 0 && (
               <>
-                <hr></hr>
-                <div className="row mt-2 justify-content-center ">
-                  <div className="d-flex flex-column justify-content-center w-50">
-                    <span
-                      style={{ fontSize: 20, fontWeight: 500 }}
-                      className="text-center mb-2"
-                    >
-                      Sắp xếp theo
-                    </span>
-                    <select
-                      className="form-select w-50 align-self-center"
-                      defaultValue={"new"}
-                    >
-                      <option value="new">Mới nhất</option>
-                      <option value="old">Cũ nhất</option>
-                    </select>
-                  </div>
-                </div>
                 <div id="commentWrapper">
                   <Comment
                     openComment={openComment}
@@ -354,7 +359,7 @@ function ProductInfo(props) {
           </div>
 
           <div className="mb-5"></div>
-        </Fragment>
+        </div>
       )}
       {isLoading && (
         <div className=" full_page_spinner ">

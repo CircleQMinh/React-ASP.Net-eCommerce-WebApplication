@@ -64,12 +64,12 @@ export const ProductDetail = (props) => {
   }, []);
 
   return (
-    <div className="container mt-2">
+    <div className="container mt-2 p-4 bg-aliceblue opacity-90 ">
       <div className="row" key={Math.random()}>
         <div className="col-12 col-md-4">
           <img
             src={product.imgUrl}
-            className="img-fluid rounded border border-1"
+            className="img-fluid rounded  border_product"
             alt="..."
           />
         </div>
@@ -158,7 +158,6 @@ export const ProductDetail = (props) => {
                     style={{
                       color: getRandomColor(),
                     }}
-            
                     className="category"
                     href={generateGenreLink(genre)}
                   >
@@ -198,7 +197,6 @@ export const ProductDetail = (props) => {
           <p className="pro_des_long">{product.description}</p>
         </div>
       </div>
-      <hr></hr>
     </div>
   );
 };

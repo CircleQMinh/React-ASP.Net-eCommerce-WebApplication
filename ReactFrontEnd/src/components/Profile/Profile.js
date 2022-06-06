@@ -155,9 +155,9 @@ function Profile() {
         <Fragment>
           <Header></Header>
           {!isLoading && (
-            <Fragment>
-              <div className="container-fluid mt-2">
-                <nav aria-label="breadcrumb" className="mt-2 breadcrumb_nav">
+            <div className="background_cover_1">
+              <div className="container-fluid p-0 m-0 bg-aliceblue opacity-90">
+                <nav aria-label="breadcrumb" className="breadcrumb_nav">
                   <ol className="breadcrumb mt-2 ms-2">
                     <li className="breadcrumb-item">
                       <NavLink to="/">Home</NavLink>
@@ -171,12 +171,12 @@ function Profile() {
                   </ol>
                 </nav>
               </div>
-              <div className="container mt-2">
+              <div className="container bg-aliceblue mt-2 opacity-90">
                 <div className="row">
-                  <div className="col-md-4 mb-3">
+                  <div className="col col-lg-3 mb-3">
                     <div className="card">
                       <div className="card-body">
-                        <div className="d-flex flex-column align-items-center text-center">
+                        <div className="d-flex flex-column border_product align-items-center text-center">
                           <img
                             src={user.imgUrl}
                             alt="Admin"
@@ -216,7 +216,9 @@ function Profile() {
                           <button
                             className="btn btn-outline-primary"
                             type="button"
-                            onClick={()=>{navigate("/redeem")}}
+                            onClick={() => {
+                              navigate("/redeem");
+                            }}
                           >
                             <i className="fas fa-file-invoice-dollar me-2"></i>
                             Mã giảm giá
@@ -224,7 +226,9 @@ function Profile() {
                           <button
                             className="btn btn-outline-primary"
                             type="button"
-                            onClick={()=>{navigate("/favorite/1")}}
+                            onClick={() => {
+                              navigate("/favorite/1");
+                            }}
                           >
                             <i className="far fa-heart me-2"></i>Yêu thích
                           </button>
@@ -232,7 +236,7 @@ function Profile() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-8">
+                  <div className="col col-lg-9">
                     <div className="card mb-3">
                       <div className="card-body">
                         <div className="row">
@@ -287,7 +291,7 @@ function Profile() {
                   </div>
                 </div>
               </div>
-            </Fragment>
+            </div>
           )}
 
           {isLoading && (

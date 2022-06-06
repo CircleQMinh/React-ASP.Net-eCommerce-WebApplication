@@ -130,7 +130,7 @@ export const FilterProduct = (props) => {
                 Từ
               </span>
               <div
-                style={{ width: "calc(100% - 42px)" }}
+                style={{ width: "calc(100% - 45px)" }}
                 className="textFieldRangePrice"
                 {...register("minPrice")}
               >

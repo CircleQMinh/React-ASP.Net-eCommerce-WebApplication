@@ -69,50 +69,87 @@ export const ProductInfo = (props) => {
     },[book])
 
     return (
-        <div 
-            className={`${"card"} ${styles.cartContainer} ${productHover === 1 && styles.borderStyle} border border-success border-2 `}
-            onMouseLeave={()=>setProductHover(-1)}
-            onMouseEnter={()=>setProductHover(1)}
-        >
-        <div style={{ position: 'relative' }}> 
+      <div
+        className={`${"card p-3"} ${styles.cartContainer} ${
+          productHover === 1 && styles.borderStyle
+        } border border-success border-2 `}
+        onMouseLeave={() => setProductHover(-1)}
+        onMouseEnter={() => setProductHover(1)}
+      >
+        <div style={{ position: "relative" }}>
           <img
             src={book?.imgUrl || "https://picsum.photos/200/200"}
-            className="card-img-top"
+            className="card-img-top border_product"
             alt={`Product ${book.id}`}
-            onClick={()=>{ book.id && redirectDetailProduct(book.id)}}
+            onClick={() => {
+              book.id && redirectDetailProduct(book.id);
+            }}
           />
-          {productHover === 1 && 
+          {productHover === 1 && (
             <div className={styles.functionWrapper}>
-              <button 
+              <button
                 className={`btn btn-primary ${styles.iconSearch} fa fa-search animate__animated animate__fadeIn animate__faster`}
-                onClick={()=>{ book.id && redirectDetailProduct(book.id)}}
+                onClick={() => {
+                  book.id && redirectDetailProduct(book.id);
+                }}
+              ></button>
+              <div
+                className={`${styles.addToCartWrapper} animate__animated animate__fadeIn animate__faster`}
               >
-              </button>
-              <div className={`${styles.addToCartWrapper} animate__animated animate__fadeIn animate__faster`}>
-                <button className={`btn btn-primary ${styles.addToCart}`} onClick={onClickAddToCart}>Thêm vào giỏ</button>
-                <button className={`btn btn-primary ${styles.iconHeart}`} onClick={() => favoriteBook()}>
-                  <i className={`fa-solid ${isFavorite ? styles.favorite + " fa-circle-xmark" : " fa-heart"}`}></i>
+                <button
+                  className={`btn btn-primary ${styles.addToCart}`}
+                  onClick={onClickAddToCart}
+                >
+                  <i className="fa-solid fa-plus me-2"></i> Thêm
+                </button>
+                <button
+                  className={`btn btn-primary ${styles.iconHeart}`}
+                  onClick={() => favoriteBook()}
+                >
+                  <i
+                    className={`fa-solid ${
+                      isFavorite
+                        ? styles.favorite + " fa-circle-xmark"
+                        : " fa-heart"
+                    }`}
+                  ></i>
                 </button>
               </div>
             </div>
-          }
-          <div className={`${styles.iconHeartTablet}`} onClick={() => favoriteBook()}>
-            <i className={`${isFavorite ? styles.favorite + " fa-circle-xmark" : styles.NoneFavorite + " fa-solid fa-heart"}`}></i>
-            </div>
+          )}
+          <div
+            className={`${styles.iconHeartTablet}`}
+            onClick={() => favoriteBook()}
+          >
+            <i
+              className={`${
+                isFavorite
+                  ? styles.favorite + " fa-circle-xmark"
+                  : styles.NoneFavorite + " fa-solid fa-heart"
+              }`}
+            ></i>
+          </div>
         </div>
         <div className={`${"card-body"}`}>
-          <h5 className={`${styles.productName}`}
-            onClick={()=>{ book.id && redirectDetailProduct(book.id)}}
-          >{book.title}</h5>
+          <h5
+            className={`${styles.productName} font-monospace text-black`}
+            onClick={() => {
+              book.id && redirectDetailProduct(book.id);
+            }}
+          >
+            {book.title}
+          </h5>
           {/* <div className={styles.price}>{formatCurrencyVN(item.price)}</div> */}
           <div className={styles.priceWrapper}>
             <ProductPrice book={book} />
           </div>
           {/* hiển thị ở màn hình tablet */}
           <div className={styles.functionWrapperTablet}>
-            <button className={`btn btn-primary`} onClick={onClickAddToCart}>Thêm vào giỏ</button>
+            <button className={`btn btn-primary`} onClick={onClickAddToCart}>
+              <i className="fa-solid fa-plus me-2"></i> Thêm
+            </button>
           </div>
         </div>
       </div>
-    )
+    );
 }

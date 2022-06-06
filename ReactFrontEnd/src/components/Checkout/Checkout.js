@@ -263,345 +263,359 @@ function Checkout(props) {
   return (
     <Fragment>
       <Header></Header>
-      <div className="container-fluid">
-        <nav aria-label="breadcrumb" className="mt-2 breadcrumb_nav">
-          <ol className="breadcrumb mt-2 ms-2">
-            <li className="breadcrumb-item">
-              <NavLink to="/">Home</NavLink>
-            </li>
-            <li className="breadcrumb-item active" aria-current="page">
-              <p>Checkout</p>
-            </li>
-          </ol>
-        </nav>
-      </div>
-      <div className="container">
-        <div className="row ">
-          <div className="col-3 d-flex justify-content-center border-bottom border-end border-4">
-            <img
-              src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
-              style={{ height: "65px", width: "65px" }}
-              alt="Nav Icon"
-              className="d-inline"
-            />
-            <p className="lead mt-3 fw-bold">Circle's Shop</p>
-          </div>
-          <div className="col-9 border-bottom border-4">
-            <p className="lead mt-3">
-              <i className="fas fa-money-check-alt me-2"></i>Thanh toán
-            </p>
+      <div className="background_cover_1">
+        <div className="container-fluid p-0 m-0 bg-aliceblue opacity-90">
+          <nav aria-label="breadcrumb" className="breadcrumb_nav">
+            <ol className="breadcrumb mt-2 ms-2">
+              <li className="breadcrumb-item">
+                <NavLink to="/">Home</NavLink>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                <p>Checkout</p>
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div className="container mt-1 bg-aliceblue opacity-90">
+          <div className="row ">
+            <div className="col-3 d-flex justify-content-center border-bottom border-end border-4">
+              <img
+                src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
+                style={{ height: "65px", width: "65px" }}
+                alt="Nav Icon"
+                className="d-inline"
+              />
+              <p className="lead mt-3 fw-bold">Circle's Shop</p>
+            </div>
+            <div className="col-9 border-bottom border-4">
+              <p className="lead mt-3">
+                <i className="fas fa-money-check-alt me-2"></i>Thanh toán
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mt-4 ">
-        <div className="row">
-          {isLoggedIn && totalItem == 0 && (
-            <div className="col-sm-12 col-lg-9 p-2 border border-2 animate__animated animate__bounceInLeft d-flex justify-content-center">
-              <img
-                className="img-fluid"
-                src="https://www.gamkart.com/frontend/img/empty-cart.png"
-                alt="noproduct"
-              ></img>
-            </div>
-          )}
-          {!isLoggedIn && (
-            <div className="col-sm-12 col-lg-9 p-2 border border-2 animate__animated animate__bounceInLeft">
-              <div className="container d-flex flex-column">
-                <p className="text-center fw-bold">Hãy đăng nhập để tiếp tục</p>
-                <button
-                  className="btn btn-success"
-                  onClick={() => {
-                    localStorage.setItem("redirect", "/checkout");
-                    navigate("/login");
-                  }}
-                >
-                  <i className="fas fa-sign-in-alt me-2"></i>Đăng nhập
-                </button>
+        <div className="container mt-4 bg-aliceblue opacity-90">
+          <div className="row">
+            {isLoggedIn && totalItem == 0 && (
+              <div className="col-sm-12 col-lg-9 p-2 border border-2 animate__animated animate__bounceInLeft d-flex justify-content-center">
+                <img
+                  className="img-fluid"
+                  src="https://www.gamkart.com/frontend/img/empty-cart.png"
+                  alt="noproduct"
+                ></img>
               </div>
-            </div>
-          )}
-          {isLoggedIn && totalItem > 0 && (
-            <div className="col-sm-12 col-lg-9 p-2 border border-2 animate__animated animate__bounceInLeft">
-              <div className="container ">
-                <form>
-                  <p className="fw-bold lead">Thông tin liên lạc</p>
-                  <div className="mb-3">
-                    <label className="form-label">Tên liên lạc: </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      {...register("contactName", {
-                        required: true,
-                      })}
-                    ></input>
-                    {errors.contactName?.type === "required" && (
-                      <div className="form-text">
-                        <i className="fas fa-exclamation-triangle me-2"></i>
-                        Tên liên lạc chưa điền
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Email: </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      {...register("email", {
-                        required: true,
-                        pattern:
-                          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                      })}
-                    ></input>
-                    {errors.email?.type === "required" && (
-                      <div className="form-text">
-                        <i className="fas fa-exclamation-triangle me-2"></i>
-                        Email chưa điền
-                      </div>
-                    )}
-                    {errors.email?.type === "pattern" && (
-                      <div className="form-text">
-                        <i className="fas fa-exclamation-triangle me-2"></i>
-                        Email không hợp lệ
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Số điện thoại: </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      {...register("phoneNumber", {
-                        required: true,
-                        minLength: 9,
-                        maxLength: 10,
-                      })}
-                    ></input>
-                    {errors.phoneNumber?.type === "required" && (
-                      <div className="form-text">
-                        <i className="fas fa-exclamation-triangle"></i>SDT không
-                        để trống
-                      </div>
-                    )}
-                    {errors.phoneNumber?.type === "minLength" && (
-                      <div className="form-text">
-                        <i className="fas fa-exclamation-triangle"></i>SDT không
-                        hợp lệ
-                      </div>
-                    )}
-                    {errors.phoneNumber?.type === "maxLength" && (
-                      <div className="form-text">
-                        <i className="fas fa-exclamation-triangle"></i>SDT không
-                        hợp lệ
-                      </div>
-                    )}
-                  </div>
-                  <p className="fw-bold lead">Địa chỉ nhận hàng</p>
-                  <div className="mb-3">
-                    <label className="form-label">Số nhà: </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      {...register("addressNo", {
-                        required: true,
-                      })}
-                    ></input>
-                    {errors.addressNo?.type === "required" && (
-                      <div className="form-text">
-                        <i className="fas fa-exclamation-triangle me-2"></i>Số
-                        nhà chưa điền
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Đường: </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      {...register("street", {
-                        required: true,
-                      })}
-                    ></input>
-                    {errors.street?.type === "required" && (
-                      <div className="form-text">
-                        <i className="fas fa-exclamation-triangle me-2"></i>
-                        Tên đường chưa điền
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Phường: </label>
-                    <select
-                      className="form-select"
-                      defaultValue={"Phường 1"}
-                      {...register("ward", {
-                        required: true,
-                      })}
-                    >
-                      {Ward.map((item) => {
-                        return (
-                          <option value={item} key={item}>
-                            {item}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Quận: </label>
-                    <select
-                      className="form-select"
-                      defaultValue={"Quận 1"}
-                      {...register("district", {
-                        required: true,
-                      })}
-                    >
-                      {District.map((item) => {
-                        return (
-                          <option value={item} key={item}>
-                            {item}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Thành phố: </label>
-                    <select
-                      className="form-select"
-                      defaultValue={"TP.HCM"}
-                      {...register("city", {
-                        required: true,
-                      })}
-                    >
-                      <option value="TP.HCM">TP.HCM</option>
-                    </select>
-                  </div>
-                  <p className="fw-bold lead">Ghi chú </p>
-                  <div className="mb-3">
-                    <label className="form-label">Ghi chú: </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Ghi chú cho đơn hàng"
-                      {...register("note")}
-                    ></input>
-                    {/* <div  className="form-text">
-                We'll never share your email with anyone else.
-              </div> */}
-                  </div>
-                  <p className="fw-bold lead">Phương thức thanh toán</p>
-                  <div className="mb-3">
-                    <label className="form-label">Phương thanh toán: </label>
-                    <select
-                      className="form-select"
-                      defaultValue={"cash"}
-                      {...register("paymentMethod", {
-                        required: true,
-                      })}
-                    >
-                      <option value="cash">Tiền mặt</option>
-                      <option value="vnpay">VNPay</option>
-                    </select>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-
-          <div className="col-sm-12 col-lg-3  p-2 border border-2 animate__animated animate__bounceInRight">
-            <div className="checkout_sticky">
-              <p className="lead text-center fw-bold">Thông tin giỏ hàng</p>
-              <div className="container d-flex justify-content-center flex-column text-center text-monospace mb-3">
-                <p>
-                  Tổng giá trị :{" "}
-                  <NumberFormat
-                    value={totalPrice}
-                    className="text-center   "
-                    displayType={"text"}
-                    thousandSeparator={true}
-                    suffix={"đ"}
-                    renderText={(value, props) => (
-                      <span {...props}>{value}</span>
-                    )}
-                  />
-                </p>
-                <p>Tổng số sản phẩm : {totalItem}</p>
-                <div className="d-grid gap-2">
+            )}
+            {!isLoggedIn && (
+              <div className="col-sm-12 col-lg-9 p-2 border border-2 animate__animated animate__bounceInLeft">
+                <div className="container d-flex flex-column">
+                  <p className="text-center fw-bold">
+                    Hãy đăng nhập để tiếp tục
+                  </p>
                   <button
-                    className="btn btn-warning"
-                    type="button"
-                    onClick={handleSubmit(SendOrder)}
-                    disabled={items.length == 0 || !isLoggedIn ? true : false}
+                    className="btn btn-success"
+                    onClick={() => {
+                      localStorage.setItem("redirect", "/checkout");
+                      navigate("/login");
+                    }}
                   >
-                    <i className="fas fa-gift me-2"></i> Gửi đơn hàng
+                    <i className="fas fa-sign-in-alt me-2"></i>Đăng nhập
                   </button>
                 </div>
               </div>
-              <p className="lead text-center fw-bold">Thông tin mã giảm giá</p>
-              {discountCode == null && (
-                <div className="container">
-                  <p className="text-center">Không có thông tin mã giảm giá</p>
+            )}
+            {isLoggedIn && totalItem > 0 && (
+              <div className="col-sm-12 col-lg-9 p-2 border border-2 animate__animated animate__bounceInLeft">
+                <div className="container ">
+                  <form>
+                    <p className="fw-bold lead">Thông tin liên lạc</p>
+                    <div className="mb-3">
+                      <label className="form-label">Tên liên lạc: </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        {...register("contactName", {
+                          required: true,
+                        })}
+                      ></input>
+                      {errors.contactName?.type === "required" && (
+                        <div className="form-text">
+                          <i className="fas fa-exclamation-triangle me-2"></i>
+                          Tên liên lạc chưa điền
+                        </div>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Email: </label>
+                      <input
+                        type="email"
+                        className="form-control"
+                        {...register("email", {
+                          required: true,
+                          pattern:
+                            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                        })}
+                      ></input>
+                      {errors.email?.type === "required" && (
+                        <div className="form-text">
+                          <i className="fas fa-exclamation-triangle me-2"></i>
+                          Email chưa điền
+                        </div>
+                      )}
+                      {errors.email?.type === "pattern" && (
+                        <div className="form-text">
+                          <i className="fas fa-exclamation-triangle me-2"></i>
+                          Email không hợp lệ
+                        </div>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Số điện thoại: </label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        {...register("phoneNumber", {
+                          required: true,
+                          minLength: 9,
+                          maxLength: 10,
+                        })}
+                      ></input>
+                      {errors.phoneNumber?.type === "required" && (
+                        <div className="form-text">
+                          <i className="fas fa-exclamation-triangle"></i>SDT
+                          không để trống
+                        </div>
+                      )}
+                      {errors.phoneNumber?.type === "minLength" && (
+                        <div className="form-text">
+                          <i className="fas fa-exclamation-triangle"></i>SDT
+                          không hợp lệ
+                        </div>
+                      )}
+                      {errors.phoneNumber?.type === "maxLength" && (
+                        <div className="form-text">
+                          <i className="fas fa-exclamation-triangle"></i>SDT
+                          không hợp lệ
+                        </div>
+                      )}
+                    </div>
+                    <p className="fw-bold lead">Địa chỉ nhận hàng</p>
+                    <div className="mb-3">
+                      <label className="form-label">Số nhà: </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        {...register("addressNo", {
+                          required: true,
+                        })}
+                      ></input>
+                      {errors.addressNo?.type === "required" && (
+                        <div className="form-text">
+                          <i className="fas fa-exclamation-triangle me-2"></i>Số
+                          nhà chưa điền
+                        </div>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Đường: </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        {...register("street", {
+                          required: true,
+                        })}
+                      ></input>
+                      {errors.street?.type === "required" && (
+                        <div className="form-text">
+                          <i className="fas fa-exclamation-triangle me-2"></i>
+                          Tên đường chưa điền
+                        </div>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Phường: </label>
+                      <select
+                        className="form-select"
+                        defaultValue={"Phường 1"}
+                        {...register("ward", {
+                          required: true,
+                        })}
+                      >
+                        {Ward.map((item) => {
+                          return (
+                            <option value={item} key={item}>
+                              {item}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Quận: </label>
+                      <select
+                        className="form-select"
+                        defaultValue={"Quận 1"}
+                        {...register("district", {
+                          required: true,
+                        })}
+                      >
+                        {District.map((item) => {
+                          return (
+                            <option value={item} key={item}>
+                              {item}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Thành phố: </label>
+                      <select
+                        className="form-select"
+                        defaultValue={"TP.HCM"}
+                        {...register("city", {
+                          required: true,
+                        })}
+                      >
+                        <option value="TP.HCM">TP.HCM</option>
+                      </select>
+                    </div>
+                    <p className="fw-bold lead">Ghi chú </p>
+                    <div className="mb-3">
+                      <label className="form-label">Ghi chú: </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Ghi chú cho đơn hàng"
+                        {...register("note")}
+                      ></input>
+                      {/* <div  className="form-text">
+                We'll never share your email with anyone else.
+              </div> */}
+                    </div>
+                    <p className="fw-bold lead">Phương thức thanh toán</p>
+                    <div className="mb-3">
+                      <label className="form-label">Phương thanh toán: </label>
+                      <select
+                        className="form-select"
+                        defaultValue={"cash"}
+                        {...register("paymentMethod", {
+                          required: true,
+                        })}
+                      >
+                        <option value="cash">Tiền mặt</option>
+                        <option value="vnpay">VNPay</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            <div className="col-sm-12 col-lg-3  p-2 border border-2 animate__animated animate__bounceInRight">
+              <div className="checkout_sticky">
+                <p className="lead text-center fw-bold">Thông tin giỏ hàng</p>
+                <div className="container d-flex justify-content-center flex-column text-center text-monospace mb-3">
+                  <p>
+                    Tổng giá trị :{" "}
+                    <NumberFormat
+                      value={totalPrice}
+                      className="text-center   "
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      suffix={"đ"}
+                      renderText={(value, props) => (
+                        <span {...props}>{value}</span>
+                      )}
+                    />
+                  </p>
+                  <p>Tổng số sản phẩm : {totalItem}</p>
                   <div className="d-grid gap-2">
                     <button
                       className="btn btn-warning"
                       type="button"
-                      onClick={handleShowDiscountModal}
+                      onClick={handleSubmit(SendOrder)}
+                      disabled={items.length == 0 || !isLoggedIn ? true : false}
                     >
-                      <i className="fas fa-gift me-2"></i> Nhập mã giảm giá
+                      <i className="fas fa-gift me-2"></i> Gửi đơn hàng
                     </button>
                   </div>
                 </div>
-              )}
-              {discountCode != null && (
-                <div className="container">
-                  {discountCode.discountAmount != null && (
-                    <Fragment>
-                      <p className="text-center">
-                        Giảm giá : {discountCode.discountAmount} đ
-                      </p>
-                      <p className="lead text-center fw-bold">
-                        Tổng giá đơn hàng sau giảm giá : 
-                        <NumberFormat
-                          value={totalPrice>discountCode.discountAmount?totalPrice-discountCode.discountAmount:0}
-                          className="text-center ms-1  "
-                          displayType={"text"}
-                          thousandSeparator={true}
-                          suffix={"đ"}
-                          renderText={(value, props) => (
-                            <span {...props}>{value}</span>
-                          )}
-                        />
-                      </p>
-                    </Fragment>
-                  )}
-                  {discountCode.discountPercent != null && (
-                    <Fragment>
-                      <p className="text-center">
-                        Giảm giá : {discountCode.discountPercent} %
-                      </p>
-                      <p className="lead text-center fw-bold">
-                        Tổng giá đơn hàng sau giảm giá : 
-                        <NumberFormat
-                          value={totalPrice-(discountCode.discountPercent*totalPrice)/100}
-                          className="text-center  ms-1 "
-                          displayType={"text"}
-                          thousandSeparator={true}
-                          suffix={"đ"}
-                          renderText={(value, props) => (
-                            <span {...props}>{value}</span>
-                          )}
-                        />
-                      </p>
-                    </Fragment>
-                  )}
-                </div>
-              )}
+                <p className="lead text-center fw-bold">
+                  Thông tin mã giảm giá
+                </p>
+                {discountCode == null && (
+                  <div className="container">
+                    <p className="text-center">
+                      Không có thông tin mã giảm giá
+                    </p>
+                    <div className="d-grid gap-2">
+                      <button
+                        className="btn btn-warning"
+                        type="button"
+                        onClick={handleShowDiscountModal}
+                      >
+                        <i className="fas fa-gift me-2"></i> Nhập mã giảm giá
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {discountCode != null && (
+                  <div className="container">
+                    {discountCode.discountAmount != null && (
+                      <Fragment>
+                        <p className="text-center">
+                          Giảm giá : {discountCode.discountAmount} đ
+                        </p>
+                        <p className="lead text-center fw-bold">
+                          Tổng giá đơn hàng sau giảm giá :
+                          <NumberFormat
+                            value={
+                              totalPrice > discountCode.discountAmount
+                                ? totalPrice - discountCode.discountAmount
+                                : 0
+                            }
+                            className="text-center ms-1  "
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            suffix={"đ"}
+                            renderText={(value, props) => (
+                              <span {...props}>{value}</span>
+                            )}
+                          />
+                        </p>
+                      </Fragment>
+                    )}
+                    {discountCode.discountPercent != null && (
+                      <Fragment>
+                        <p className="text-center">
+                          Giảm giá : {discountCode.discountPercent} %
+                        </p>
+                        <p className="lead text-center fw-bold">
+                          Tổng giá đơn hàng sau giảm giá :
+                          <NumberFormat
+                            value={
+                              totalPrice -
+                              (discountCode.discountPercent * totalPrice) / 100
+                            }
+                            className="text-center  ms-1 "
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            suffix={"đ"}
+                            renderText={(value, props) => (
+                              <span {...props}>{value}</span>
+                            )}
+                          />
+                        </p>
+                      </Fragment>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-
       <Modal
         backdrop="static"
         centered

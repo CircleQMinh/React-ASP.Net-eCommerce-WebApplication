@@ -43,10 +43,10 @@ function SlickSlider(props) {
       : props.responsive_setting;
   let items = props.items;
   var settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
-    arrows: false,
+    arrows: true,
     slidesToShow: slide_to_show,
     slidesToScroll: slide_to_scroll,
     initialSlide: 0,
@@ -95,13 +95,13 @@ function SlickSlider(props) {
 
   return (
     <Fragment>
-      <Container className="p-5  " style={{ position: "relative" }}
+      <div className="p-2 container " 
           onMouseLeave={()=>setSliderHover(false)}
           onMouseEnter={()=>setSliderHover(true)}
       >
         {sliderHover &&   
           <>
-            <button className={`btn ${styles.angleRightBtn}`} onClick={() => slider?.current?.slickNext()}>
+            <button className={`btn ${styles.angleRightBtn} btn-danger`} onClick={() => slider?.current?.slickNext()}>
               <i className="fa fa-angle-right"></i>
             </button>
             <button className={`btn ${styles.angleLeftBtn}`} onClick={() => slider?.current?.slickPrev()}>
@@ -120,7 +120,7 @@ function SlickSlider(props) {
             })}
           </Slider>
         )}
-      </Container>
+      </div>
     </Fragment>
   );
 }
