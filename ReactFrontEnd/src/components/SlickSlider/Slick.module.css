@@ -22,7 +22,7 @@
 .angleLeftBtn,
 .angleRightBtn {
     position: absolute;
-    top: 40%;
+    top: 45%;
     background-color: rgb(50, 50, 50, 0.5); /* #323232 */
     display: flex;
     align-items: center;

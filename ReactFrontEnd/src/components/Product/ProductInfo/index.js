@@ -72,7 +72,7 @@ export const ProductInfo = (props) => {
       <div
         className={`${"card p-3"} ${styles.cartContainer} ${
           productHover === 1 && styles.borderStyle
-        } border border-success border-2 `}
+        } border border-2`}
         onMouseLeave={() => setProductHover(-1)}
         onMouseEnter={() => setProductHover(1)}
       >

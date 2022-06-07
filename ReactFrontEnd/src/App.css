@@ -31,6 +31,7 @@ Extra extra large	xxl	        ≥1400px */
 
 .body {
   overflow-x: hidden;
+  font-family: Roboto;
 }
 .print_a4 {
   background-color: "#f5f5f5";
@@ -651,7 +652,7 @@ Extra extra large	xxl	        ≥1400px */
   opacity: 1 !important;
 }
 .border_product {
-  border: red solid 2px !important;
+  border: #0d6efd solid 2px !important;
 }
 .border_review {
   border: blueviolet solid 2px !important;
