@@ -213,7 +213,7 @@ namespace DotNet6WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
         [HttpPut("{id}")]
@@ -241,7 +241,7 @@ namespace DotNet6WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
         [HttpDelete("{id}")]
@@ -255,7 +255,13 @@ namespace DotNet6WebApi.Controllers
                 {
                     return Ok(new { success = false, msg = "Không tìm thấy đơn hàng" });
                 }
-                await unitOfWork.Orders.Delete(order.Id);
+                if (order.Status==(int)OrderStatus.NotChecked||order.Status==(int)OrderStatus.Checked||order.Status==(int)OrderStatus.Delivering)
+                {
+                    order.Status= (int)OrderStatus.Canceled;
+                    order.Note = "Quản trị viên đã từ chối đơn hàng.";
+                }
+                order.IsLocked = true;
+                unitOfWork.Orders.Update(order);
                 await unitOfWork.Save();
                 return Ok(new { success = true });
             }
@@ -272,7 +278,7 @@ namespace DotNet6WebApi.Controllers
             //shippedDate
             try
             {
-                Expression<Func<Order, bool>> expression = status=="all" ? q=>true : q => q.Status == int.Parse(status);
+                Expression<Func<Order, bool>> expression = status=="all" ? q=>q.IsLocked==false : q => q.Status == int.Parse(status)&&q.IsLocked==false;
                 Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;
                 switch (orderby)
                 {

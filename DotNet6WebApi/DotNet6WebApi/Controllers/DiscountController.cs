@@ -27,7 +27,7 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-                Expression<Func<DiscountCode, bool>> expression = q=>true;
+                Expression<Func<DiscountCode, bool>> expression = q=>q.IsLocked==false;
                 Expression<Func<DiscountCode, bool>> expression_status = q=>true;
                 Expression<Func<DiscountCode, bool>> expression_type = q => true;
 
@@ -180,7 +180,8 @@ namespace DotNet6WebApi.Controllers
                 {
                     return Ok(new { success = false, error = "Không tìm thấy mã!" });
                 }
-                await unitOfWork.DiscountCodes.Delete(dc.Id);
+                dc.IsLocked = true;
+                unitOfWork.DiscountCodes.Update(dc);
                 await unitOfWork.Save();
                 return Ok(new { success = true });
             }
@@ -226,7 +227,7 @@ namespace DotNet6WebApi.Controllers
                 return BadRequest(new { error = ex.ToString() });
             }
         }
-
+        //shiper02 fix
         [HttpPost("redeemDiscountCode")]
         [Authorize]
         public async Task<IActionResult> RedeemDiscount([FromBody]RedeemDiscountCodeDTO dto)

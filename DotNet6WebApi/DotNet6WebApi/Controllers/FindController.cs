@@ -48,7 +48,7 @@ namespace DotNet6WebApi.Controllers
                 {
                     //--------------------------------------------------------------------------------------------------
                     case ("Product", "Name"):
-                        expression_book = q => q.Title.Contains(keyword);
+                        expression_book = q => q.Title.Contains(keyword)&&q.IsLocked==false;
                         listFromQuery = await unitOfWork.Books.GetAll(
                         expression_book,
                         null,
@@ -58,7 +58,7 @@ namespace DotNet6WebApi.Controllers
                         result = mapper.Map<IList<AdminBookDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
                     case ("Product", "Price"):
-                        expression_book = q => q.Price == Int32.Parse(keyword);
+                        expression_book = q => q.Price == Int32.Parse(keyword) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Books.GetAll(
                         expression_book,
                         null,
@@ -68,7 +68,7 @@ namespace DotNet6WebApi.Controllers
                         result = mapper.Map<IList<AdminBookDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
                     case ("Product", "Id"):
-                        expression_book = q => q.Id == Int32.Parse(keyword);
+                        expression_book = q => q.Id == Int32.Parse(keyword) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Books.GetAll(
                         expression_book,
                         null,
@@ -79,7 +79,7 @@ namespace DotNet6WebApi.Controllers
                         return Accepted(new { success = true, result = result, total = count });
                     //--------------------------------------------------------------------------------------------------
                     case ("Order", "Name"):
-                        expression_order = q=>q.ContactName.Contains(keyword);
+                        expression_order = q=>q.ContactName.Contains(keyword) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Orders.GetAll(
                           expression_order,
                           null,
@@ -91,7 +91,7 @@ namespace DotNet6WebApi.Controllers
                     
 
                     case ("Order", "Id"):
-                        expression_order = q => q.Id==Int32.Parse(keyword);
+                        expression_order = q => q.Id==Int32.Parse(keyword) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Orders.GetAll(
                           expression_order,
                           null,
@@ -101,7 +101,7 @@ namespace DotNet6WebApi.Controllers
                         result = mapper.Map<IList<OrderDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
                     case ("Order", "TotalPrice"):
-                        expression_order = q => q.TotalPrice == Int32.Parse(keyword);
+                        expression_order = q => q.TotalPrice == Int32.Parse(keyword) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Orders.GetAll(
                           expression_order,
                           null,
@@ -112,7 +112,7 @@ namespace DotNet6WebApi.Controllers
                         return Accepted(new { success = true, result = result, total = count });
                     case ("Order", "OrderDate"):
 
-                        expression_order = q => q.OrderDate.Date.Equals(DateTime.ParseExact(keyword, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date);
+                        expression_order = q => q.OrderDate.Date.Equals(DateTime.ParseExact(keyword, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Orders.GetAll(
                           expression_order,
                           null,
@@ -123,7 +123,7 @@ namespace DotNet6WebApi.Controllers
                         return Accepted(new { success = true, result = result, total = count });
                     case ("Order", "ShippedDate"):
                         expression_order = q => q.ShippedDate.ToShortDateString() ==
-                        DateTime.ParseExact(keyword, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToShortDateString();
+                        DateTime.ParseExact(keyword, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToShortDateString() && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Orders.GetAll(
                           expression_order,
                           null,
@@ -134,7 +134,7 @@ namespace DotNet6WebApi.Controllers
                         return Accepted(new { success = true, result = result, total = count });
                     //--------------------------------------------------------------------------------------------------
                     case ("User", "Id"):
-                        expression_user = q => q.Id == keyword;
+                        expression_user = q => q.Id == keyword && q.IsLocked == false;
                         listFromQuery= await unitOfWork.Users.GetAll(
                             expression_user,
                             null,null,new PaginationFilter(pageNumber,pageSize));
@@ -143,7 +143,7 @@ namespace DotNet6WebApi.Controllers
                         return Accepted(new { success = true, result = result, total = count });
                        
                     case ("User", "Name"):
-                        expression_user = q => q.UserName.Contains(keyword);
+                        expression_user = q => q.UserName.Contains(keyword) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Users.GetAll(
                             expression_user,
                             null, null, new PaginationFilter(pageNumber, pageSize));
@@ -152,7 +152,7 @@ namespace DotNet6WebApi.Controllers
                         return Accepted(new { success = true, result = result, total = count });
                     //--------------------------------------------------------------------------------------------------
                     case ("Employee", "Id"):
-                        expression_emp = q => q.Id == Int32.Parse(keyword);
+                        expression_emp = q => q.Id == Int32.Parse(keyword) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Employees.GetAll(
                           expression_emp,
                           null,
@@ -162,7 +162,7 @@ namespace DotNet6WebApi.Controllers
                         result = mapper.Map<IList<EmployeeDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
                     case ("Employee", "Name"):
-                        expression_emp = q => q.Name.Contains(keyword);
+                        expression_emp = q => q.Name.Contains(keyword) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Employees.GetAll(
                           expression_emp,
                           null,
@@ -172,7 +172,7 @@ namespace DotNet6WebApi.Controllers
                         result = mapper.Map<IList<EmployeeDTO>>(listFromQuery);
                         return Accepted(new { success = true, result = result, total = count });
                     case ("Employee", "Email"):
-                        expression_emp = q => q.Email.Contains(keyword);
+                        expression_emp = q => q.Email.Contains(keyword) && q.IsLocked == false;
                         listFromQuery = await unitOfWork.Employees.GetAll(
                           expression_emp,
                           null,

@@ -47,13 +47,12 @@ namespace DotNet6WebApi.Controllers
                         break;
                 }
 
-                var promos = await unitOfWork.Promotions.GetAll(expression, orderBy, new List<string> { "PromotionInfos" }, new PaginationFilter(pageNumber, pageSize));
-                var count = await unitOfWork.Promotions.GetCount(expression);
+                var promos = await unitOfWork.Promotions.GetAll(expression, orderBy,null, new PaginationFilter(pageNumber, pageSize));
                 var result = mapper.Map<IList<FullPromotionDTO>>(promos);
 
 
 
-                return Accepted(new { result = result, total = count });
+                return Accepted(new { result = result, total = promos.Count });
             }
             catch (Exception ex)
             {
@@ -248,7 +247,7 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-                var books = await unitOfWork.Books.GetAll(q => q.PromotionInfoID==null, q => q.OrderBy(b=>b.Id),null);
+                var books = await unitOfWork.Books.GetAll(q => q.PromotionInfoID==null&&q.IsLocked==false, q => q.OrderBy(b=>b.Id),null);
                 var result = mapper.Map<IList<BookDTO>>(books);
                 return Ok(new { result = result });
             }

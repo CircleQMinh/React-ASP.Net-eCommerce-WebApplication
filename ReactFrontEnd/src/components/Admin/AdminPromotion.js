@@ -343,7 +343,7 @@ function AdminPromotion() {
                               <th>Thông tin khuyến mãi</th>
                               <th>Ngày bắt đầu</th>
                               <th>Ngày kết thúc</th>
-                              <th>Số sản phẩm</th>
+
                               <th className="text-right">Actions</th>
                             </tr>
                           </thead>

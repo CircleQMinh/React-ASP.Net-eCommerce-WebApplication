@@ -399,7 +399,7 @@ function PromotionTableItem(props) {
         <td className="text-black">
           {formatDate(new Date(item.endDate + "Z"), "dd-MM-yyyy HH:mm:ss")}
         </td>
-        <td className="text-black">{item.promotionInfos.length}</td>
+
         <td className="text-black">
           <div className="btn-group">
             <button

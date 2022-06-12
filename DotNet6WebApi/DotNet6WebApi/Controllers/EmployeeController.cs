@@ -32,7 +32,7 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-                Expression<Func<Employee, bool>> expression = null;
+                Expression<Func<Employee, bool>> expression = q=>q.IsLocked==false;
                 Func<IQueryable<Employee>, IOrderedQueryable<Employee>> orderBy = null;
 
                 switch (role)
@@ -195,15 +195,19 @@ namespace DotNet6WebApi.Controllers
                 {
                     return Ok(new { success = false, msg = "Không tìm thấy nhân viên" });
                 }
-                await unitOfWork.Employees.Delete(emp.Id);
+                emp.IsLocked = true;
+                unitOfWork.Employees.Update(emp);
                 await unitOfWork.Save();
                 if (emp.ShipperId != null)
                 {
                     deleteUser = true;
                 }
                 if (deleteUser)
+
                 {
-                    await userManager.DeleteAsync(emp.Shipper);
+                    var user = await userManager.FindByIdAsync(emp.ShipperId);
+                    user.IsLocked = true;
+                    await userManager.UpdateAsync(user);
                 }
                 return Ok(new { success = true });
             }

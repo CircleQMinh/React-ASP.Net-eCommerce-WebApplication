@@ -10,6 +10,7 @@ namespace DotNet6WebApi.DTO
         public string imgUrl { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public bool IsLocked { get; set; }
     }
 
     public class FullPromotionDTO
@@ -23,6 +24,7 @@ namespace DotNet6WebApi.DTO
         public virtual IList<SimplePromotionInfoDTO> PromotionInfos { get; set; }
         public int Status { get; set; }
         public int Visible { get; set; }
+        public bool IsLocked { get; set; }
     }
 
     public class CreatPromotionDTO

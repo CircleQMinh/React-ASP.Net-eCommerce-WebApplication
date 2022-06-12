@@ -20,6 +20,8 @@
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
 
+        public bool IsLocked { get; set; }
+
         public Book()
         {
             Genres = new List<Genre>();

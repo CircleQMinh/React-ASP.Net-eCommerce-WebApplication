@@ -45,6 +45,7 @@
         public int Coins { get; set; }
         public virtual bool EmailConfirmed { get; set; }
         public IList<string> Roles { get; set; }
+        public bool IsLocked { get; set; }
     }
 
     public class UserIdDTO

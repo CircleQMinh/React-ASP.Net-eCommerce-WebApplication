@@ -8,7 +8,6 @@
         public int BookId { get; set; }
         public Book Book { get; set; }
         public int Quantity { get; set; }
-
         public string? PromotionPercent { get; set; }
         public string? PromotionAmount { get; set; }
     }

@@ -84,6 +84,11 @@ namespace DotNet6WebApi.Controllers
                     var error = "Bạn chưa xác thục tài khoản! Hãy kiểm tra email để xác thực.";
                     return Accepted(new { msg = error });
                 }
+                if (u.IsLocked)
+                {
+                    var error = "Tài khoản đã bị khóa!";
+                    return Accepted(new { msg = error });
+                }
 
                 var roles = await userManager.GetRolesAsync(u);
                 var results = mapper.Map<SimpleUserDTO>(u);

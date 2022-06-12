@@ -22,6 +22,8 @@
         public DiscountCode? DiscountCode { get; set; }
         public string? ShipperID { get; set; }
         public virtual AppUser Shipper { get; set; }
+
+        public bool IsLocked { get; set; }
     }
 
 
