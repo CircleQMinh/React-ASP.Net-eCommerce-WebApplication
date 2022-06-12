@@ -50,7 +50,7 @@ namespace DotNet6WebApi.Controllers
                         break;
                 }
 
-                var users = await unitOfWork.Users.GetAll(null, orderBy, null, new PaginationFilter(pageNumber, pageSize));
+                var users = await unitOfWork.Users.GetAll(q=>q.IsLocked==false, orderBy, null, new PaginationFilter(pageNumber, pageSize));
                 var result = mapper.Map<IList<SimpleUserForAdminDTO>>(users);
 
                 var user_result = users.Zip(result, (u, r) => new { User = u, Result = r });
@@ -61,7 +61,7 @@ namespace DotNet6WebApi.Controllers
                 }
 
                 //result = result.Where(u => u.Roles.Contains("User")).ToList();
-                var count = await unitOfWork.Users.GetCount(null);
+                var count = await unitOfWork.Users.GetCount(q => q.IsLocked == false);
                 return Ok(new { success = true, result, total = count });
             }
             catch (Exception ex)
@@ -184,7 +184,8 @@ namespace DotNet6WebApi.Controllers
             {
                 return Ok(new { success = false, msg = "Không tìm thấy user!" });
             }
-            await userManager.DeleteAsync(user); 
+            user.IsLocked = true;
+            unitOfWork.Users.Update(user);
             await unitOfWork.Save();
             return Ok(new { success = true });
         }

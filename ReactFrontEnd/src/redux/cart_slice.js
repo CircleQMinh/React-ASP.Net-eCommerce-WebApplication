@@ -9,7 +9,7 @@ const cart_slice = createSlice({
   initialState: initialState,
   reducers: {
     addToCart(state, action) {
-      var item = action.payload;
+      var item = action.payload;console.log(item)
       var existItem = state.items.find((q) => q.product.id == item.product.id);
       if (existItem) {
         existItem.quantity += item.quantity;
@@ -53,14 +53,18 @@ const cart_slice = createSlice({
       state.items.forEach((item) => {
         if (item.product.promotionInfo == null) {
           total += item.product.price * item.quantity;
+      
         } else if (
           item.product.promotionInfo != null &&
           item.product.promotionInfo.promotionPercent != null
         ) {
+       
           total +=
-            (item.product.price - (item.product.price * item.promotionInfo.promotionPercent) / 100) *
+            (item.product.price - (
+              item.product.price * item.product.promotionInfo.promotionPercent/100)) *
             item.quantity;
         } else {
+       
           total +=
             (item.product.price - item.product.promotionInfo.promotionAmount) *
             item.quantity;

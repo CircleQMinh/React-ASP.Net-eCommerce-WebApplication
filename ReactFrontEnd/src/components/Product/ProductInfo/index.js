@@ -19,6 +19,7 @@ export const ProductInfo = (props) => {
     function onClickAddToCart(event){
         event.preventDefault()
         var item = {product: book, quantity:1}
+        console.log(item)
         dispatch(cart_slice_action.addToCart(item))
         dispatch(cart_slice_action.calculateCartTotal())
     }

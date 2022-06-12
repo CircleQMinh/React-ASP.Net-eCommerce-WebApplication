@@ -17,6 +17,7 @@
         public string Email { get; set; }
         public string imgUrl { get; set; }
         public int Status { get; set; }
+        public bool IsLocked { get; set; }
     }
     public class CreateShipperDTO
     {

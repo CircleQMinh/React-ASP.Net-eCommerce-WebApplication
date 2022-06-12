@@ -140,7 +140,7 @@ namespace DotNet6WebApi.Helper
             {
                 double totalPrice;
                 string giam;
-                if (order.DiscountCode.DiscountAmount != "null")
+                if (order.DiscountCode.DiscountAmount != null)
                 {
                     totalPrice = (order.TotalPrice  - double.Parse(order.DiscountCode.DiscountAmount));
                     if (totalPrice < 0)

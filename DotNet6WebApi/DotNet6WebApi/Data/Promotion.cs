@@ -11,5 +11,6 @@
         public virtual IList<PromotionInfo> PromotionInfos { get; set; }
         public int Status { get; set; }
         public int Visible { get; set; }
+
     }
 }

@@ -8,6 +8,7 @@
         public string Description { get; set; }
         public virtual IList<Book> Books { get; set; }
 
+
         public Genre()
         {
             Books = new List<Book>();

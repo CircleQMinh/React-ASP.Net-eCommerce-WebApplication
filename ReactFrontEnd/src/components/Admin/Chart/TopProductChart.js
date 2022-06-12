@@ -13,10 +13,11 @@ import { React, Fragment } from "react";
 
 function TopProductChart(props) {
   var productData = props.productData;
+  //console.log(productData)
 
   var data = [];
   productData.forEach((item) => {
-    var info = { x: item.book.title, y: item.sales, label: item.book.title };
+    var info = { x: item.book.title, y: item.sales, label: item.sales };
     data.push(info);
   });
 

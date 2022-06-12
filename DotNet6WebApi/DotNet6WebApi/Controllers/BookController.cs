@@ -58,7 +58,7 @@ namespace DotNet6WebApi.Controllers
         public async Task<IActionResult> GetBooks(int pageNumber =1, int pageSize=8, string? keyword = null, string? priceRange = null, string? genreFilter = null)
         {
 
-            Expression<Func<Book, bool>> expression = q=>q.Id!=0;
+            Expression<Func<Book, bool>> expression = q=>q.IsLocked==false;
 
             try
             {
@@ -124,7 +124,7 @@ namespace DotNet6WebApi.Controllers
                     (q.Authors.Any(author => book.Authors.Contains(author))
                 ||  q.Genres.Any(genre => book.Genres.Contains(genre))
                 ||  q.Publisher==book.Publisher)
-                &&  q.Id!=id;
+                &&  q.Id!= id&&q.IsLocked == false;
 
                 var relatedBook = await unitOfWork.Books.GetAll(expression, q => q.OrderBy(book => Guid.NewGuid()),
                     new List<string>() { "Authors", "Genres", "Publisher"},
@@ -137,7 +137,7 @@ namespace DotNet6WebApi.Controllers
                     !(q.Authors.Any(author => book.Authors.Contains(author))
                     || q.Genres.Any(genre => book.Genres.Contains(genre))
                     || q.Publisher == book.Publisher)
-                    && q.Id != id;
+                    && q.Id != id && q.IsLocked == false;
                     var randomBooks = await unitOfWork.Books.GetAll(expression_revert, q => q.OrderBy(book => Guid.NewGuid()),
                         new List<string>() { "PromotionInfo", "WishlistUsers" }, 
                         new PaginationFilter(1, numberOfBook-relatedBook.Count));
@@ -168,7 +168,7 @@ namespace DotNet6WebApi.Controllers
             try
             {
                 var randomBooks = await unitOfWork.Books.GetAll(
-                    null,
+                    q=> q.IsLocked == false,
                     q => q.OrderBy(book => Guid.NewGuid()),
                     new List<string>() { "Authors", "Genres", "Publisher", "WishlistUsers" },
                     new PaginationFilter(1, numberOfBook));
@@ -241,7 +241,7 @@ namespace DotNet6WebApi.Controllers
         {
             try
             {
-                var books = await unitOfWork.Books.GetAll(q => true, q => q.OrderByDescending(p => p.Id), new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" }, new PaginationFilter(1, number));
+                var books = await unitOfWork.Books.GetAll(q => q.IsLocked==false, q => q.OrderByDescending(p => p.Id), new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" }, new PaginationFilter(1, number));
                 foreach (var book in books)
                 {
                     var promoInfo = await unitOfWork.PromotionInfos.Get(
@@ -268,7 +268,7 @@ namespace DotNet6WebApi.Controllers
 
             try
             {
-                Expression<Func<Book, bool>> expression = genre == "all" ? q => true : q => q.Genres.Any(g => g.Id == int.Parse(genre));
+                Expression<Func<Book, bool>> expression = genre == "all" ?  q=>q.IsLocked == false : q => q.Genres.Any(g => g.Id == int.Parse(genre)) && q.IsLocked == false;
                 Func<IQueryable<Book>, IOrderedQueryable<Book>> orderBy = null;
                 switch (orderby)
                 {
@@ -544,7 +544,9 @@ namespace DotNet6WebApi.Controllers
                 {
                     return Ok(new { success = false, msg = "Không tìm thấy sản phẩm" });
                 }
-                await unitOfWork.Books.Delete(book.Id);
+                book.IsLocked = true;
+                book.WishlistUsers=new List<AppUser>();
+                unitOfWork.Books.Update(book);
                 await unitOfWork.Save();
                 return Ok(new { success = true });
             }
@@ -658,7 +660,7 @@ namespace DotNet6WebApi.Controllers
         [HttpGet("author")]
         public async Task<IActionResult> GetBookByAuthor(string name,int pageNumber,int pageSize)
         {
-            Expression<Func<Book, bool>> expression = q => q.Authors.Any(author => author.Name == name);
+            Expression<Func<Book, bool>> expression = q => q.Authors.Any(author => author.Name == name)&&q.IsLocked==false;
             var books = await unitOfWork.Books.GetAll(expression,
                 null,
                 new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" },
@@ -670,7 +672,7 @@ namespace DotNet6WebApi.Controllers
         [HttpGet("genre")]
         public async Task<IActionResult> GetBookByGenre(int id, int pageNumber, int pageSize)
         {
-            Expression<Func<Book, bool>> expression = q => q.Genres.Any(g => g.Id == id);
+            Expression<Func<Book, bool>> expression = q => q.Genres.Any(g => g.Id == id)&&q.IsLocked==false;
             var books = await unitOfWork.Books.GetAll(expression,
                 null,
                 new List<string> { "Authors", "Genres", "Publisher", "WishlistUsers" },
