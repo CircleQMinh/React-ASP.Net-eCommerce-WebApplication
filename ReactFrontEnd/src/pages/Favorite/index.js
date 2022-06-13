@@ -11,6 +11,7 @@ import ProductListItem from "../../components/ProductList/ProductListItem";
 import { PaginationPage } from "../../components/Pagination";
 import { LIMIT_FAVORITE_PAGE } from "../../utils/constant";
 import { ProductInfo } from "../../components/Product/ProductInfo";
+import { TitleNav } from "../Home/components/TitleNav";
 
 import styles from "./favorite.module.css";
 
@@ -76,8 +77,8 @@ const FavoritePage = (props) => {
         />
       )}
       <Header />
-      <div className="background_cover_1">
-        <div className="container-fluid p-0 m-0 bg-aliceblue opacity-85">
+      <div className="">
+        <div className="container-fluid p-0 m-0 mb-4">
           <nav aria-label="breadcrumb" className="breadcrumb_nav">
             <ol className="breadcrumb mt-2 ms-2">
               <li className="breadcrumb-item">
@@ -89,12 +90,10 @@ const FavoritePage = (props) => {
             </ol>
           </nav>
         </div>
-        <p className="font-monospace fs-3 mb-0 text-center text-black bg-aliceblue opacity-85">
-          Danh sách sản phẩm yêu thích
-        </p>
-       
+
+        <TitleNav title=" Danh sách sản phẩm yêu thích  " style={{margin: "0 24px 0 24px"}} disableIcon={true}/>
         <div
-          className={`${styles.bodyFavorite} mb-0 bg-aliceblue opacity-85`}
+          className={`${styles.bodyFavorite} mb-0 bg-aliceblue`}
           id="scrollView"
         >
           

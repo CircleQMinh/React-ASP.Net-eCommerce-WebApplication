@@ -1,15 +1,24 @@
 .cartContainer {
     margin: 0 4px;
     cursor: pointer;
+    border: 2px solid #eeeeee !important;
+}
+
+.cartContainer:hover {
     border-color: var(--primary-background) !important;
 }
 
-.cartContainer :hover {
-    border-color: var(--primary-color);
+.borderStyle {
+    border: 1px solid #eeeeee;
 }
 
-.borderStyle {
+.borderStyle:hover {
     border: 1px solid var(--primary-color)
+}
+
+.borderImage {
+    padding-bottom: 5px ;
+    border-bottom: 2px solid var(--primary-background) !important;
 }
 
 .iconSearch {

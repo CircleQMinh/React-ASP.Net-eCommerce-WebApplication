@@ -3,6 +3,8 @@ import AdminService from "../../../api/AdminService";
 import { formatDate } from "../../../helper/formatDate";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../../components/Loading";
+import { TitleNav } from "./TitleNav";
+import './styles.css'
 
 function PromotionAdvertise() {
   const [promotions, setPromotions] = useState([]);
@@ -30,27 +32,18 @@ function PromotionAdvertise() {
 
   return (
     <Fragment>
-      <div className="container mt-3  p-1 font-monospace">
-        <hr className="hr_main_page"></hr>
-        <div className="row  ">
-          <div className="col-lg-12">
-            <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
-              <h3 className="font-monospace text-darkblue text-center">
-                <i className="fas fa-bullhorn  animate__animated animate__jello animate__infinite"></i>{" "}
-                Chương trình khuyến mãi đang diễn ra!
-                <i className="fas fa-bullhorn animate__animated animate__jello animate__infinite ms-2"></i>
-              </h3>
-            </div>
-          </div>
-        </div>
-        <hr className="hr_main_page"></hr>
+      <div className="containerDiv">
+        <TitleNav 
+          title={" Chương trình khuyến mãi đang diễn ra! "} 
+          icon={ <i className="fas fa-bullhorn  animate__animated animate__jello animate__infinite"></i>} 
+        />
         {promotions.length > 0 ? (
-          <div className="row d-flex justify-content-center mt-3">
+          <div className="row d-flex justify-content-center mt-3 promotionContainer">
             <div
-              className="container py-4 animate__animated animate__rotateIn "
+              className="animate__animated animate__rotateIn "
               onClick={toPromoInfo}
             >
-              <article className="postcard dark blue">
+              <article className="postcard postCardContainer">
                 <a
                   className="postcard__img_link"
                   href={`/promotion/${promotions[currentIndex].id}`}
@@ -65,7 +58,6 @@ function PromotionAdvertise() {
                   <h1 className="postcard__title blue text-tron">
                     <a
                       href={`/promotion/${promotions[currentIndex].id}`}
-                      className="font-monospace"
                     >
                       {promotions[currentIndex].name}
                     </a>
@@ -93,7 +85,7 @@ function PromotionAdvertise() {
                     {promotions[currentIndex].description}
                   </div>
 
-                  <button className="btn2  ">
+                  <button className="btn buttonPromotion">
                     Xem ngay <i className="fas fa-arrow-right"></i>
                   </button>
                 </div>

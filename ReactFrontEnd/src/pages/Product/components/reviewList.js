@@ -63,11 +63,11 @@ export const ListReview = (props) => {
 
         return (
           <div className="p-3">
-            <div className="row mt-3 border_review p-1" key={review.userID}>
+            <div className="row mt-3 border_black p-1" key={review.userID}>
               <div className="col-4 col-sm-2 border_right p-1 d-flex flex-column justify-content-center">
                 <img
                   src={review.user.imgUrl}
-                  className="img-fluid rounded border_review img_review"
+                  className="img-fluid rounded border_default img_review"
                   alt="..."
                 />
                 <div className="d-flex justify-content-center text-center flex-column align-items-start">

@@ -14,6 +14,7 @@ import { PAGE_SIZE_SEARCH, RANGE_PRICE_SEARCH } from "../../utils/constant";
 import { SearchField } from "./components/searchField";
 import { FilterProduct } from "./components/filterProduct";
 import { ListProductComponent } from "./components/listProduct";
+import { TitleNav } from "../Home/components/TitleNav";
 
 export const SearchPage = (props) => {
   const navigate = useNavigate();
@@ -211,20 +212,10 @@ export const SearchPage = (props) => {
   return (
     <>
       <Header></Header>
-      <div className="background_cover_1">
-        <div class="container margin_search pb-1">
-          <hr className="hr_main_page"></hr>
-          <div className="d-flex justify-content-center bg-aliceblue opacity-85">
-            <h3 className="font-monospace text-darkblue">
-              <i className="far fa-star animate__animated animate__heartBeat animate__infinite"></i>{" "}
-              Cửa hàng sách Circle'shop
-              <i className="far fa-star animate__animated animate__heartBeat animate__infinite ms-2"></i>
-            </h3>
-          </div>
-          <hr className="hr_main_page"></hr>
-        </div>
+      <div>
+        {/* <TitleNav title="Cửa hàng sách Circle'shop"/> */}
         <Container fluid>
-          <Container fluid className="search-bg p-2">
+          <Container fluid className="p-2">
             <div className="row">
               <div className="col">
                 <SearchField

@@ -77,10 +77,10 @@ export const ProductInfo = (props) => {
         onMouseLeave={() => setProductHover(-1)}
         onMouseEnter={() => setProductHover(1)}
       >
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative" }} className={styles.borderImage}>
           <img
             src={book?.imgUrl || "https://picsum.photos/200/200"}
-            className="card-img-top border_product"
+            className="card-img-top"
             alt={`Product ${book.id}`}
             onClick={() => {
               book.id && redirectDetailProduct(book.id);

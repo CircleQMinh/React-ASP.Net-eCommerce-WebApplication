@@ -292,7 +292,7 @@ Extra extra large	xxl	        ≥1400px */
   position: fixed;
   width: 25%;
   height: 30px;
-  background-color: #b3d323;
+  background-color: var(--primary-background);
   color: #fafeff;
   border-radius: 50px;
   text-align: center;
@@ -377,7 +377,7 @@ Extra extra large	xxl	        ≥1400px */
   width: 100%;
   object-fit: fill;
   position: relative; /* padding: 20px; */
-  border: solid #d7ac37 4px;
+  border: solid var(--primary-color) 4px;
 }
 .postcard .postcard__img_link {
   display: contents;
@@ -387,7 +387,7 @@ Extra extra large	xxl	        ≥1400px */
   height: 10px;
   margin: 10px 0;
   border-radius: 5px;
-  background-color: #424242;
+  background-color: var(--primary-color);
   transition: width 0.2s ease;
 }
 .postcard .postcard__text {
@@ -616,8 +616,9 @@ Extra extra large	xxl	        ≥1400px */
 }
 .background_cover_1 {
   font-family: roboto, sans-serif;
-  background: url("https://res.cloudinary.com/dkmk9tdwx/image/upload/v1653801035/8_tu1uha.jpg")
-    no-repeat center center fixed;
+  /* background: url("https://res.cloudinary.com/dkmk9tdwx/image/upload/v1653801035/8_tu1uha.jpg")
+    no-repeat center center fixed; */
+  background-color: #f5f5f5 !important;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -640,7 +641,8 @@ Extra extra large	xxl	        ≥1400px */
   opacity: 0.95 !important;
 }
 .bg-aliceblue {
-  background-color: aliceblue !important;
+  /* background-color: aliceblue !important; */
+  background-color: #FFF !important;
 }
 .bg-cornflowerblue {
   background-color: cornflowerblue !important;
@@ -650,6 +652,15 @@ Extra extra large	xxl	        ≥1400px */
 }
 .slick-dots li.slick-active button:before {
   opacity: 1 !important;
+}
+.border_default {
+  border: 1px solid #eeeeee;
+}
+.border_black {
+  border: 1px solid #c1bbbb;
+}
+.border_default:hover {
+  border: 1px solid #eeeeee;
 }
 .border_product {
   border: #0d6efd solid 2px !important;
@@ -689,4 +700,12 @@ Extra extra large	xxl	        ≥1400px */
 
 .min_height_100vh{
   min-height: 100vh;
+}
+
+.containerDiv {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 10px 0 10px 0;
+  margin: 12px;
+  /* border */
 }

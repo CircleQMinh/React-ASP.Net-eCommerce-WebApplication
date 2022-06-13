@@ -9,14 +9,12 @@
     font-weight: bold;
 }
 
-
-
 .angleRightBtn {
-    right: 0;
+    right: 10px;
 }
 
 .angleLeftBtn {
-    left: 0;
+    left: 10px;
 }
 
 .angleLeftBtn,
@@ -39,4 +37,20 @@
 .angleLeftBtn > i,
 .angleRightBtn > i {
     color: #fff;
+}
+
+.containerSlider {
+    margin: 0 48px 0 48px;
+}
+
+@media (max-width: 767.98px ) { 
+    .containerSlider {
+        margin: 0 12px 0 12px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) { 
+    .containerSlider {
+        margin: 0 36px 0 36px;
+    }
 }

@@ -75,8 +75,8 @@ function Redeem() {
   return (
     <Fragment>
       <Header></Header>
-      <div className="background_cover_1">
-        <div className="container-fluid p-0 m-0 bg-aliceblue opacity-90">
+      <div className="">
+        <div className="container-fluid p-0 m-0 bg-aliceblue">
           <nav aria-label="breadcrumb" className="breadcrumb_nav">
             <ol className="breadcrumb mt-2 ms-2">
               <li className="breadcrumb-item">
@@ -88,7 +88,7 @@ function Redeem() {
             </ol>
           </nav>
         </div>
-        <div className="container mt-2 w-75 bg-aliceblue opacity-90">
+        <div className="container mt-2 w-75 bg-aliceblue">
           <div className="row">
             <div className="col">
               <p className="lead">

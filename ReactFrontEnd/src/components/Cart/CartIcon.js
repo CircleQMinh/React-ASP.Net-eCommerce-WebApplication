@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { cart_slice_action } from "../../redux/cart_slice.js";
 import CartItem from "./CartItem.js";
 import { useNavigate } from 'react-router-dom';
+import './Cart.css'
+import { TitleNav } from "../../pages/Home/components/TitleNav.js";
+
 function CartIcon(props) {
   const [isHover, setIsHover] = useState(false);
 
@@ -50,26 +53,26 @@ function CartIcon(props) {
             className="float-btn-cart-price text_decoration_none animate__animated animate__slideInRight animate__faster"
             key={"info"}
           >
-            <p className="text-monospace ">Thông tin giỏ hàng</p>
+            <p>Thông tin giỏ hàng</p>
           </a>
           <div
             className="cart_item_list p-2 shadow-lg border rounded animate__animated animate__slideInRight "
             onMouseLeave={onNotHoverOnCartIcon}
             onMouseEnter={onHoverOnCartIcon}
           >
-            <div className="container d-flex justify-content-center flex-column text-center text-monospace mb-3">
-              <p>
+            <div className="container d-flex justify-content-center flex-column text-center mb-1 ">
+              <p className="mb-1">
                 Tổng giá trị :{" "}
                 <NumberFormat
                   value={totalPrice}
-                  className="text-center   "
+                  className="text-center priceTotal "
                   displayType={"text"}
                   thousandSeparator={true}
                   suffix={"đ"}
                   renderText={(value, props) => <span {...props}>{value}</span>}
                 />
               </p>
-              <p>Tổng số sản phẩm : {totalItem}</p>
+              <p>Tổng số sản phẩm : <a className="totalProduct"> {totalItem}</a></p>
               <div
                 className="btn-group w-100"
                 role="group"
@@ -78,13 +81,15 @@ function CartIcon(props) {
                 <button type="button" className="btn btn-warning" onClick={() =>  navigate('/checkout')}>
                   <i className="fas fa-money-check-alt me-2"></i>Thanh toán
                 </button>
-                <button type="button" className="btn btn-success" onClick={onClickResetCartBTN}>
-                  <i className="fas fa-receipt me-2"></i>Xóa giỏ hàng
+                <button type="button" className="btn btn-danger" onClick={onClickResetCartBTN}>
+                  <i className="far fa-times-circle ms-2"></i>  Xóa giỏ hàng
                 </button>
               </div>
-              <p className="lead mt-3">Danh sách sản phẩm</p>
+              {/* <p className="mt-2 lead fw-normal">Danh sách sản phẩm</p> */}
+             <TitleNav title="Danh sách sản phẩm" style={{ margin: "8px 0 0 0",  }} disableIcon={true}/>
+
             </div>
-            <div className="items_list">
+            <div className="items_list pe-2">
               {items.length == 0 && (
                 <img
                   className="img-fluid"
