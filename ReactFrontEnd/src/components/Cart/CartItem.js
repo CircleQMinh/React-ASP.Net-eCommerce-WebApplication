@@ -33,10 +33,10 @@ function CartItem(props) {
   return (
     <Fragment>
       <div className="row">
-        <div className="col-5">
+        <div className="col-5 border-default">
           <img
             src={item.product.imgUrl}
-            className="img-fluid rounded border border-5"
+            className="img-fluid rounded border_default"
             alt="..."
           />
         </div>
@@ -127,14 +127,14 @@ function CartItem(props) {
             <hr className="w-100 m-0"></hr>
             <div className="d-flex justify-content-between w-100 mt-2">
               <button
-                className="btn btn-sm btn-success btn_cart"
+                className="btn btn-sm btn-primary btn_cart"
                 onClick={onMinusIconClick}
               >
                 <i className="fas fa-minus"></i>
               </button>
               <p className="mx-2 pt-2">{item.quantity}</p>
               <button
-                className="btn btm-sm btn-success btn_cart"
+                className="btn btm-sm btn-primary btn_cart"
                 onClick={onFlusIconClick}
               >
                 <i className="fas fa-plus"></i>
@@ -146,7 +146,7 @@ function CartItem(props) {
                 type="button"
                 onClick={onDeleteButtonClick}
               >
-                Xóa khỏi giỏ hàng <i className="far fa-times-circle ms-2"></i>
+                Xóa khỏi giỏ hàng
               </button>
             </div>
           </div>

@@ -15,6 +15,7 @@ import { Evaluate } from "./components/Evaluate";
 import styles from "../Contact/contact.module.css";
 import "./Home.css";
 import PromotionAdvertise from "./components/PromotionAdvertise";
+import { SlickProducts } from "./components/ListProduct";
 
 function Home(props) {
   const navigate = useNavigate();
@@ -83,70 +84,13 @@ function Home(props) {
       <Header></Header>
       <div className="home-wrapper background_cover_1">
         <AdvertiseSlide></AdvertiseSlide>
-        <div className="container mt-4">
-          <hr className="hr_main_page"></hr>
-          <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
-            <h3 className="font-monospace text-darkblue">
-              <i className="far fa-star animate__animated animate__heartBeat animate__infinite"></i>{" "}
-              Các sản phẩm nổi bật
-              <i className="far fa-star animate__animated animate__heartBeat animate__infinite ms-2"></i>
-            </h3>
-          </div>
-          <hr className="hr_main_page"></hr>
-          {popularProducts?.length > 0 ? (
-            <SlickSlider items={popularProducts} />
-          ) : (
-            <LoadingScreen />
-          )}
-        </div>
-        <div className="container mt-4">
-          <hr className="hr_main_page"></hr>
-          <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
-            <h3 className="font-monospace text-darkblue">
-              <i className="far fa-star animate__animated animate__rotateIn animate__infinite"></i>{" "}
-              Gợi ý cho bạn
-              <i className="far fa-star animate__animated animate__rotateIn animate__infinite ms-2"></i>
-            </h3>
-          </div>
-          <hr className="hr_main_page"></hr>
-          {randomProducts?.length > 0 ? (
-            <SlickSlider items={randomProducts}></SlickSlider>
-          ) : (
-            <LoadingScreen />
-          )}
-        </div>
-        <div className="container mt-4">
-          <hr className="hr_main_page"></hr>
-          <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
-            <h3 className="font-monospace text-darkblue">
-              <i className="far fa-star animate__animated animate__heartBeat animate__infinite"></i>{" "}
-              Mới nhất
-              <i className="far fa-star animate__animated animate__heartBeat animate__infinite ms-2"></i>
-            </h3>
-          </div>
-          <hr className="hr_main_page"></hr>
-          {lateProducts?.length > 0 ? (
-            <SlickSlider items={lateProducts}></SlickSlider>
-          ) : (
-            <LoadingScreen />
-          )}
-        </div>
+        <SlickProducts products={popularProducts} title={" Các sản phẩm nổi bật "} />
+        <SlickProducts products={randomProducts} title={" Gợi ý cho bạn "} />
+        <SlickProducts products={lateProducts} title={" Mới nhất "} />
         <PromotionAdvertise></PromotionAdvertise>
         <Evaluate />
 
-        <div className="container">
-          <hr className="hr_main_page"></hr>
-          <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
-            <h3 className="font-monospace text-darkblue">
-              <i className="far fa-star animate__animated animate__heartBeat animate__infinite"></i>{" "}
-              Về chúng tôi
-              <i className="far fa-star animate__animated animate__heartBeat animate__infinite ms-2"></i>
-            </h3>
-          </div>
-          <hr className="hr_main_page"></hr>
-        </div>
-
-        <div className={`${styles.bodyContact} bg-aliceblue`}>
+        <div className={`${styles.bodyContact}`} style={{ backgroundColor: "#FFF" }}>
           <div className={styles.infoWrapper}>
             <div className={`${styles.content} mb-5 px-2`}>
               <span style={{ fontWeight: "bold" }}>Circle's Shop</span> Cửa hàng
@@ -208,59 +152,12 @@ function Home(props) {
                     </div>
                   </div>
                 </div>
-                <div className={`col-12 col-md-6 mt-3 ${styles.colWrapper}`}>
-                  <div className={styles.title}> Liên hệ </div>
-                  <div className="d-flex">
-                    <div className={styles.iconWrapper}>
-                      <i class="fa-solid fa-location-dot"></i>
-                    </div>
-                    <div style={{ alignSelf: "center" }}>1 Võ Văn Ngân</div>
-                  </div>
-                  <div className="d-flex">
-                    <div className={styles.iconWrapper}>
-                      <i class="fa-solid fa-phone"></i>
-                    </div>
-                    <div style={{ alignSelf: "center" }}>0788283307</div>
-                  </div>
-                  <div className="d-flex">
-                    <div className={styles.iconWrapper}>
-                      <i class="fa-solid fa-earth-asia"></i>
-                    </div>
-                    <div style={{ alignSelf: "center" }}>
-                      http://www.example.com
-                    </div>
-                  </div>
-                </div>
-                <div className={`col-12 col-md-6 mt-3 ${styles.colWrapper}`}>
-                  <div className={styles.title}> Link </div>
-                  <div className="d-flex">
-                    <div className={styles.iconFacebook}>
-                      <i class="fa-brands fa-facebook-f"></i>
-                    </div>
-                    <div style={{ alignSelf: "center" }}>Facebook</div>
-                  </div>
-                  <div className="d-flex">
-                    <div
-                      className={`${styles.iconWrapper} ${styles.twitterIcon}`}
-                    >
-                      <i class="fa-brands fa-twitter"></i>
-                    </div>
-                    <div style={{ alignSelf: "center" }}>Twitter</div>
-                  </div>
-                  <div className="d-flex">
-                    <div
-                      className={`${styles.iconWrapper} ${styles.ggplusIcon}`}
-                    >
-                      <i class="fa-brands fa-google-plus-g"></i>
-                    </div>
-                    <div style={{ alignSelf: "center" }}>Google Plus</div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <Footer />
     </Fragment>
   );
 }

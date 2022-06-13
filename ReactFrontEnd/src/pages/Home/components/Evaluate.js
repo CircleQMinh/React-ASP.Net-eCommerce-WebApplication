@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { set } from "react-hook-form";
 import "./styles.css";
+import { TitleNav } from "./TitleNav";
 
 const evaluates = [
   {
@@ -60,20 +61,10 @@ export const Evaluate = () => {
     </div>
   );
   return (
-    <>
-      <div className="container mt-3 ">
-        <hr className="hr_main_page"></hr>
-        <div className="d-flex justify-content-center bg-cornflowerblue opacity-85">
-          <h3 className="font-monospace text-darkblue">
-            <i className="far fa-star animate__animated animate__heartBeat animate__infinite"></i>{" "}
-            Khách hàng nói gì về chúng tôi
-            <i className="far fa-star animate__animated animate__heartBeat animate__infinite ms-2"></i>
-          </h3>
-        </div>
-        <hr className="hr_main_page"></hr>
-      </div>
+    // <div className="containerDiv">
+    //   <TitleNav title="Khách hàng nói gì về chúng tôi"/>
 
-      <div className="displayFlex justify-content-center align-items-center flex-column evaluateContainer">
+      <div className="displayFlex justify-content-center align-items-center flex-column evaluateContainer containerDiv">
         {evaluates.map((item, index) => {
           if (index === value) {
             return (
@@ -92,6 +83,6 @@ export const Evaluate = () => {
 
         {EvaluateImage}
       </div>
-    </>
+    // </div>
   );
 };

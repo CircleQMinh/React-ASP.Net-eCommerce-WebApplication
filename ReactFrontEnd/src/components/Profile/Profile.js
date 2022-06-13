@@ -156,7 +156,7 @@ function Profile() {
           <Header></Header>
           {!isLoading && (
             <div className="background_cover_1">
-              <div className="container-fluid p-0 m-0 bg-aliceblue opacity-90">
+              <div className="container-fluid p-0 m-0 bg-aliceblue">
                 <nav aria-label="breadcrumb" className="breadcrumb_nav">
                   <ol className="breadcrumb mt-2 ms-2">
                     <li className="breadcrumb-item">
@@ -171,7 +171,7 @@ function Profile() {
                   </ol>
                 </nav>
               </div>
-              <div className="container bg-aliceblue mt-2 opacity-90">
+              <div className="containerDiv bg-aliceblue mt-2">
                 <div className="row">
                   <div className="col col-lg-3 mb-3">
                     <div className="card">

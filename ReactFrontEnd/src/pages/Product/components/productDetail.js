@@ -64,7 +64,7 @@ export const ProductDetail = (props) => {
   }, []);
 
   return (
-    <div className="container mt-2 p-4 bg-aliceblue opacity-90 ">
+    <div className="containerDiv mt-2 p-4 bg-aliceblue ">
       <div className="row" key={Math.random()}>
         <div className="col-12 col-md-4">
           <img

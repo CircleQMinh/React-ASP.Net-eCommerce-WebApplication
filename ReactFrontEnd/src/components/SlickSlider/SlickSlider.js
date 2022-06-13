@@ -95,7 +95,7 @@ function SlickSlider(props) {
 
   return (
     <Fragment>
-      <Container className="p-5  " style={{ position: "relative" }}
+      <div className={` ${styles.containerSlider} `} style={{ position: "relative", padding: "24px 48px 24px 48px" }}
           onMouseLeave={()=>setSliderHover(false)}
           onMouseEnter={()=>setSliderHover(true)}
       >
@@ -120,7 +120,7 @@ function SlickSlider(props) {
             })}
           </Slider>
         )}
-     </Container>
+     </div>
     </Fragment>
   );
 }

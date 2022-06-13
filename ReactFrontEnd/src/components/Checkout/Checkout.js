@@ -263,8 +263,8 @@ function Checkout(props) {
   return (
     <Fragment>
       <Header></Header>
-      <div className="background_cover_1 min_height_100vh">
-        <div className="container-fluid p-0 m-0 bg-aliceblue opacity-90">
+      <div className="min_height_100vh">
+        <div className="container-fluid p-0 m-0 bg-aliceblue rounded-1">
           <nav aria-label="breadcrumb" className="breadcrumb_nav">
             <ol className="breadcrumb mt-2 ms-2">
               <li className="breadcrumb-item">
@@ -276,7 +276,7 @@ function Checkout(props) {
             </ol>
           </nav>
         </div>
-        <div className="container mt-1 bg-aliceblue opacity-90">
+        <div className="container mt-1 bg-aliceblue">
           <div className="row ">
             <div className="col-3 d-flex justify-content-center border-bottom border-end border-4">
               <img
@@ -294,8 +294,7 @@ function Checkout(props) {
             </div>
           </div>
         </div>
-
-        <div className="container mt-4 bg-aliceblue opacity-90">
+        <div className="container mt-4 bg-aliceblue">
           <div className="row">
             {isLoggedIn && totalItem == 0 && (
               <div className="col-sm-12 col-lg-9 p-2 border border-2 animate__animated animate__bounceInLeft d-flex justify-content-center">

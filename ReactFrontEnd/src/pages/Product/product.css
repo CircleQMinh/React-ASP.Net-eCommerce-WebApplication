@@ -4,16 +4,16 @@
 
 .breadcrumb_nav {
   background-color: black;
-  color: greenyellow;
+  color: var(--primary-background);
   height: 40px;
   display: flex;
 }
 .breadcrumb_nav a{
-    color: greenyellow;
+    color: var(--primary-background);
     text-decoration: none!important;
 }
 .breadcrumb_nav p{
-    color: greenyellow;
+    color: var(--primary-background);
     display: inline;
 }
 
@@ -58,7 +58,7 @@
     padding: 10px;
 }
 .border_right{
-    border-right: solid 2px #dc3545;
+    border-right: solid 2px #c1bbbb;
 }
 
 .favorite {

@@ -299,7 +299,7 @@ function ProfileOrder() {
           <Header></Header>
           {!isLoading && (
             <div className="background_cover_1">
-              <div className="container-fluid p-0 m-0 bg-aliceblue opacity-90">
+              <div className="container-fluid p-0 m-0 bg-aliceblue">
                 <nav aria-label="breadcrumb" className=" breadcrumb_nav">
                   <ol className="breadcrumb mt-2 ms-2">
                     <li className="breadcrumb-item">
@@ -317,7 +317,7 @@ function ProfileOrder() {
                   </ol>
                 </nav>
               </div>
-              <div className="container mt-2 bg-aliceblue opacity-90">
+              <div className="containerDiv mt-2 bg-aliceblue">
                 <div className="row">
                   <div className="col col-lg-3 mb-3">
                     <div className="card">

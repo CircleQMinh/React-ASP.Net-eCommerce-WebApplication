@@ -14,6 +14,7 @@ import { ListReview } from "./components/reviewList";
 import { ProductDetail } from "./components/productDetail";
 import { Comment } from "./components/comment";
 import { toast } from "react-toastify";
+import { TitleNav } from "../Home/components/TitleNav";
 
 function ProductInfo(props) {
   const params = useParams();
@@ -165,15 +166,8 @@ function ProductInfo(props) {
             onClickAddToCart={onClickAddToCart}
             onClickComment={onClickComment}
           />
-          <div className="container bg-aliceblue opacity-90">
-            <h2 className="text-center text-black font-monospace lead">
-              <i className="fas fa-bars me-2"></i>
-              <span style={{ fontSize: 20, fontWeight: 500 }}>
-                Sách tương tự
-              </span>
-              <i className="fas fa-bars ms-2"></i>
-            </h2>
-            <hr className="hr_main_page"></hr>
+          <div className="containerDiv bg-aliceblue">
+            <TitleNav title=" Sách tương tự  " icon={<i className="fas fa-bars me-2"></i>}/>
             {!isLoadingRelated && (
               <>
                 {related_Product.length > 0 ? (
@@ -184,15 +178,10 @@ function ProductInfo(props) {
               </>
             )}
 
-            <h2 className="text-center font-monospace lead mt-2">
-              <i className="fas fa-star me-1"></i>
-              <span style={{ fontSize: 20, fontWeight: 500 }}>Đánh giá ({avgRating.toFixed(2)}) </span>
-              <i className="fas fa-star ms-1"></i>
-            </h2>
-            <hr className="hr_main_page"></hr>
+            <TitleNav title=" Đánh giá  " icon={ <i className="fas fa-star ms-1"></i>} style={{ marginTop: 16 }}/>
             {/* Đánh giá */}
 
-            <div className="row d-flex justify-content-center">
+            <div className="row d-flex justify-content-center mt-4">
               {reviews.length > 0 && (
                 <div className="rating_pro">
                   <div className="d-flex flex-wrap justify-content-start w-100 ">
@@ -315,12 +304,8 @@ function ProductInfo(props) {
                 </div>
               )}
             </div>
-            <h2 className="text-center font-monospace lead mt-2">
-              <i className="fa-solid fa-pen-nib me-2"></i>
-              <span style={{ fontSize: 20, fontWeight: 500 }}>Nhận xét ({reviews.length})</span>
-              <i className="fa-solid fa-pen-nib ms-2"></i>
-            </h2>
-            <hr className="hr_main_page"></hr>
+            
+            <TitleNav title=" Nhận xét  " icon={ <i className="fa-solid fa-pen-nib ms-2"></i>}/>
             {/* Bình luận */}
             {reviews.length == 0 && (
               <>

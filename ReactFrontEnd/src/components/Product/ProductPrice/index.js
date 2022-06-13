@@ -18,7 +18,7 @@ export const ProductPrice = ({ book }) => {
                 </div>
                 <div>
                   <span className="badge rounded-pill bg-danger ms-3 font-monospace">
-                    {`- ${book.promotionInfo.promotionAmount} đ`}
+                    {`- ${formatCurrencyVN(book.promotionInfo.promotionAmount)} đ`}
                   </span>
                 </div>
               </>
