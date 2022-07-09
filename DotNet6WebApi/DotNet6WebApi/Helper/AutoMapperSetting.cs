@@ -11,6 +11,7 @@ namespace DotNet6WebApi.Helper
         {
             //Genre
             CreateMap<Genre, GenreDTO>().ReverseMap();
+            CreateMap<Genre, GenreInfoDTO>().ReverseMap();
             CreateMap<Genre, SmallerGenreDTO>().ReverseMap();
             CreateMap<Genre, CreateGenreDTO>().ReverseMap();
             CreateMap<Genre, GenreInfoAdminDTO>().ReverseMap();
