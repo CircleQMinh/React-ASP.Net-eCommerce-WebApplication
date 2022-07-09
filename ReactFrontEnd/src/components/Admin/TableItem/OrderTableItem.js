@@ -267,6 +267,7 @@ function OrderTableItem(props) {
           <p>Tên liên lạc : {item.contactName}</p>
           <p>Số điện thoại : {item.phone}</p>
           <p>Email : {item.email}</p>
+          <p>Địa chỉ : {item.address}</p>
         </td>
         <td className="text-black">
           <NumberFormat
